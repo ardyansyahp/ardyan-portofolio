@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ardyan Syahputra</title>
+    <!-- Custom Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/star.ico">
+    <link rel="stylesheet" href="assets/css/style.css?v=3">
+    <!-- Google Fonts: Inter for reading, JetBrains Mono for tech accent -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- FILM GRAIN -->
+    <div class="film-grain"></div>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- SCROLL PROGRESS -->
+    <div id="scroll-progress"></div>
+    <!-- BOOT SCREEN -->
+    <div id="boot-screen" class="boot-screen">
+        <div class="boot-text" id="boot-text"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">ARDYAN.</a>
+            <div class="nav-right" style="display: flex; align-items: center; gap: 24px;">
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li>
+                        <button id="factory-mode-btn" class="btn-outline"
+                        style="padding: 6px 12px; font-size: 12px; font-family: var(--font-mono); cursor: pointer;">[Execute Override]</button>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero reveal" id="home">
+            <div class="container hero-grid">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Junior <br> <span style="color: var(--accent);">Web Developer</span>.
+                    </h1>
+                    <p class="hero-desc">
+                        Hi, saya <strong>Ardyan Syahputra</strong>. Saya menerjemahkan kerumitan rantai pasok pabrik
+                        menjadi perangkat lunak skala enterprise yang efisien.
+                    </p>
+                    <div class="hero-cta">
+                        <div class="bento-connect">
+                            <span class="bento-label">Terhubung</span>
+                            <div class="bento-icons">
+                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ardyansyahputra174@gmail.com&su=Halo%20Ardyan!"
+                                    target="_blank" title="Email" aria-label="Email">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                        </path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                </a>
+                                <a href="https://www.linkedin.com/in/ardyan-syahputra" target="_blank" title="LinkedIn"
+                                    aria-label="LinkedIn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                        </path>
+                                        <rect x="2" y="9" width="4" height="12"></rect>
+                                        <circle cx="4" cy="4" r="2"></circle>
+                                    </svg>
+                                </a>
+                                <a href="https://www.instagram.com/ardaynsyahp" target="_blank" title="Instagram"
+                                    aria-label="Instagram">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IMPACT METRICS -->
+                    <div class="hero-metrics">
+                        <div class="metric">
+                            <div style="display: flex; align-items: baseline;">
+                                <h3 class="metric-number" data-target="1">0</h3><span class="metric-plus"></span>
+                            </div>
+                            <p class="metric-label">Sistem Enterprise</p>
+                        </div>
+                        <div class="metric">
+                            <div style="display: flex; align-items: baseline;">
+                                <h3 class="metric-number" data-target="2">0</h3><span class="metric-plus"></span>
+                            </div>
+                            <p class="metric-label">Aplikasi Skala Menengah</p>
+                        </div>
+                        <div class="metric">
+                            <div style="display: flex; align-items: baseline;">
+                                <h3 class="metric-number" data-target="100">0</h3><span class="metric-plus"
+                                    style="margin-left: 2px;">%</span>
+                            </div>
+                            <p class="metric-label">Orientasi Bisnis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="close"></span>
+                                <span class="minimize"></span>
+                                <span class="maximize"></span>
+                            </div>
+                            <div class="terminal-title">guest@ardyan-sys:~</div>
+                        </div>
+                        <div class="terminal-body" id="terminal-body">
+                            <div class="terminal-output" id="terminal-output">
+                                <p><span class="prompt">guest@ardyan-sys:~$</span> ./welcome.sh</p>
+                                <p class="sys-msg">Welcome to Ardyan's Interactive Terminal.</p>
+                                <p class="sys-msg">Type <span class="highlight">'help'</span> to see available commands.</p>
+                            </div>
+                            <div class="terminal-input-line">
+                                <span class="prompt">guest@ardyan-sys:~$</span>
+                                <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" placeholder="Ketik perintah di sini...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT & SKILLS -->
+        <section class="about section" id="about">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h2 class="section-title">01. Tentang Saya</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p>Berpengalaman merancang arsitektur ekosistem digital terintegrasi, mulai dari sistem
+                            pelaporan kualitas, pemantauan operasional real-time, hingga otomasi alur kerja produksi di
+                            industri manufaktur.</p>
+                        <p>Saya tidak sekadar menulis kode, tetapi juga menganalisis masalah bisnis dan merancang solusi
+                            teknologi yang berdampak langsung pada efisiensi rantai pasok perusahaan.</p>
+
+                        <h3 class="skill-title" style="margin-top: 48px; font-size: 18px; margin-bottom: 24px;">
+                            Arsitektur & Teknologi:</h3>
+                        <div class="tech-stack-grid">
+                            <div class="tech-category">
+                                <h4 class="tech-cat-title">Languages & Databases</h4>
+                                <div class="tech-tags">
+                                    <span>PHP</span><span>JavaScript</span><span>SQL/MariaDB</span><span>HTML5</span><span>CSS3</span><span>PowerShell</span>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h4 class="tech-cat-title">Frameworks & Libraries</h4>
+                                <div class="tech-tags">
+                                    <span>Laravel</span><span>Livewire</span><span>Alpine.js</span><span>Tailwind
+                                        CSS</span><span>Flutter</span>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h4 class="tech-cat-title">Web Services & Integration</h4>
+                                <div class="tech-tags">
+                                    <span>RESTful API</span><span>AJAX/Fetch API</span>
+                                </div>
+                            </div>
+                            <div class="tech-category">
+                                <h4 class="tech-cat-title">Infrastructure & Tools</h4>
+                                <div class="tech-tags">
+                                    <span>Docker</span><span>Git</span><span>cPanel</span><span>Laragon</span><span>VS
+                                        Code</span><span>HeidiSQL</span><span>DBeaver</span><span>Netbeans</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="projects section" id="projects">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h2 class="section-title">02. Proyek Pilihan</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="project-grid">
+
+                    <!-- S2SMFG -->
+                    <article class="project-card reveal">
+                        <div class="project-content">
+                            <p class="mono-subtitle project-overline">Manufacturing ERP</p>
+                            <h3 class="project-title">S2SMFG (Procure to Ship)</h3>
+                            <div class="project-desc">
+                                <p>Platform komprehensif yang mendigitalkan seluruh siklus rantai pasok end-to-end.
+                                    Mulai dari pengadaan material, barcode operasional produksi, hingga logistik
+                                    pengiriman barang jadi (Finish Good).</p>
+                            </div>
+                            <ul class="project-tech mono-subtitle">
+                                <li>Laravel</li>
+                                <li>MySQL</li>
+                                <li>Barcode/QR</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- PRINTER ROBOT -->
+                    <article class="project-card reveal" style="transition-delay: 0.1s;">
+                        <div class="project-content">
+                            <p class="mono-subtitle project-overline">Hardware Automation</p>
+                            <h3 class="project-title">Direct-to-Printer Robot</h3>
+                            <div class="project-desc">
+                                <p>Sistem background service menggunakan PowerShell yang terintegrasi dengan RESTful
+                                    API. Memungkinkan dokumen SPK dari website langsung dicetak ke printer fisik pabrik
+                                    secara otomatis tanpa dialog box manual.</p>
+                            </div>
+                            <ul class="project-tech">
+                                <li>Laravel</li>
+                                <li>PowerShell</li>
+                                <li>REST API</li>
+                                <li>WScript.Shell</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- ASAKAI & DATA QC -->
+                    <article class="project-card reveal" style="transition-delay: 0.2s;">
+                        <div class="project-content">
+                            <p class="mono-subtitle project-overline">Analytics & Control</p>
+                            <h3 class="project-title">Asakai Dashboard & DataQC</h3>
+                            <div class="project-desc">
+                                <p>Sistem pelaporan real-time untuk inspeksi kualitas produk (DataQC) dan pemantauan KPI
+                                    operasional harian yang digunakan oleh jajaran manajemen dalam Morning Meeting
+                                    (Asakai).</p>
+                            </div>
+                            <ul class="project-tech">
+                                <li>Laravel</li>
+                                <li>Livewire</li>
+                                <li>Alpine.js</li>
+                                <li>DOMPDF</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section class="experience section" id="experience">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h2 class="section-title">03. Pengalaman Kerja</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date mono-subtitle">Feb 2024 — Saat Ini</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-role">Web Developer</h3>
+                            <h4 class="timeline-company">PT. Mada Wikri Tunggal</h4>
+                            <p>Mengeksekusi siklus pengembangan perangkat lunak (SDLC) secara menyeluruh sebagai Solo
+                                Developer. Bertanggung jawab atas analisis kebutuhan, coding, pengujian, hingga
+                                deployment ke shared hosting (cPanel).</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date mono-subtitle">Jan 2023 — Nov 2023</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-role">Elementary Class Teacher</h3>
+                            <h4 class="timeline-company">BBC Ciracas</h4>
+                            <p>Meningkatkan keterampilan komunikasi publik dan transfer pengetahuan, yang terbukti
+                                sangat efektif saat melakukan user training dan pendampingan implementasi software
+                                kepada operator di lapangan.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date mono-subtitle">Jan 2020 — Jun 2020</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-role">Data Entry Administration</h3>
+                            <h4 class="timeline-company">Kemenkumham RI</h4>
+                            <p>Melakukan digitalisasi dan pemrosesan data persuratan resmi serta dokumen pengajuan HAKI
+                                ke basis data instansi dengan tingkat akurasi tinggi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact section reveal" id="contact">
+            <div class="container text-center">
+                <p class="mono-subtitle">04. Apa Selanjutnya?</p>
+                <h2 class="contact-title">Mari Berkolaborasi</h2>
+                <p class="contact-desc">Saya sedang terbuka untuk peluang baru. Baik Anda memiliki pertanyaan atau
+                    sekadar ingin menyapa, saya akan membalas secepat mungkin.</p>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ardyansyahputra174@gmail.com&su=Halo%20Ardyan!"
+                    target="_blank" class="btn btn-primary" id="btn-email">Say Hello</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                <a href="#" class="logo">ARDYAN.</a>
+                <p class="footer-tagline">Arsitektur & Sistem Digital</p>
+            </div>
+            <div class="footer-right">
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/ardyan-syahputra" target="_blank"
+                        aria-label="LinkedIn">LinkedIn</a>
+                    <a href="https://www.instagram.com/ardaynsyahp" target="_blank" aria-label="Instagram">Instagram</a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ardyansyahputra174@gmail.com&su=Halo%20Ardyan!"
+                        target="_blank" aria-label="Email">Email</a>
+                </div>
+                <p class="mono-subtitle footer-copy">Didesain & Dibangun oleh Ardyan Syahputra &copy; 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
