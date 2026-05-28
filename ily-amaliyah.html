@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Kesayanganku, Nur Amaliyah Abdillah Putri</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffe6ea;
+            font-family: 'Quicksand', sans-serif;
+            color: #d81b60;
+            overflow-x: hidden;
+        }
+
+        /* Floating Hearts Animation */
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            animation: float 6s ease-in infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(216, 27, 96, 0.2);
+        }
+
+        .date {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: #d81b60;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .love-letter {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(216, 27, 96, 0.1);
+            line-height: 1.8;
+            font-size: 1.15rem;
+            margin-bottom: 50px;
+            border: 3px dashed #ffb6c1;
+            text-align: left;
+            position: relative;
+        }
+
+        .love-letter::before {
+            content: "💌";
+            font-size: 40px;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffe6ea;
+            border-radius: 50%;
+            padding: 0 10px;
+        }
+
+        .love-letter p {
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* Polaroid Gallery */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 35px 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 220px;
+            transform: rotate(-4deg);
+            cursor: pointer;
+        }
+
+        .polaroid:nth-child(even) {
+            transform: rotate(5deg);
+        }
+
+        .polaroid:nth-child(3n) {
+            transform: rotate(-2deg);
+        }
+
+        .polaroid:hover {
+            transform: scale(1.15) rotate(0deg);
+            z-index: 10;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background-color: #fce4ec;
+            display: block;
+        }
+
+        .polaroid .caption {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            margin-top: 15px;
+            color: #ad1457;
+            font-weight: bold;
+        }
+
+        /* Loading placeholders */
+        .placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 220px;
+            background: #fce4ec;
+            color: #f06292;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .love-letter {
+                font-size: 1rem;
+                padding: 30px 20px;
+            }
+
+            .polaroid {
+                width: 140px;
+                padding: 10px 10px 25px 10px;
+            }
+
+            .polaroid img,
+            .placeholder {
+                height: 140px;
+            }
+
+            .polaroid .caption {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hearts" id="hearts"></div>
+
+    <div class="container">
+        <h1>Happy 4th Anniversary!</h1>
+        <div class="date">💖 Tanggal 26 Terspesial 💖</div>
+
+        <div class="love-letter">
+            <p>Halo Tuan Putri <strong>Nur Amaliyah Abdillah Putri</strong>, sayangku, cintaku, duniaku! 💕</p>
+            <p>Maaf ya kalau ngucapinnya telat dikit atau pakai cara <em>kaya</em> begini. Cowok cowok lain mungkin
+                ngasih bunga atau cokelat, tapi cowokmu yang seorang <em>developer</em> ini malah nyelipin surat cinta
+                rahasia di dalam *source code* portofolio profesionalnya. Biar seluruh dunia nggak tahu, cuma kita
+                berdua aja yang tahu *URL* rahasia ini.</p>
+            <p>Udah 4 tahun ya kita bareng-bareng semenjak tanggal 26 itu. Makasih udah sabar banget ngadepin aku yang
+                kadang sibuk ngoding atau ngurusin *error*. Tiap kali aku mumet liat kode, senyum kamu itu beneran jadi
+                <em>debugger</em> paling ampuh buat hatiku. 🙈
+            </p>
+            <p>Semoga di tahun ke-4 ini dan tahun-tahun berikutnya, kita makin lengket, makin dewasa, dan semua mimpi
+                kita bisa pelan-pelan terwujud (terutama mimpiku buat bikin kamu bahagia terus).</p>
+            <p style="text-align: right; font-weight: bold; margin-top: 30px;">
+                I love you to the moon and back!<br>
+                - From the Future, Ardyan 😘
+            </p>
+        </div>
+
+        <h2>Galeri Gemes Kita 📸</h2>
+        <div class="gallery">
+            <!-- Foto 1 -->
+            <div class="polaroid">
+                <img src="assets/images/love/foto1.jpg"
+                    onerror="this.outerHTML='<div class=\'placeholder\'>Ganti dengan foto1.jpg</div>'" alt="Foto 1">
+                <div class="caption">Ciee gemes bgt</div>
+            </div>
+            <!-- Foto 2 -->
+            <div class="polaroid">
+                <img src="assets/images/love/foto2.jpg"
+                    onerror="this.outerHTML='<div class=\'placeholder\'>Ganti dengan foto2.jpg</div>'" alt="Foto 2">
+                <div class="caption">Kesayanganku</div>
+            </div>
+            <!-- Foto 3 -->
+            <div class="polaroid">
+                <img src="assets/images/love/foto3.jpg"
+                    onerror="this.outerHTML='<div class=\'placeholder\'>Ganti dengan foto3.jpg</div>'" alt="Foto 3">
+                <div class="caption">Milik berdua</div>
+            </div>
+            <!-- Foto 4 -->
+            <div class="polaroid">
+                <img src="assets/images/love/foto4.jpg"
+                    onerror="this.outerHTML='<div class=\'placeholder\'>Ganti dengan foto4.jpg</div>'" alt="Foto 4">
+                <div class="caption">Senyum termanis</div>
+            </div>
+            <!-- Foto 5 -->
+            <div class="polaroid">
+                <img src="assets/images/love/foto5.jpg"
+                    onerror="this.outerHTML='<div class=\'placeholder\'>Ganti dengan foto5.jpg</div>'" alt="Foto 5">
+                <div class="caption">I love you!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animasi Hujan Love
+        const heartsContainer = document.getElementById('hearts');
+        const heartIcons = ['💖', '💕', '💗', '💓', '💞'];
+
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }, 300);
+    </script>
+</body>
+
+</html>
