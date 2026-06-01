@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S2SMFG Case Study - Ardyan Syahputra</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/star.ico">
+    <link rel="stylesheet" href="../assets/css/style.css?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="case-study-page">
+
+    <div class="container">
+        <!-- BACK NAVIGATION -->
+        <a href="../index.html#projects" class="back-link">
+            <span>&larr;</span> [ Kembali ke Portfolio ]
+        </a>
+
+        <!-- HEADER -->
+        <header class="case-study-header">
+            <p class="mono-subtitle" style="text-transform: uppercase;">01. Case Study: Enterprise System</p>
+            <h1 class="case-study-title">S2SMFG (Procure to Ship ERP)</h1>
+            
+            <div class="case-study-meta">
+                <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
+                <div class="meta-item">Peran: <strong>Lead Full-Stack Developer</strong></div>
+                <div class="meta-item">Stack: <strong>Laravel, MySQL/MariaDB, AJAX</strong></div>
+                <div class="meta-item">Skala: <strong>78 Tabel | 50+ Daily Users</strong></div>
+            </div>
+        </header>
+
+        <!-- THE PROBLEM -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Problem (Masalah Bisnis)</h2>
+            <div class="case-study-content">
+                <p>
+                    Sebelum sistem S2SMFG dideploy, seluruh alur kerja pelacakan material dan produksi di pabrik PT. Mada Wikri Tunggal masih berbasis kertas manual. Lembar "Kartu Travel" digunakan untuk mencatat perpindahan barang jadi dari mesin cetak ke area karantina QC, lalu ke gudang barang jadi.
+                </p>
+                <p>
+                    Metode manual ini menyebabkan beberapa masalah kritis pada rantai pasok:
+                </p>
+                <ul>
+                    <li><strong>Kehilangan Data Fisik:</strong> Kartu travel kertas sering kotor, robek, atau bahkan hilang di area lantai pabrik yang sibuk, sehingga melumpuhkan pelacakan riwayat lot produksi.</li>
+                    <li><strong>Delay Sinkronisasi Inventaris:</strong> Stok barang di gudang hanya direkap sekali dalam 24 jam ke dalam spreadsheet Excel. Manajemen tidak memiliki data riil saat melakukan perencanaan produksi (PPIC).</li>
+                    <li><strong>Human Error Tinggi:</strong> Kesalahan pengetikan kode part yang mirip (misalnya part dengan suffix "-A" tertukar dengan "-B") menyebabkan selisih inventaris bernilai puluhan juta rupiah.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- THE ARCHITECTURE -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Architecture (Desain Sistem)</h2>
+            <div class="case-study-content">
+                <p>
+                    Ekosistem S2SMFG dibangun di atas arsitektur monolitik Laravel dengan pendekatan modular. Database MariaDB menampung 78 tabel relasional yang dinormalisasi hingga bentuk 3NF untuk menjaga integritas data transaksi tinggi.
+                </p>
+                
+                <div class="arch-diagram-container">
+                    <div class="arch-grid">
+                        <div class="arch-node">
+                            <div class="arch-node-title">1. Raw Materials</div>
+                            Pencatatan pengadaan & bahan baku masuk gudang.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">2. Barcode SPK</div>
+                            Sistem otomatisasi cetak barcode SPK & Label Box.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">3. QC Scanner</div>
+                            Validasi QR Code barang keluar & QC checking.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">4. Finish Good Out</div>
+                            Logistik armada & sinkronisasi data surat jalan.
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    Setiap box barang jadi yang diproduksi diberi label QR Code unik berisi data nomor SPK, ID part, jumlah isi box, dan timestamp. Operator QC di stasiun akhir cukup memindai QR Code tersebut untuk merekam status "Good" secara real-time.
+                </p>
+            </div>
+        </section>
+
+        <!-- THE CODE -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Code (Implementasi Transaksi)</h2>
+            <div class="case-study-content">
+                <p>
+                    Untuk memastikan tidak terjadi <i>race condition</i> atau data corrupt saat 50+ operator secara bersamaan melakukan scan QR Code barang keluar, seluruh operasi tulis database dibungkus di dalam <strong>Database Transaction</strong> Laravel.
+                </p>
+                <p>
+                    Berikut adalah cuplikan kode backend di controller yang menangani perekaman scan barang keluar dengan mekanisme validasi ketat:
+                </p>
+
+<pre><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/PrintQueueController.php</span>
+<span class="token keyword">namespace</span> <span class="token class-name">App\Http\Controllers\Api</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token class-name">Illuminate\Http\Request</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token class-name">Illuminate\Support\Facades\DB</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token class-name">App\Models\TFinishGoodOut</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token class-name">App\Models\shipping\TSpk</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">FinishGoodScanController</span> <span class="token keyword">extends</span> <span class="token class-name">Controller</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Memproses scan QR code box finished good untuk pengiriman.
+     * Menggunakan DB transaction untuk menjamin konsistensi data atomik.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">processScan</span><span class="token punctuation">(</span><span class="token class-name">Request</span> <span class="token variable">$request</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">validate</span><span class="token punctuation">([</span>
+            <span class="token string">'spk_id'</span> <span class="token operator">=&gt;</span> <span class="token string">'required|exists:t_spk,id'</span><span class="token punctuation">,</span>
+            <span class="token string">'qr_content'</span> <span class="token operator">=&gt;</span> <span class="token string">'required|string'</span><span class="token punctuation">,</span>
+            <span class="token string">'qty'</span> <span class="token operator">=&gt;</span> <span class="token string">'required|integer|min:1'</span>
+        <span class="token punctuation">]);</span>
+
+        <span class="token comment">// Parsing konten QR (Format: PART-CODE|CYCLE|BOX-NUM)</span>
+        <span class="token variable">$parsedData</span> <span class="token operator">=</span> <span class="token function">explode</span><span class="token punctuation">(</span><span class="token string">'|'</span><span class="token punctuation">, </span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qr_content</span><span class="token punctuation">);</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token variable">$parsedData</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span><span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'error'</span><span class="token punctuation">, </span><span class="token string">'message'</span> <span class="token operator">=&gt;</span> <span class="token string">'Format QR tidak valid'</span><span class="token punctuation">], </span><span class="token number">400</span><span class="token punctuation">);</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token variable">$partCode</span> <span class="token operator">=</span> <span class="token variable">$parsedData</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">];</span>
+        <span class="token variable">$cycle</span> <span class="token operator">=</span> <span class="token variable">$parsedData</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">];</span>
+
+        <span class="token comment">// Jalankan Database Transaction untuk menjamin atomic save & lock</span>
+        <span class="token keyword">return</span> <span class="token class-name">DB</span><span class="token operator">::</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">use</span> <span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">, </span><span class="token variable">$partCode</span><span class="token punctuation">, </span><span class="token variable">$cycle</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 1. Lock Row SPK untuk update balance pengiriman</span>
+            <span class="token variable">$spk</span> <span class="token operator">=</span> <span class="token class-name">TSpk</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">, </span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">spk_id</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">lockForUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">firstOrFail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 2. Periksa duplikasi scan box unik</span>
+            <span class="token variable">$exists</span> <span class="token operator">=</span> <span class="token class-name">TFinishGoodOut</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'qr_hash'</span><span class="token punctuation">, </span><span class="token function">md5</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qr_content</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token operator">-&gt;</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'status'</span><span class="token punctuation">, </span><span class="token string">'scanned'</span><span class="token punctuation">)</span>
+                <span class="token operator">-&gt;</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$exists</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span><span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'error'</span><span class="token punctuation">, </span><span class="token string">'message'</span> <span class="token operator">=&gt;</span> <span class="token string">'Box ini sudah discan sebelumnya'</span><span class="token punctuation">], </span><span class="token number">422</span><span class="token punctuation">);</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token comment">// 3. Catat scan finished good</span>
+            <span class="token variable">$fgScan</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TFinishGoodOut</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$fgScan</span><span class="token operator">-&gt;</span><span class="token function">spk_id</span> <span class="token operator">=</span> <span class="token variable">$spk</span><span class="token operator">-&gt;</span><span class="token function">id</span><span class="token punctuation">;</span>
+            <span class="token variable">$fgScan</span><span class="token operator">-&gt;</span><span class="token function">part_code</span> <span class="token operator">=</span> <span class="token variable">$partCode</span><span class="token punctuation">;</span>
+            <span class="token variable">$fgScan</span><span class="token operator">-&gt;</span><span class="token function">cycle</span> <span class="token operator">=</span> <span class="token variable">$cycle</span><span class="token punctuation">;</span>
+            <span class="token variable">$fgScan</span><span class="token operator">-&gt;</span><span class="token function">qty</span> <span class="token operator">=</span> <span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qty</span><span class="token punctuation">;</span>
+            <span class="token variable">$fgScan</span><span class="token operator">-&gt;</span><span class="token function">qr_hash</span> <span class="token operator">=</span> <span class="token function">md5</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qr_content</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$fgScan</span><span class="token operator">-&gt;</span><span class="token function">status</span> <span class="token operator">=</span> <span class="token string">'scanned'</span><span class="token punctuation">;</span>
+            <span class="token variable">$fgScan</span><span class="token operator">-&gt;</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 4. Update status tracking SPK</span>
+            <span class="token variable">$spk</span><span class="token operator">-&gt;</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token string">'total_scanned_qty'</span><span class="token punctuation">, </span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qty</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span>
+                <span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'success'</span><span class="token punctuation">,</span>
+                <span class="token string">'message'</span> <span class="token operator">=&gt;</span> <span class="token string">'Box berhasil divalidasi'</span><span class="token punctuation">,</span>
+                <span class="token string">'data'</span> <span class="token operator">=&gt;</span> <span class="token punctuation">[</span>
+                    <span class="token string">'part_code'</span> <span class="token operator">=&gt;</span> <span class="token variable">$partCode</span><span class="token punctuation">,</span>
+                    <span class="token string">'qty'</span> <span class="token operator">=&gt;</span> <span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qty</span>
+                <span class="token punctuation">]</span>
+            <span class="token punctuation">]);</span>
+        <span class="token punctuation">});</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+                
+                <p>
+                    <strong>Mengapa kode ini scalable?</strong>
+                </p>
+                <ul>
+                    <li>Menggunakan <code>DB::transaction</code> untuk memastikan konsistensi relasi. Jika pencatatan scan berhasil tetapi update SPK gagal, seluruh data akan otomatis di-rollback.</li>
+                    <li>Fungsi <code>lockForUpdate()</code> mengunci record baris SPK pada database saat transaksi berjalan, memblokir request lain dari mengubah SPK yang sama secara bersamaan guna mencegah selisih stok (oversell/over-ship).</li>
+                    <li>Validasi keunikan berbasis hash MD5 mencegah manipulasi data atau double scan box oleh operator.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

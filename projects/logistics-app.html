@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistics App Case Study - Ardyan Syahputra</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/star.ico">
+    <link rel="stylesheet" href="../assets/css/style.css?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="case-study-page">
+
+    <div class="container">
+        <!-- BACK NAVIGATION -->
+        <a href="../index.html#projects" class="back-link">
+            <span>&larr;</span> [ Kembali ke Beranda ]
+        </a>
+
+        <!-- HEADER -->
+        <header class="case-study-header">
+            <p class="mono-subtitle" style="text-transform: uppercase;">04. Case Study: Mobile App & Integration</p>
+            <h1 class="case-study-title">Logistics Driver App</h1>
+
+            <div class="case-study-meta">
+                <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
+                <div class="meta-item">Peran: <strong>Mobile & Backend Developer</strong></div>
+                <div class="meta-item">Stack: <strong>Flutter (Dart), GetX, GPS, QR, Laravel API</strong></div>
+                <div class="meta-item">Akurasi: <strong>95% Konfirmasi Lebih Cepat</strong></div>
+            </div>
+        </header>
+
+        <!-- THE PROBLEM -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Problem (Masalah Bisnis)</h2>
+            <div class="case-study-content">
+                <p>
+                    Sebelum aplikasi seluler logistik dideploy, manajemen tidak memiliki visibilitas terhadap status
+                    pengiriman barang dari pabrik ke stasiun perakitan pelanggan (customer plant):
+                </p>
+                <ul>
+                    <li><strong>Buta Lokasi Armada:</strong> Tim logistik tidak mengetahui posisi truk pengiriman secara
+                        real-time, sehingga harus berulang kali menelepon pengemudi saat di jalan.</li>
+                    <li><strong>Proses Manual Lambat:</strong> Konfirmasi penerimaan barang hanya bisa diverifikasi
+                        setelah pengemudi kembali ke pabrik dan menyerahkan lembar fisik Surat Jalan bertanda tangan.
+                    </li>
+                    <li><strong>Sengketa Waktu Pengiriman:</strong> Ketiadaan timestamp kedatangan digital yang presisi
+                        menyulitkan verifikasi klaim keterlambatan pasokan (just-in-time penalty) dari pelanggan.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- THE ARCHITECTURE -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Architecture (Sinkronisasi GPS & QR)</h2>
+            <div class="case-study-content">
+                <p>
+                    Solusinya adalah aplikasi mobile cross-platform berbasis Flutter untuk platform Android yang
+                    dipasang pada handphone seluruh driver armada pabrik. Aplikasi ini terintegrasi langsung dengan API
+                    backend Laravel di cloud.
+                </p>
+
+                <div class="arch-diagram-container">
+                    <div class="arch-grid">
+                        <div class="arch-node">
+                            <div class="arch-node-title">1. Flutter Driver Client</div>
+                            Memuat daftar trip surat jalan. Mengakses modul GPS & Scanner QR hardware HP.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">2. Geo-Location Loop</div>
+                            Perekaman koordinat lokasi (Latitude/Longitude) secara periodik saat perjalanan aktif.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">3. Scan QR on Arrival</div>
+                            Driver memindai QR Code di gerbang pelanggan untuk memicu tanda terima digital.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">4. Laravel API & DB</div>
+                            Menyimpan timestamp log presisi GPS untuk diverifikasi oleh tim internal PPIC.
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    Driver menggunakan pemindai QR bawaan aplikasi untuk men-scan kode di plant tujuan. Jika koordinat
+                    GPS driver berada di luar radius radius pagar (geofencing) plant pelanggan, sistem akan menolak
+                    konfirmasi masuk untuk mencegah kecurangan pengisian laporan kedatangan.
+                </p>
+            </div>
+        </section>
+
+        <!-- THE CODE -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Code (GetX State & Endpoint Sinkronisasi)</h2>
+            <div class="case-study-content">
+                <p>
+                    Aplikasi mobile menggunakan GetX untuk manajemen state dan dependensi. Berikut adalah cuplikan
+                    controller Flutter (Dart) yang menangani sinkronisasi lokasi GPS dan payload konfirmasi pengiriman:
+                </p>
+
+                <pre><code class="language-dart"><span class="token comment">// driver_app/lib/app/controllers/delivery_controller.dart</span>
+<span class="token keyword">import</span> <span class="token string">'package:get/get.dart'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">'package:geolocator/geolocator.dart'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">'package:http/http.dart'</span> <span class="token keyword">as</span> <span class="token class-name">http</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token string">'dart:convert'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">DeliveryController</span> <span class="token keyword">extends</span> <span class="token class-name">GetxController</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> isLoading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">.</span>obs<span class="token punctuation">;</span>
+  <span class="token keyword">var</span> currentPosition <span class="token operator">=</span> <span class="token class-name">Rxn</span><span class="token operator">&lt;</span><span class="token class-name">Position</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">/// Memicu konfirmasi kedatangan di lokasi pengiriman</span>
+  <span class="token class-name">Future</span><span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token operator">&gt;</span> <span class="token function">confirmArrival</span><span class="token punctuation">(</span><span class="token keyword">int</span> spkId<span class="token punctuation">,</span> <span class="token class-name">String</span> qrCodeContent<span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+      isLoading<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      
+      <span class="token comment">// 1. Ambil koordinat GPS terkini dari perangkat</span>
+      <span class="token class-name">Position</span> position <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token class-name">Geolocator</span><span class="token punctuation">.</span><span class="token function">getCurrentPosition</span><span class="token punctuation">(</span>
+        desiredAccuracy<span class="token operator">:</span> <span class="token class-name">LocationAccuracy</span><span class="token punctuation">.</span>high
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      currentPosition<span class="token punctuation">.</span>value <span class="token operator">=</span> position<span class="token punctuation">;</span>
+
+      <span class="token comment">// 2. Kirim payload data ke REST API Laravel ERP</span>
+      <span class="token keyword">final</span> response <span class="token operator">=</span> <span class="token keyword">await</span> http<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span>
+        <span class="token class-name">Uri</span><span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">'https://s2smfg.biz.id/api/delivery/arrival-confirm'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        headers<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token string">'Content-Type'</span><span class="token operator">:</span> <span class="token string">'application/json'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        body<span class="token operator">:</span> jsonEncode<span class="token punctuation">(</span><span class="token punctuation">{</span>
+          <span class="token string">'spk_id'</span><span class="token operator">:</span> spkId<span class="token punctuation">,</span>
+          <span class="token string">'qr_content'</span><span class="token operator">:</span> qrCodeContent<span class="token punctuation">,</span>
+          <span class="token string">'latitude'</span><span class="token operator">:</span> position<span class="token punctuation">.</span>latitude<span class="token punctuation">,</span>
+          <span class="token string">'longitude'</span><span class="token operator">:</span> position<span class="token punctuation">.</span>longitude<span class="token punctuation">,</span>
+          <span class="token string">'scanned_at'</span><span class="token operator">:</span> <span class="token class-name">DateTime</span><span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>toIso8601String<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>response<span class="token punctuation">.</span>statusCode <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Get</span><span class="token punctuation">.</span><span class="token function">snackbar</span><span class="token punctuation">(</span><span class="token string">'Sukses'</span><span class="token punctuation">, </span><span class="token string">'Konfirmasi kedatangan berhasil dikirim'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      <span class="token class-name">} else </span><span class="token punctuation">{</span>
+        <span class="token keyword">final</span> errData <span class="token operator">=</span> jsonDecode<span class="token punctuation">(</span>response<span class="token punctuation">.</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Get</span><span class="token punctuation">.</span><span class="token function">defaultDialog</span><span class="token punctuation">(</span>title<span class="token operator">:</span> <span class="token string">'Gagal'</span><span class="token punctuation">,</span> middleText<span class="token operator">:</span> errData<span class="token punctuation">[</span><span class="token string">'message'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+      <span class="token class-name">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token class-name">Get</span><span class="token punctuation">.</span><span class="token function">snackbar</span><span class="token punctuation">(</span><span class="token string">'Error Connection'</span><span class="token punctuation">, </span>e<span class="token punctuation">.</span>toString<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token class-name">} finally </span><span class="token punctuation">{</span>
+      isLoading<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token class-name">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+                <p>
+                    Berikut adalah cuplikan controller API di backend Laravel yang memproses data kedatangan driver dan
+                    menghitung deviasi jarak:
+                </p>
+
+                <pre><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/DeliveryApiController.php</span>
+<span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">confirmArrival</span><span class="token punctuation">(</span><span class="token class-name">Request</span> <span class="token variable">$request</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">validate</span><span class="token punctuation">([</span>
+        <span class="token string">'spk_id'</span> <span class="token operator">=&gt;</span> <span class="token string">'required|exists:t_spk,id'</span><span class="token punctuation">,</span>
+        <span class="token string">'latitude'</span> <span class="token operator">=&gt;</span> <span class="token string">'required|numeric'</span><span class="token punctuation">,</span>
+        <span class="token string">'longitude'</span> <span class="token operator">=&gt;</span> <span class="token string">'required|numeric'</span>
+    <span class="token punctuation">]);</span>
+
+    <span class="token variable">$spk</span> <span class="token operator">=</span> <span class="token class-name">TSpk</span><span class="token operator">::</span><span class="token function">with</span><span class="token punctuation">(</span><span class="token string">'customer'</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">findOrFail</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">spk_id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token comment">// Hitung jarak (Formula Haversine) antara GPS driver & koordinat plant pelanggan</span>
+    <span class="token variable">$latFrom</span> <span class="token operator">=</span> <span class="token function">deg2rad</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">latitude</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$lonFrom</span> <span class="token operator">=</span> <span class="token function">deg2rad</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">longitude</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$latTo</span>   <span class="token operator">=</span> <span class="token function">deg2rad</span><span class="token punctuation">(</span><span class="token variable">$spk</span><span class="token operator">-&gt;</span><span class="token function">customer</span><span class="token operator">-&gt;</span><span class="token function">latitude</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$lonTo</span>   <span class="token operator">=</span> <span class="token function">deg2rad</span><span class="token punctuation">(</span><span class="token variable">$spk</span><span class="token operator">-&gt;</span><span class="token function">customer</span><span class="token operator">-&gt;</span><span class="token function">longitude</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token variable">$earthRadius</span> <span class="token operator">=</span> <span class="token number">6371000</span><span class="token punctuation">;</span> <span class="token comment">// Meter</span>
+    <span class="token variable">$latDelta</span> <span class="token operator">=</span> <span class="token variable">$latTo</span> <span class="token operator">-</span> <span class="token variable">$latFrom</span><span class="token punctuation">;</span>
+    <span class="token variable">$lonDelta</span> <span class="token operator">=</span> <span class="token variable">$lonTo</span> <span class="token operator">-</span> <span class="token variable">$lonFrom</span><span class="token punctuation">;</span>
+
+    <span class="token variable">$angle</span> <span class="token operator">=</span> <span class="token number">2</span> <span class="token operator">*</span> <span class="token function">asin</span><span class="token punctuation">(</span><span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token function">pow</span><span class="token punctuation">(</span><span class="token function">sin</span><span class="token punctuation">(</span><span class="token variable">$latDelta</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">, </span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+      <span class="token function">cos</span><span class="token punctuation">(</span><span class="token variable">$latFrom</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token function">cos</span><span class="token punctuation">(</span><span class="token variable">$latTo</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token function">pow</span><span class="token punctuation">(</span><span class="token function">sin</span><span class="token punctuation">(</span><span class="token variable">$lonDelta</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">, </span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token variable">$distance</span> <span class="token operator">=</span> <span class="token variable">$angle</span> <span class="token operator">*</span> <span class="token variable">$earthRadius</span><span class="token punctuation">;</span> <span class="token comment">// Jarak deviasi</span>
+
+    <span class="token comment">// Toleransi geofence maksimal 200 meter dari gerbang customer</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$distance</span> <span class="token operator">&gt;</span> <span class="token number">200</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span>
+            <span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'error'</span><span class="token punctuation">,</span>
+            <span class="token string">'message'</span> <span class="token operator">=&gt;</span> <span class="token string">'Posisi Anda terlalu jauh dari lokasi customer ('</span> <span class="token operator">.</span> <span class="token function">round</span><span class="token punctuation">(</span><span class="token variable">$distance</span><span class="token punctuation">)</span> <span class="token operator">.</span> <span class="token string">' meter)'</span>
+        <span class="token punctuation">], </span><span class="token number">400</span><span class="token punctuation">);</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Catat status kedatangan ke basis data</span>
+    <span class="token variable">$spk</span><span class="token operator">-&gt;</span><span class="token function">update</span><span class="token punctuation">([</span>
+        <span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'arrived'</span><span class="token punctuation">,</span>
+        <span class="token string">'actual_arrival_time'</span> <span class="token operator">=&gt;</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">'arrival_latitude'</span> <span class="token operator">=&gt;</span> <span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">latitude</span><span class="token punctuation">,</span>
+        <span class="token string">'arrival_longitude'</span> <span class="token operator">=&gt;</span> <span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">longitude</span>
+    <span class="token punctuation">]);</span>
+
+    <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span><span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'success'</span><span class="token punctuation">, </span><span class="token string">'message'</span> <span class="token operator">=&gt;</span> <span class="token string">'Kedatangan terverifikasi'</span><span class="token punctuation">]);</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+                <p>
+                    <strong>Mengapa integrasi ini tangguh?</strong>
+                </p>
+                <ul>
+                    <li><strong>Proteksi Geofencing:</strong> Perhitungan rumus Haversine langsung di sisi backend
+                        mencegah manipulasi spoofing GPS palsu oleh driver demi mendapatkan validasi awal palsu.</li>
+                    <li><strong>GetX Reactivity:</strong> Menggunakan observables GetX (<code>.obs</code>) untuk
+                        memperbarui state UI pemindaian secara real-time tanpa penundaan rendering layar HP driver.</li>
+                    <li><strong>Data Terintegrasi:</strong> Logistik terhubung langsung ke ERP, memangkas siklus
+                        pelacakan surat jalan dari 1 hari menjadi kurang dari 1 detik sejak driver men-scan QR
+                        kedatangan di customer plant.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>

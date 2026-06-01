@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Printer Case Study - Ardyan Syahputra</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/star.ico">
+    <link rel="stylesheet" href="../assets/css/style.css?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="case-study-page">
+
+    <div class="container">
+        <!-- BACK NAVIGATION -->
+        <a href="../index.html#projects" class="back-link">
+            <span>&larr;</span> [ Kembali ke Beranda ]
+        </a>
+
+        <!-- HEADER -->
+        <header class="case-study-header">
+            <p class="mono-subtitle" style="text-transform: uppercase;">02. Case Study: Hardware Automation</p>
+            <h1 class="case-study-title">Direct-to-Printer Robot</h1>
+
+            <div class="case-study-meta">
+                <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
+                <div class="meta-item">Peran: <strong>Backend & Automation Dev</strong></div>
+                <div class="meta-item">Stack: <strong>PowerShell, SumatraPDF, Laravel REST API</strong></div>
+                <div class="meta-item">Jeda Polling: <strong>3 Detik (Real-time Agent)</strong></div>
+            </div>
+        </header>
+
+        <!-- THE PROBLEM -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Problem (Masalah Bisnis)</h2>
+            <div class="case-study-content">
+                <p>
+                    Saat dokumen Surat Perintah Kerja (SPK) dirilis dari sistem ERP pusat (yang di-host di cloud),
+                    dokumen tersebut harus dicetak secara fisik di printer lantai produksi masing-masing departemen.
+                    Sebelum otomatisasi ini dibuat:
+                </p>
+                <ul>
+                    <li><strong>Prosedur Berbelit:</strong> Operator pabrik harus secara manual menyegarkan (refresh)
+                        halaman ERP, mengunduh file PDF SPK, membuka aplikasi PDF Reader, memanggil dialog pencetakan
+                        (Ctrl+P), mencocokkan printer departemen, dan menekan cetak.</li>
+                    <li><strong>Friksi Digital:</strong> Operator produksi sering kali kurang terbiasa mengoperasikan
+                        antarmuka komputer yang rumit, sehingga sering terjadi kesalahan cetak (salah ukuran kertas,
+                        orientasi landscape terpotong, atau salah printer).</li>
+                    <li><strong>Bottleneck Waktu:</strong> Waktu yang terbuang sejak admin merilis dokumen hingga
+                        operator memegang lembar fisik SPK rata-rata memakan waktu 2 hingga 3 menit.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- THE ARCHITECTURE -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Architecture (Otomasi Cetak Tanpa Pop-up)</h2>
+            <div class="case-study-content">
+                <p>
+                    Solusi yang dirancang adalah agen PowerShell lokal yang berjalan sebagai <i>background service</i>
+                    pada server lokal pabrik yang terhubung ke printer fisik. Agen ini melakukan komunikasi dua arah
+                    dengan RESTful API server ERP.
+                </p>
+
+                <div class="arch-diagram-container">
+                    <div class="arch-grid">
+                        <div class="arch-node">
+                            <div class="arch-node-title">1. Laravel Cloud ERP</div>
+                            Admin merilis SPK. Job cetak dimasukkan ke tabel antrean <code>TPrintQueue</code>.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">2. PS Script (3s Agent)</div>
+                            PowerShell lokal melakukan polling <code>GET /api/print-queue/pending</code> tiap 3 detik.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">3. Silent Printer Agent</div>
+                            Mengunduh PDF, memanggil SumatraPDF CLI untuk cetak silent tanpa GUI dialog box.
+                        </div>
+                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">4. Server Callback</div>
+                            Mengirim status sukses <code>POST /api/print-queue/complete/{id}</code> ke server.
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    Karena SumatraPDF dijalankan secara silent via CLI, operator tidak terganggu oleh kemunculan GUI
+                    Reader. Dokumen langsung keluar dari printer pabrik secara instan (<10 detik sejak dirilis oleh
+                        admin di cloud). </p>
+            </div>
+        </section>
+
+        <!-- THE CODE -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Code (Agen Polling & Callback API)</h2>
+            <div class="case-study-content">
+                <p>
+                    Berikut adalah bagian inti dari script <strong>PowerShell</strong> yang berjalan secara
+                    terus-menerus di server lokal pabrik untuk memproses pekerjaan cetak:
+                </p>
+
+                <pre><code class="language-powershell"><span class="token comment"># RobotPrinter.ps1</span>
+<span class="token variable">$ServerUrl</span> <span class="token operator">=</span> <span class="token string">"https://s2smfg.biz.id"</span>
+<span class="token variable">$PrinterName</span> <span class="token operator">=</span> <span class="token string">"EPSON L3250 Series (Copy 1)"</span>
+<span class="token variable">$SumatraPath</span> <span class="token operator">=</span> <span class="token string">"C:\Program Files\SumatraPDF\SumatraPDF.exe"</span>
+<span class="token variable">$SleepSeconds</span> <span class="token operator">=</span> <span class="token number">3</span>
+
+<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">$true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token comment"># Mengambil daftar antrean SPK yang pending</span>
+        <span class="token variable">$response</span> <span class="token operator">=</span> <span class="token function">Invoke-RestMethod</span> <span class="token operator">-</span>Uri <span class="token string">"$ServerUrl/api/print-queue/pending"</span> <span class="token operator">-</span>Method Get
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$response</span><span class="token punctuation">.</span>status <span class="token operator">-eq</span> <span class="token string">'success'</span> <span class="token operator">-and</span> <span class="token variable">$response</span><span class="token punctuation">.</span>data<span class="token punctuation">.</span>count <span class="token operator">-gt</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$spkId</span> <span class="token keyword">in</span> <span class="token variable">$response</span><span class="token punctuation">.</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token variable">$pdfUrl</span> <span class="token operator">=</span> <span class="token string">"$ServerUrl/api/print-queue/download/$spkId"</span>
+                <span class="token variable">$tempFile</span> <span class="token operator">=</span> <span class="token string">"$PSScriptRoot\spk_print_$spkId.pdf"</span>
+
+                <span class="token comment"># Unduh file PDF secara terisolasi</span>
+                <span class="token function">Invoke-WebRequest</span> <span class="token operator">-</span>Uri <span class="token variable">$pdfUrl</span> <span class="token operator">-</span>OutFile <span class="token variable">$tempFile</span> <span class="token operator">-</span>UseBasicParsing
+                
+                <span class="token comment"># Kirim ke printer lokal pabrik menggunakan SumatraPDF CLI secara silent</span>
+                <span class="token variable">$wsh</span> <span class="token operator">=</span> <span class="token function">New-Object</span> <span class="token operator">-</span>ComObject WScript.Shell
+                <span class="token variable">$wsh</span><span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token string">"`"$SumatraPath`" -print-to `"$PrinterName`" -silent `"$tempFile`""</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token boolean">$true</span><span class="token punctuation">)</span>
+                
+                <span class="token comment"># Jeda agar spooler Windows selesai memproses job</span>
+                <span class="token function">Start-Sleep</span> <span class="token operator">-</span>Seconds <span class="token number">5</span>
+
+                <span class="token comment"># Konfirmasi status cetak selesai ke cloud ERP</span>
+                <span class="token function">Invoke-RestMethod</span> <span class="token operator">-</span>Uri <span class="token string">"$ServerUrl/api/print-queue/complete/$spkId"</span> <span class="token operator">-</span>Method Post
+                <span class="token function">Remove-Item</span> <span class="token variable">$tempFile</span> <span class="token operator">-</span>Force
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">{</span>
+        <span class="token comment"># Server offline or connection lost - ignore to avoid crash</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">Start-Sleep</span> <span class="token operator">-</span>Seconds <span class="token variable">$SleepSeconds</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+                <p>
+                    Berikut adalah implementasi endpoint REST API pada controller backend Laravel yang mengelola antrean
+                    cetak:
+                </p>
+
+                <pre><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/PrintQueueController.php</span>
+<span class="token keyword">namespace</span> <span class="token class-name">App\Http\Controllers\Api</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token class-name">App\Http\Controllers\Controller</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token class-name">App\Models\TPrintQueue</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">PrintQueueController</span> <span class="token keyword">extends</span> <span class="token class-name">Controller</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Mengambil daftar ID pekerjaan cetak yang masih tertunda (pending).
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">getPending</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$pendingJobs</span> <span class="token operator">=</span> <span class="token class-name">TPrintQueue</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'status'</span><span class="token punctuation">, </span><span class="token string">'pending'</span><span class="token punctuation">)</span>
+            <span class="token operator">-&gt;</span><span class="token function">orderBy</span><span class="token punctuation">(</span><span class="token string">'created_at'</span><span class="token punctuation">, </span><span class="token string">'asc'</span><span class="token punctuation">)</span>
+            <span class="token operator">-&gt;</span><span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'spk_id'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            
+        <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span>
+            <span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'success'</span><span class="token punctuation">,</span>
+            <span class="token string">'data'</span> <span class="token operator">=&gt;</span> <span class="token variable">$pendingJobs</span>
+        <span class="token punctuation">]);</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Memperbarui status pekerjaan cetak menjadi selesai (printed).
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">markComplete</span><span class="token punctuation">(</span><span class="token variable">$spk_id</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name">TPrintQueue</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'spk_id'</span><span class="token punctuation">, </span><span class="token variable">$spk_id</span><span class="token punctuation">)</span>
+            <span class="token operator">-&gt;</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'status'</span><span class="token punctuation">, </span><span class="token string">'pending'</span><span class="token punctuation">)</span>
+            <span class="token operator">-&gt;</span><span class="token function">update</span><span class="token punctuation">([</span><span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'printed'</span><span class="token punctuation">, </span><span class="token string">'updated_at'</span> <span class="token operator">=&gt;</span> <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]);</span>
+            
+        <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span>
+            <span class="token string">'status'</span> <span class="token operator">=&gt;</span> <span class="token string">'success'</span><span class="token punctuation">,</span>
+            <span class="token string">'message'</span> <span class="token operator">=&gt;</span> <span class="token string">'Pekerjaan cetak ditandai sukses'</span>
+        <span class="token punctuation">]);</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+                <p>
+                    <strong>Mengapa otomatisasi ini sukses?</strong>
+                </p>
+                <ul>
+                    <li><strong>Zero Interface Operator:</strong> Operator tidak perlu membuka browser atau menekan satu
+                        tombol pun. Printer akan mencetak lembar kerja fisik secara otomatis dalam hitungan detik
+                        setelah admin memproses SPK.</li>
+                    <li><strong>Konsumsi Memori Rendah:</strong> Menggunakan SumatraPDF CLI yang jauh lebih ringan
+                        daripada Adobe Acrobat Reader, mencegah server lokal kelebihan beban RAM.</li>
+                    <li><strong>Resiliensi Koneksi:</strong> PowerShell menggunakan blok <code>try/catch</code> kosong
+                        pada level luar untuk mencegah script terhenti (crash) saat terjadi putus jaringan internet
+                        sementara di pabrik.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
