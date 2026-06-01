@@ -1,3 +1,9 @@
+// Paksa browser untuk selalu mulai dari paling atas saat refresh
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 // Logika sederhana untuk animasi dan interaksi
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Portfolio Loaded. Clean & Lightning Fast.");
@@ -38,6 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.style.opacity = 1;
                     el.style.transition = 'opacity 0.8s ease';
                 });
+                
+                // Mulai observe animasi scroll HANYA setelah boot screen menghilang
+                // agar animasi section pertama (hero) terlihat oleh user
+                const revealElements = document.querySelectorAll('.reveal');
+                revealElements.forEach(el => revealObserver.observe(el));
             }, 800);
         }
     }
@@ -81,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 3. SCROLL REVEAL & METRICS
-    const revealElements = document.querySelectorAll('.reveal');
     const metrics = document.querySelectorAll('.metric-number');
     let metricsAnimated = false;
 
@@ -111,11 +121,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateCounter();
                     });
                 }
+            } else {
+                // Mencegah bug "flicker" (tarik-tarikan) saat elemen keluar dari atas layar.
+                // Class active HANYA dihapus jika elemen keluar dari BAWAH layar (scroll ke atas).
+                if (entry.boundingClientRect.top > 0) {
+                    entry.target.classList.remove('active');
+                    
+                    // Reset animasi angka jika hero section keluar dari viewport bawah
+                    if (entry.target.classList.contains('hero')) {
+                        metricsAnimated = false;
+                        metrics.forEach(metric => {
+                            metric.innerText = '0';
+                        });
+                    }
+                }
             }
         });
     }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-    revealElements.forEach(el => revealObserver.observe(el));
 
     // Terminal Logic
     const terminalBody = document.getElementById('terminal-body');
