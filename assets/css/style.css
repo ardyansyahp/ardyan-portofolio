@@ -747,43 +747,6 @@ footer {
     border-top: 1px solid var(--border-color);
 }
 
-/* Boot Screen */
-.boot-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: #0f172a;
-    color: #22c55e;
-    font-family: var(--font-mono);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 10vw;
-    font-size: 16px;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-}
-
-.boot-screen.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.boot-text p {
-    margin-bottom: 8px;
-}
-
-body.booting {
-    overflow: hidden;
-}
-
-body.booting main,
-body.booting footer,
-body.booting nav {
-    opacity: 0;
-}
 
 /* Factory Mode */
 body.factory-mode {
@@ -1174,67 +1137,6 @@ body.factory-mode #scroll-progress {
     background: linear-gradient(90deg, #38bdf8, #eab308);
 }
 
-/* 2. CUSTOM CURSOR */
-@media (pointer: fine) {
-    body:not(.case-study-page) {
-        cursor: none;
-        /* Hide default cursor */
-    }
-
-    body:not(.case-study-page) a,
-    body:not(.case-study-page) button,
-    body:not(.case-study-page) input,
-    body:not(.case-study-page) .magnetic-btn,
-    body:not(.case-study-page) .bento-connect {
-        cursor: none;
-    }
-
-    .cursor-dot,
-    .cursor-ring {
-        position: fixed;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition: opacity 0.3s ease;
-    }
-
-    .cursor-dot {
-        width: 8px;
-        height: 8px;
-        background-color: var(--accent);
-        border-radius: 50%;
-    }
-
-    .cursor-ring {
-        width: 40px;
-        height: 40px;
-        border: 1px solid var(--accent);
-        border-radius: 50%;
-        transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
-    }
-
-    /* Hover state added by JS */
-    .cursor-ring.cursor-hover {
-        width: 60px;
-        height: 60px;
-        background-color: rgba(37, 99, 235, 0.1);
-        border-color: transparent;
-    }
-
-    body.factory-mode .cursor-dot {
-        background-color: #eab308;
-    }
-
-    body.factory-mode .cursor-ring {
-        border-color: #eab308;
-    }
-
-    body.factory-mode .cursor-ring.cursor-hover {
-        background-color: rgba(234, 179, 8, 0.15);
-    }
-}
 
 /* 3. SCROLL REVEAL ANIMATIONS */
 .reveal {

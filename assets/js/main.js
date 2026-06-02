@@ -8,58 +8,20 @@ window.scrollTo(0, 0);
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Portfolio Loaded. Clean & Lightning Fast.");
 
-    // 1. BOOT SEQUENCE LOGIC
-    const bootScreen = document.getElementById('boot-screen');
-    const bootTextContainer = document.getElementById('boot-text');
-
-    const bootMessages = [
-        "> Initializing Ardyan's System...",
-        "> Loading S2SMFG Protocols... OK",
-        "> Connecting to Robot Printer... OK",
-        "> Injecting Flutter Dependencies... OK",
-        "> Welcome. Terminal is ready for input."
-    ];
-
-    document.body.classList.add('booting');
-
-    let msgIndex = 0;
-
-    function showNextMessage() {
-        if (msgIndex < bootMessages.length) {
-            const p = document.createElement('p');
-            p.textContent = bootMessages[msgIndex];
-            bootTextContainer.appendChild(p);
-            msgIndex++;
-
-            // Random delay between 200ms and 600ms
-            const delay = Math.floor(Math.random() * 400) + 200;
-            setTimeout(showNextMessage, delay);
-        } else {
-            // Finish boot
-            setTimeout(() => {
-                bootScreen.classList.add('hidden');
-                document.body.classList.remove('booting');
-                // Trigger fade ins
-                document.querySelectorAll('main, footer, nav').forEach(el => {
-                    el.style.opacity = 1;
-                    el.style.transition = 'opacity 0.8s ease';
-                });
-                
-                // Mulai observe animasi scroll HANYA setelah boot screen menghilang
-                // agar animasi section pertama (hero) terlihat oleh user
-                const revealElements = document.querySelectorAll('.reveal');
-                revealElements.forEach(el => revealObserver.observe(el));
-            }, 800);
-        }
-    }
-
-    // Start boot sequence
-    setTimeout(showNextMessage, 500);
 
     // --- SOUND DESIGN ---
-    const clackAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let clackAudioCtx = null;
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+            clackAudioCtx = new AudioContext();
+        }
+    } catch (e) {
+        console.warn('AudioContext not supported or blocked');
+    }
 
     function playClackSound() {
+        if (!clackAudioCtx) return;
         if (clackAudioCtx.state === 'suspended') clackAudioCtx.resume();
         const osc = clackAudioCtx.createOscillator();
         const gainNode = clackAudioCtx.createGain();
@@ -290,37 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 6. CUSTOM CURSOR
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorRing = document.querySelector('.cursor-ring');
-
-    if (cursorDot && cursorRing) {
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-
-            // Adding slight delay to ring for smooth effect
-            setTimeout(() => {
-                cursorRing.style.left = `${posX}px`;
-                cursorRing.style.top = `${posY}px`;
-            }, 50);
-        });
-
-        // Hover states
-        const interactables = document.querySelectorAll('a, button, input, .magnetic-btn, .bento-connect');
-        interactables.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursorRing.classList.add('cursor-hover');
-            });
-            el.addEventListener('mouseleave', () => {
-                cursorRing.classList.remove('cursor-hover');
-            });
-        });
-    }
-
     // 7. HAMBURGER MENU MOBILE
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-links');
@@ -339,5 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Start observing scroll animations since boot screen is removed
+    const revealElements = document.querySelectorAll('.reveal');
+    revealElements.forEach(el => revealObserver.observe(el));
 
 });
