@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const commands = {
-            'help': 'Available commands: <br>- <span class="highlight">whoami</span>: About me<br>- <span class="highlight">projects</span>: List my core projects<br>- <span class="highlight">skills</span>: My tech stack<br>- <span class="highlight">contact</span>: How to reach me<br>- <span class="highlight">linkedin</span>: Open LinkedIn profile<br>- <span class="highlight">instagram</span>: Open Instagram profile<br>- <span class="highlight">email</span>: Open default email client<br>- <span class="highlight">clear</span>: Clear terminal<br><br><span style="color:#ef4444; font-size:12px;">[RESTRICTED: \'hire-me\' protocol detected. Requires \'sudo\' privileges]</span>',
+            'help': 'Available commands: <br>- <span class="highlight">whoami</span>: About me<br>- <span class="highlight">projects</span>: List my core projects<br>- <span class="highlight">skills</span>: My tech stack<br>- <span class="highlight">contact</span>: How to reach me<br>- <span class="highlight">halo</span>: System info fetch<br>- <span class="highlight">linkedin</span>: Open LinkedIn profile<br>- <span class="highlight">instagram</span>: Open Instagram profile<br>- <span class="highlight">email</span>: Open Gmail<br>- <span class="highlight">clear</span>: Clear terminal<br><br><span style="color:#ef4444; font-size:12px;">[RESTRICTED: \'hire-me\' protocol detected. Requires \'sudo\' privileges]</span>',
             'whoami': 'Ardyan Syahputra. Web Developer & System Integrator. I build digital ecosystems and automate factory floors.',
             'projects': '1. S2SMFG: <a href="projects/s2smfg" class="highlight" style="text-decoration: underline;">[View Case Study]</a><br>2. Direct-to-Printer Robot: <a href="projects/robot-printer" class="highlight" style="text-decoration: underline;">[View Case Study]</a><br>3. Asakai Dashboard: <a href="projects/asakai-dashboard" class="highlight" style="text-decoration: underline;">[View Case Study]</a><br>4. Logistics Driver App: <a href="projects/logistics-app" class="highlight" style="text-decoration: underline;">[View Case Study]</a>',
             'skills': 'PHP, Laravel, Livewire, Alpine.js, SQL, PowerShell, Flutter, Git, Docker, REST API.',
@@ -150,6 +150,62 @@ document.addEventListener('DOMContentLoaded', () => {
                     p.className = 'sys-msg';
                     p.innerHTML = `<span style="color:#ef4444;">Permission denied.</span> The 'hire-me' protocol requires root privileges. Please run as <span class="highlight">sudo hire-me</span>.`;
                     terminalOutput.appendChild(p);
+                    scrollToBottom();
+                    return;
+                }
+
+                if (val === 'halo' || val === 'neofetch' || val === 'screenfetch') {
+                    const asciiArt = `
+                  -&#96;
+                 .o+&#96;
+                &#96;ooo/
+               &#96;+oooo:
+              &#96;+oooooo:
+              -+oooooo+:
+            &#96;/:-:++oooo+:
+           &#96;/++++/+++++++:
+          &#96;/++++++++++++++:
+         &#96;/+++ooooooooooooo/&#96;
+        ./ooosssso++osssssso+&#96;
+       .oossssso-&#96;&#96;&#96;&#96;/ossssss+&#96;
+      -osssssso.      :ssssssso.
+     :osssssss/        osssso+++.
+    /ossssssss/        +ssssooo/-
+  &#96;/ossssso+/-        -:/+osssso+-
+ &#96;+sso+:-&#96;               &#96;.-/+oso:
+&#96;++:.                         &#96;-/+/
+.&#96;                               &#96;/`;
+                    const fetchHTML = `
+<div style="display: flex; flex-wrap: wrap; gap: 20px; font-family: var(--font-mono); font-size: 13px; line-height: 1.4; margin-top: 10px; margin-bottom: 10px;">
+<div style="color: #38bdf8; white-space: pre; font-weight: bold; font-size: 11px; line-height: 1.2;">${asciiArt}</div>
+<div>
+<span style="color: #38bdf8; font-weight: bold;">ardyan</span>@<span style="color: #38bdf8; font-weight: bold;">web-ecosystem</span>
+<br><span style="color: #94a3b8;">---------------------</span>
+<br><span style="color: #38bdf8; font-weight: bold;">OS:</span> Ardyan Portfolio OS
+<br><span style="color: #38bdf8; font-weight: bold;">Kernel:</span> PHP, Laravel
+<br><span style="color: #38bdf8; font-weight: bold;">Uptime:</span> 24/7 Problem Solving
+<br><span style="color: #38bdf8; font-weight: bold;">Packages:</span> 150+ (composer, npm)
+<br><span style="color: #38bdf8; font-weight: bold;">Shell:</span> bash & powershell
+<br><span style="color: #38bdf8; font-weight: bold;">Resolution:</span> 4K Ultra HD
+<br><span style="color: #38bdf8; font-weight: bold;">DE:</span> VScode
+<br><span style="color: #38bdf8; font-weight: bold;">WM:</span> Windows 11
+<br><span style="color: #38bdf8; font-weight: bold;">Theme:</span> Dark Mode [Custom]
+<br><span style="color: #38bdf8; font-weight: bold;">CPU:</span> Highly Analytical Brain
+<br><span style="color: #38bdf8; font-weight: bold;">Memory:</span> Coffee (16 Cups)
+<br>
+<div style="margin-top: 8px; display: flex; gap: 4px;">
+<span style="display:inline-block; width:16px; height:16px; background:#475569;"></span>
+<span style="display:inline-block; width:16px; height:16px; background:#ef4444;"></span>
+<span style="display:inline-block; width:16px; height:16px; background:#22c55e;"></span>
+<span style="display:inline-block; width:16px; height:16px; background:#eab308;"></span>
+<span style="display:inline-block; width:16px; height:16px; background:#3b82f6;"></span>
+<span style="display:inline-block; width:16px; height:16px; background:#a855f7;"></span>
+<span style="display:inline-block; width:16px; height:16px; background:#06b6d4;"></span>
+<span style="display:inline-block; width:16px; height:16px; background:#f8fafc;"></span>
+</div>
+</div>
+</div>`;
+                    terminalOutput.innerHTML += fetchHTML;
                     scrollToBottom();
                     return;
                 }

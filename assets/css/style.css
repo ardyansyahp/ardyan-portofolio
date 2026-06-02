@@ -206,6 +206,10 @@ h4 {
     align-items: center;
 }
 
+.hero-visual {
+    min-width: 0;
+}
+
 .hero-title {
     font-size: clamp(40px, 8vw, 70px);
     letter-spacing: -1.5px;
@@ -235,6 +239,7 @@ h4 {
 .terminal-window {
     position: relative;
     width: 100%;
+    min-width: 0;
     aspect-ratio: 4/3;
     background-color: #0f172a;
     /* Dark slate */
@@ -337,6 +342,7 @@ h4 {
     font-family: var(--font-mono);
     font-size: 14px;
     flex-grow: 1;
+    min-width: 0;
     outline: none;
 }
 
