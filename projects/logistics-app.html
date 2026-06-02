@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logistics App Case Study - Ardyan Syahputra</title>
     <link rel="icon" type="image/x-icon" href="../assets/images/star.ico">
-    <link rel="stylesheet" href="../assets/css/style.css?v=3">
+    <link rel="stylesheet" href="../assets/css/style.css?v=4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
         /* Custom Simulator Styling */
         .simulator-box {
@@ -18,12 +21,14 @@
             padding: 32px;
             margin: 32px 0;
         }
+
         .sim-steps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
             margin-bottom: 24px;
         }
+
         .sim-step-btn {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -36,12 +41,14 @@
             border-radius: 4px;
             transition: all 0.3s ease;
         }
+
         .sim-step-btn.active {
             border-color: var(--accent);
             color: var(--text-main);
             background-color: rgba(59, 130, 246, 0.1);
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
         }
+
         .sim-screen {
             background-color: #050507;
             border: 1px solid var(--border-color);
@@ -57,7 +64,9 @@
             color: var(--text-main);
             position: relative;
         }
+
         .sim-phone-ui {
+            width: 100%;
             max-width: 320px;
             margin: 0 auto;
             border: 2px solid var(--border-color);
@@ -65,6 +74,7 @@
             padding: 16px;
             background: #0d0d11;
         }
+
         .sim-title {
             color: var(--accent);
             font-weight: bold;
@@ -73,6 +83,7 @@
             font-size: 12px;
             letter-spacing: 1px;
         }
+
         .sim-badge {
             background: rgba(34, 197, 94, 0.1);
             color: #22c55e;
@@ -82,6 +93,7 @@
             display: inline-block;
             margin-bottom: 12px;
         }
+
         @media (max-width: 768px) {
             .sim-steps-grid {
                 grid-template-columns: 1fr;
@@ -89,12 +101,13 @@
         }
     </style>
 </head>
+
 <body class="case-study-page">
     <div class="film-grain"></div>
 
     <div class="container">
         <!-- BACK NAVIGATION -->
-        <a href="../index.html#projects" class="back-link">
+        <a href="../#projects" class="back-link">
             <span>&larr;</span> [ Kembali ke Beranda ]
         </a>
 
@@ -102,7 +115,7 @@
         <header class="case-study-header">
             <p class="mono-subtitle" style="text-transform: uppercase;">04. Case Study: Mobile App & Integration</p>
             <h1 class="case-study-title">Logistics Driver App</h1>
-            
+
             <div class="case-study-meta">
                 <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
                 <div class="meta-item">Peran: <strong>Lead Mobile Developer (Flutter)</strong></div>
@@ -116,12 +129,19 @@
             <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
             <div class="case-study-content">
                 <p>
-                    Pelacakan armada pengiriman barang jadi (finished goods) ke customer plant sebelumnya dilakukan secara manual. Gudang PPIC tidak memiliki visibilitas langsung terhadap status pengiriman barang dari pabrik ke stasiun perakitan pelanggan:
+                    Pelacakan armada pengiriman barang jadi (finished goods) ke customer plant sebelumnya dilakukan
+                    secara manual. Gudang PPIC tidak memiliki visibilitas langsung terhadap status pengiriman barang
+                    dari pabrik ke stasiun perakitan pelanggan:
                 </p>
                 <ul>
-                    <li><strong>Buta Lokasi Armada:</strong> Tim logistik tidak mengetahui posisi truk pengiriman secara real-time, sehingga harus berulang kali menelpon pengemudi saat di jalan.</li>
-                    <li><strong>Proses Manual Lambat:</strong> Konfirmasi penerimaan barang hanya bisa divalidasi setelah pengemudi kembali ke pabrik pada sore hari untuk menyerahkan fisik Surat Jalan bertanda tangan.</li>
-                    <li><strong>Sengketa Waktu Pengiriman:</strong> Ketiadaan catatan timestamp digital yang akurat menyulitkan penelusuran jika terjadi klaim keterlambatan pasokan (just-in-time) oleh pelanggan.</li>
+                    <li><strong>Buta Lokasi Armada:</strong> Tim logistik tidak mengetahui posisi truk pengiriman secara
+                        real-time, sehingga harus berulang kali menelpon pengemudi saat di jalan.</li>
+                    <li><strong>Proses Manual Lambat:</strong> Konfirmasi penerimaan barang hanya bisa divalidasi
+                        setelah pengemudi kembali ke pabrik pada sore hari untuk menyerahkan fisik Surat Jalan bertanda
+                        tangan.</li>
+                    <li><strong>Sengketa Waktu Pengiriman:</strong> Ketiadaan catatan timestamp digital yang akurat
+                        menyulitkan penelusuran jika terjadi klaim keterlambatan pasokan (just-in-time) oleh pelanggan.
+                    </li>
                 </ul>
             </div>
         </section>
@@ -131,9 +151,11 @@
             <h2 class="case-study-section-title">Pendekatan Arsitektur Teknologi yang Pilih</h2>
             <div class="case-study-content">
                 <p>
-                    Solusinya adalah aplikasi mobile cross-platform berbasis **Flutter** untuk platform Android yang dipasang pada handphone seluruh driver armada pabrik. Aplikasi ini terintegrasi langsung dengan API backend Laravel di cloud.
+                    Solusinya adalah aplikasi mobile cross-platform berbasis Flutter untuk platform Android yang
+                    dipasang pada handphone seluruh driver armada pabrik. Aplikasi ini terintegrasi langsung dengan API
+                    backend Laravel di cloud.
                 </p>
-                
+
                 <div class="arch-diagram-container">
                     <div class="arch-grid">
                         <div class="arch-node">
@@ -159,7 +181,9 @@
                 </div>
 
                 <p>
-                    Driver menggunakan pemindai QR bawaan aplikasi untuk men-scan kode di plant tujuan. Jika koordinat GPS driver berada di luar radius radius pagar (geofencing) plant pelanggan, sistem akan menolak konfirmasi masuk untuk mencegah kecurangan pengisian laporan kedatangan.
+                    Driver menggunakan pemindai QR bawaan aplikasi untuk men-scan kode di plant tujuan. Jika koordinat
+                    GPS driver berada di luar radius radius pagar (geofencing) plant pelanggan, sistem akan menolak
+                    konfirmasi masuk untuk mencegah kecurangan pengisian laporan kedatangan.
                 </p>
             </div>
         </section>
@@ -169,7 +193,8 @@
             <h2 class="case-study-section-title">Langkah Sinkronisasi GPS & QR (Simulator Interaktif)</h2>
             <div class="case-study-content">
                 <p>
-                    Gunakan simulator interaktif di bawah ini untuk melihat bagaimana transisi status pengiriman berjalan dari pemindaian QR di lapangan hingga sinkronisasi data lokasi ke database Laravel backend:
+                    Gunakan simulator interaktif di bawah ini untuk melihat bagaimana transisi status pengiriman
+                    berjalan dari pemindaian QR di lapangan hingga sinkronisasi data lokasi ke database Laravel backend:
                 </p>
 
                 <!-- SIMULATOR WIDGET -->
@@ -185,11 +210,16 @@
                         <!-- Step 1 Content by Default -->
                         <div class="sim-phone-ui">
                             <div class="sim-title">[ Driver Client: Camera QR Scan ]</div>
-                            <span class="sim-badge" style="background-color: rgba(234, 179, 8, 0.1); color: #eab308;">Awaiting Camera Scan...</span>
-                            <p style="color: var(--text-muted);">Memindai QR Barcode pada box pengapalan atau pos gerbang stasiun perakitan pelanggan...</p>
-                            <div style="background: rgba(255,255,255,0.02); border: 1px dashed var(--border-color); padding: 8px; text-align: center; margin-top: 10px;">
+                            <span class="sim-badge"
+                                style="background-color: rgba(234, 179, 8, 0.1); color: #eab308;">Awaiting Camera
+                                Scan...</span>
+                            <p style="color: var(--text-muted);">Memindai QR Barcode pada box pengapalan atau pos
+                                gerbang stasiun perakitan pelanggan...</p>
+                            <div
+                                style="background: rgba(255,255,255,0.02); border: 1px dashed var(--border-color); padding: 8px; text-align: center; margin-top: 10px;">
                                 [ |||||||||| QR CODE SCANNED |||||||||| ]<br>
-                                <span style="font-size: 11px; color: var(--accent);">SPK-OUT-99812|PLANT-3-CIKARANG|BOX-012</span>
+                                <span
+                                    style="font-size: 11px; color: var(--accent);">SPK-OUT-99812|PLANT-3-CIKARANG|BOX-012</span>
                             </div>
                         </div>
                     </div>
@@ -202,17 +232,22 @@
             <h2 class="case-study-section-title">Tantangan Teknis & Integrasi Flutter-REST API</h2>
             <div class="case-study-content">
                 <p>
-                    Tantangan teknis terbesar adalah merancang sinkronisasi geofencing yang hemat baterai serta mencegah kecurangan (GPS Spoofing) oleh driver di lapangan.
+                    Tantangan teknis terbesar adalah merancang sinkronisasi geofencing yang hemat baterai serta mencegah
+                    kecurangan (GPS Spoofing) oleh driver di lapangan.
                 </p>
                 <p>
                     <strong>Solusi GetX & Haversine Geofencing:</strong><br>
-                    State management diatur menggunakan GetX untuk memproses perubahan status pengiriman secara responsif. Rumus Haversine dihitung langsung di sisi backend Laravel saat API menerima payload koordinat, memastikan validasi jarak fisik driver nyata dari pagar koordinat plant pelanggan sebelum menyetujui transaksi kedatangan.
+                    State management diatur menggunakan GetX untuk memproses perubahan status pengiriman secara
+                    responsif. Rumus Haversine dihitung langsung di sisi backend Laravel saat API menerima payload
+                    koordinat, memastikan validasi jarak fisik driver nyata dari pagar koordinat plant pelanggan sebelum
+                    menyetujui transaksi kedatangan.
                 </p>
                 <p>
-                    Berikut adalah cuplikan controller **Flutter (Dart)** yang menangani pemindaian dan pengiriman koordinat:
+                    Berikut adalah cuplikan controller Flutter (Dart) yang menangani pemindaian dan pengiriman
+                    koordinat:
                 </p>
 
-<pre><code class="language-dart"><span class="token comment">// driver_app/lib/app/controllers/delivery_controller.dart</span>
+                <pre><code class="language-dart"><span class="token comment">// driver_app/lib/app/controllers/delivery_controller.dart</span>
 <span class="token keyword">import</span> <span class="token string">'package:get/get.dart'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token string">'package:geolocator/geolocator.dart'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token string">'package:http/http.dart'</span> <span class="token keyword">as</span> <span class="token class-name">http</span><span class="token punctuation">;</span>
@@ -261,13 +296,17 @@
             <h2 class="case-study-section-title">Hasil Akhir yang Terukur</h2>
             <div class="case-study-content">
                 <p>
-                    Aplikasi mobile Android ini sukses disebarkan secara instan ke seluruh armada pengiriman. Efisiensi pencatatan waktu kirim meningkat pesat secara kuantitatif:
+                    Aplikasi mobile Android ini sukses disebarkan secara instan ke seluruh armada pengiriman. Efisiensi
+                    pencatatan waktu kirim meningkat pesat secara kuantitatif:
                 </p>
 
-                <div style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 24px 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-main); line-height: 1.8;">
+                <div
+                    style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 24px 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-main); line-height: 1.8;">
                     <strong>[ FORMULA EFISIENSI WAKTU PELAPORAN ]</strong><br>
-                    &Delta;T<sub>pelaporan</sub> = (T<sub>manual</sub> - T<sub>aplikasi</sub>) / T<sub>manual</sub> &times; 100%<br>
-                    &Delta;T<sub>pelaporan</sub> = (28800 s - 10 s) / 28800 s &times; 100% &approx; 99.9% (Real-time Sync)<br><br>
+                    &Delta;T<sub>pelaporan</sub> = (T<sub>manual</sub> - T<sub>aplikasi</sub>) / T<sub>manual</sub>
+                    &times; 100%<br>
+                    &Delta;T<sub>pelaporan</sub> = (28800 s - 10 s) / 28800 s &times; 100% &approx; 99.9% (Real-time
+                    Sync)<br><br>
                     <strong>[ TINGKAT ADOPSI ARMADA ]</strong><br>
                     Adopsi Driver = 20 Driver Aktif / 20 Driver Armada = 100%
                 </div>
@@ -276,9 +315,12 @@
                     <strong>Dampak Terukur Hasil Penerapan:</strong>
                 </p>
                 <ul>
-                    <li><strong>Kecepatan Rekap Laporan:</strong> Dari rekap manual lembar fisik ke Excel di sore hari (delay 8 jam) menjadi **instan 10 detik** saat QR discan di plant customer.</li>
-                    <li><strong>Akurasi Pelacakan GPS Trip:</strong> Mengeliminasi komplain klaim keterlambatan sepihak dari pelanggan karena sistem mencatat koordinat dan waktu tiba presisi.</li>
-                    <li><strong>Tingkat Adopsi Driver:</strong> **100% adopsi sukses** dari 20 driver berkat desain UI/UX tombol yang ramah bagi operator.</li>
+                    <li><strong>Kecepatan Rekap Laporan:</strong> Dari rekap manual lembar fisik ke Excel di sore hari
+                        (delay 8 jam) menjadi instan 10 detik saat QR discan di plant customer.</li>
+                    <li><strong>Akurasi Pelacakan GPS Trip:</strong> Mengeliminasi komplain klaim keterlambatan sepihak
+                        dari pelanggan karena sistem mencatat koordinat dan waktu tiba presisi.</li>
+                    <li><strong>Tingkat Adopsi Driver:</strong> 100% adopsi sukses dari 20 driver berkat desain UI/UX
+                        tombol yang ramah bagi operator.</li>
                 </ul>
             </div>
         </section>
@@ -301,7 +343,7 @@
             const screen = document.getElementById('sim-screen-content');
             let content = '';
 
-            switch(step) {
+            switch (step) {
                 case 1:
                     content = `
                         <div class="sim-phone-ui">
@@ -367,4 +409,5 @@
         }
     </script>
 </body>
+
 </html>

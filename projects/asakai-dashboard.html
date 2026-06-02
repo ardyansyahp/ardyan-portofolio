@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asakai & DataQC Case Study - Ardyan Syahputra</title>
     <link rel="icon" type="image/x-icon" href="../assets/images/star.ico">
-    <link rel="stylesheet" href="../assets/css/style.css?v=3">
+    <link rel="stylesheet" href="../assets/css/style.css?v=4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body class="case-study-page">
     <div class="film-grain"></div>
 
     <div class="container">
         <!-- BACK NAVIGATION -->
-        <a href="../index.html#projects" class="back-link">
+        <a href="../#projects" class="back-link">
             <span>&larr;</span> [ Kembali ke Beranda ]
         </a>
 
@@ -23,7 +27,7 @@
         <header class="case-study-header">
             <p class="mono-subtitle" style="text-transform: uppercase;">03. Case Study: Analytics & Control</p>
             <h1 class="case-study-title">Asakai Dashboard & DataQC</h1>
-            
+
             <div class="case-study-meta">
                 <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
                 <div class="meta-item">Peran: <strong>Lead Developer</strong></div>
@@ -37,12 +41,18 @@
             <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
             <div class="case-study-content">
                 <p>
-                    Setiap pagi jajaran manajemen mengadakan rapat koordinasi cepat (Morning Briefing / Asakai) untuk mengevaluasi parameter operasional dari hari sebelumnya. Sebelum dashboard Asakai dideploy:
+                    Setiap pagi jajaran manajemen mengadakan rapat koordinasi cepat (Morning Briefing / Asakai) untuk
+                    mengevaluasi parameter operasional dari hari sebelumnya. Sebelum dashboard Asakai dideploy:
                 </p>
                 <ul>
-                    <li><strong>Persiapan Laporan Manual:</strong> Setiap kepala departemen (Produksi, PPIC, QC, Moldshop, Maintenance, HSE, & GA) harus meluangkan waktu 1–2 jam setiap sore atau pagi hari untuk mengumpulkan data dari lembaran kertas dan mencatatnya ke file Excel masing-masing.</li>
-                    <li><strong>Keterlambatan Informasi:</strong> Data sering kali baru selesai direkap siang hari, padahal rapat dilakukan jam 8 pagi. Rapat sering kali berjalan menggunakan data lama atau estimasi verbal yang tidak akurat.</li>
-                    <li><strong>Kesulitan Visualisasi:</strong> Laporan disajikan dalam bentuk spreadsheet rumit yang sulit dibaca dari jarak jauh pada layar monitor TV ruang rapat.</li>
+                    <li><strong>Persiapan Laporan Manual:</strong> Setiap kepala departemen (Produksi, PPIC, QC,
+                        Moldshop, Maintenance, HSE, & GA) harus meluangkan waktu 1–2 jam setiap sore atau pagi hari
+                        untuk mengumpulkan data dari lembaran kertas dan mencatatnya ke file Excel masing-masing.</li>
+                    <li><strong>Keterlambatan Informasi:</strong> Data sering kali baru selesai direkap siang hari,
+                        padahal rapat dilakukan jam 8 pagi. Rapat sering kali berjalan menggunakan data lama atau
+                        estimasi verbal yang tidak akurat.</li>
+                    <li><strong>Kesulitan Visualisasi:</strong> Laporan disajikan dalam bentuk spreadsheet rumit yang
+                        sulit dibaca dari jarak jauh pada layar monitor TV ruang rapat.</li>
                 </ul>
             </div>
         </section>
@@ -52,9 +62,11 @@
             <h2 class="case-study-section-title">Pendekatan Arsitektur Teknologi yang Dipilih</h2>
             <div class="case-study-content">
                 <p>
-                    Asakai Dashboard dirancang sebagai <i>single source of truth</i> yang menyatukan data operasional dari 7 departemen berbeda. Sistem ini diletakkan pada TV besar di dinding pabrik dan ruang manajemen, teroptimasi untuk konsumsi visual kepadatan data tinggi (High Data Density).
+                    Asakai Dashboard dirancang sebagai <i>single source of truth</i> yang menyatukan data operasional
+                    dari 7 departemen berbeda. Sistem ini diletakkan pada TV besar di dinding pabrik dan ruang
+                    manajemen, teroptimasi untuk konsumsi visual kepadatan data tinggi (High Data Density).
                 </p>
-                
+
                 <div class="arch-diagram-container">
                     <div class="arch-grid">
                         <div class="arch-node">
@@ -80,7 +92,9 @@
                 </div>
 
                 <p>
-                    Sistem ini mengandalkan integrasi Tailwind CSS, Alpine.js, Laravel, dan Livewire untuk memberikan pembaruan antarmuka secara instan dari server tanpa perlu menulis file JavaScript SPA yang berat dan berlebihan.
+                    Sistem ini mengandalkan integrasi Tailwind CSS, Alpine.js, Laravel, dan Livewire untuk memberikan
+                    pembaruan antarmuka secara instan dari server tanpa perlu menulis file JavaScript SPA yang berat dan
+                    berlebihan.
                 </p>
             </div>
         </section>
@@ -90,20 +104,31 @@
             <h2 class="case-study-section-title">Tantangan Teknis & Rekayasa Performa Database</h2>
             <div class="case-study-content">
                 <p>
-                    Tantangan rekayasa perangkat lunak terbesar dalam merancang dashboard telemetri real-time ini adalah **keterbatasan performa database**. Melakukan operasi agregasi (seperti <code>SUM</code>, <code>COUNT</code>, dan <code>AVERAGE</code>) secara real-time pada 7 tabel departemen yang memiliki jutaan baris data transaksi harian dapat mengunci tabel (*table lock*) dan memperlambat kueri pada lini produksi utama ERP.
+                    Tantangan rekayasa perangkat lunak terbesar dalam merancang dashboard telemetri real-time ini adalah
+                    keterbatasan performa database. Melakukan operasi agregasi (seperti <code>SUM</code>,
+                    <code>COUNT</code>, dan <code>AVERAGE</code>) secara real-time pada 7 tabel departemen yang memiliki
+                    jutaan baris data transaksi harian dapat mengunci tabel (*table lock*) dan memperlambat kueri pada
+                    lini produksi utama ERP.
                 </p>
                 <p>
                     <strong>Solusi Rekayasa Performa Database:</strong>
                 </p>
                 <ul>
-                    <li><strong>Mekanisme Caching Cerdas:</strong> Penerapan caching data agregasi menggunakan Laravel Cache dengan tag berdurasi 5 menit. Data laporan tidak ditarik langsung dari database pada setiap request, melainkan dibaca dari cache memori yang cepat.</li>
-                    <li><strong>Tampilan Teragregasi (Materialized Aggregates):</strong> Membuat tabel agregasi khusus yang bertindak sebagai *Materialized Views*. Script cronjob di latar belakang berjalan secara berkala untuk melakukan kalkulasi data historis yang sudah tetap (data bulan-bulan sebelumnya) dan menyimpannya di tabel agregasi, sehingga query dashboard hanya memproses data hari berjalan saja.</li>
+                    <li><strong>Mekanisme Caching Cerdas:</strong> Penerapan caching data agregasi menggunakan Laravel
+                        Cache dengan tag berdurasi 5 menit. Data laporan tidak ditarik langsung dari database pada
+                        setiap request, melainkan dibaca dari cache memori yang cepat.</li>
+                    <li><strong>Tampilan Teragregasi (Materialized Aggregates):</strong> Membuat tabel agregasi khusus
+                        yang bertindak sebagai *Materialized Views*. Script cronjob di latar belakang berjalan secara
+                        berkala untuk melakukan kalkulasi data historis yang sudah tetap (data bulan-bulan sebelumnya)
+                        dan menyimpannya di tabel agregasi, sehingga query dashboard hanya memproses data hari berjalan
+                        saja.</li>
                 </ul>
                 <p>
-                    Berikut adalah cuplikan kode implementasi caching agregasi data di stasiun TV Asakai untuk meminimalkan beban query database:
+                    Berikut adalah cuplikan kode implementasi caching agregasi data di stasiun TV Asakai untuk
+                    meminimalkan beban query database:
                 </p>
 
-<pre><code class="language-php"><span class="token comment">// App/Http/Controllers/DashboardController.php</span>
+                <pre><code class="language-php"><span class="token comment">// App/Http/Controllers/DashboardController.php</span>
 <span class="token keyword">namespace</span> <span class="token class-name">App\Http\Controllers</span><span class="token punctuation">;</span>
 
 <span class="token keyword">use</span> <span class="token class-name">Illuminate\Support\Facades\Cache</span><span class="token punctuation">;</span>
@@ -139,10 +164,13 @@
             <h2 class="case-study-section-title">Hasil Akhir yang Terukur</h2>
             <div class="case-study-content">
                 <p>
-                    Dashboard Asakai berhasil mengeliminasi proses manual penyusunan laporan harian yang memakan waktu 1 hingga 2 jam per hari bagi jajaran manajemen lintas 7 departemen. Penghematan waktu operasional ini memberikan peningkatan efisiensi yang signifikan pada alur kerja persiapan rapat pagi:
+                    Dashboard Asakai berhasil mengeliminasi proses manual penyusunan laporan harian yang memakan waktu 1
+                    hingga 2 jam per hari bagi jajaran manajemen lintas 7 departemen. Penghematan waktu operasional ini
+                    memberikan peningkatan efisiensi yang signifikan pada alur kerja persiapan rapat pagi:
                 </p>
 
-                <div style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 24px 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-main); line-height: 1.8;">
+                <div
+                    style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 24px 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-main); line-height: 1.8;">
                     <strong>[ FORMULA PENGHEMATAN WAKTU KOORDINASI ]</strong><br>
                     Waktu Dihemat = 1.5 Jam / Hari &times; 5 Hari Kerja / Minggu = 7.5 Jam / Minggu
                 </div>
@@ -151,12 +179,17 @@
                     <strong>Dampak Terukur Hasil Penerapan:</strong>
                 </p>
                 <ul>
-                    <li><strong>Waktu Persiapan Rapat:</strong> Berkurang dari 1.5 jam menjadi **0 menit** (semua parameter ter-update otomatis secara real-time).</li>
-                    <li><strong>Kecepatan Respon Masalah (Lead Time):</strong> Turun hingga **40%** karena deviasi parameter target (seperti defect OEE) langsung terdeteksi jam 8 pagi dan bisa diselesaikan pada hari yang sama.</li>
-                    <li><strong>Penyebaran Informasi Lintas Departemen:</strong> Koordinasi antar departemen berjalan transparan tanpa hambatan data (*data silos*).</li>
+                    <li><strong>Waktu Persiapan Rapat:</strong> Berkurang dari 1.5 jam menjadi 0 menit (semua parameter
+                        ter-update otomatis secara real-time).</li>
+                    <li><strong>Kecepatan Respon Masalah (Lead Time):</strong> Turun hingga 40% karena deviasi parameter
+                        target (seperti defect OEE) langsung terdeteksi jam 8 pagi dan bisa diselesaikan pada hari yang
+                        sama.</li>
+                    <li><strong>Penyebaran Informasi Lintas Departemen:</strong> Koordinasi antar departemen berjalan
+                        transparan tanpa hambatan data (*data silos*).</li>
                 </ul>
             </div>
         </section>
     </div>
 </body>
+
 </html>

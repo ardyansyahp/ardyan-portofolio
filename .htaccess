@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Redirect index.html to the root /
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/index\.html [NC]
+RewriteRule ^ / [R=301,L]
+
+# Redirect external requests for page.html to page (excluding index)
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/((?!index)[^.]+)\.html [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# Resolve page to page.html internally
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [NC,L]

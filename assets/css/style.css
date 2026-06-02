@@ -29,6 +29,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -38,6 +39,9 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     transition: background-color 2s ease, color 2s ease;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
 }
 
 .container {
@@ -985,6 +989,18 @@ body.factory-mode .social-links a::after {
     animation: noise 0.2s infinite;
 }
 
+/* Full screen film grain for case studies to avoid any horizontal scrollbar */
+.case-study-page .film-grain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.06;
+    z-index: 9999;
+    animation: grain-animation 1s steps(10) infinite;
+}
+
 body.factory-mode .film-grain {
     opacity: 0.15;
 }
@@ -1033,6 +1049,19 @@ body.factory-mode .film-grain {
     100% {
         transform: translate(0, 0)
     }
+}
+
+@keyframes grain-animation {
+    0%, 100% { background-position: 0 0; }
+    10% { background-position: -5% -10%; }
+    20% { background-position: -15% 5%; }
+    30% { background-position: 7% -25%; }
+    40% { background-position: -5% 25%; }
+    50% { background-position: -15% 10%; }
+    60% { background-position: 15% 0%; }
+    70% { background-position: 0% 15%; }
+    80% { background-position: 3% 35%; }
+    90% { background-position: -10% 10%; }
 }
 
 /* HAMBURGER MENU */
@@ -1366,7 +1395,7 @@ body.factory-mode .metric-plus {
     border-radius: 6px;
     padding: 32px;
     margin: 32px 0;
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 /* Simple text-based diagram blocks */
@@ -1415,14 +1444,74 @@ body.factory-mode .metric-plus {
     padding: 10px;
 }
 
+/* Workflow Grid */
+.workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+}
+
+.workflow-card {
+    background: linear-gradient(145deg, var(--card-bg), #0f0f13);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.workflow-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.1);
+}
+
+.workflow-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.workflow-card:hover::before {
+    opacity: 1;
+}
+
+.w-step-number {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.w-step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
 /* Syntax Highlighting */
 pre {
     background-color: #050507;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 24px;
-    overflow-x: auto;
     margin: 24px 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-x: hidden;
 }
 
 code {
