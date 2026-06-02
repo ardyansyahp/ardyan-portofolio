@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const commands = {
-            'help': 'Available commands: <br>- <span class="highlight">whoami</span>: About me<br>- <span class="highlight">projects</span>: List my core projects<br>- <span class="highlight">skills</span>: My tech stack<br>- <span class="highlight">contact</span>: How to reach me<br>- <span class="highlight">clear</span>: Clear terminal<br><br><span style="color:#ef4444; font-size:12px;">[RESTRICTED: \'hire-me\' protocol detected. Requires \'sudo\' privileges]</span>',
+            'help': 'Available commands: <br>- <span class="highlight">whoami</span>: About me<br>- <span class="highlight">projects</span>: List my core projects<br>- <span class="highlight">skills</span>: My tech stack<br>- <span class="highlight">contact</span>: How to reach me<br>- <span class="highlight">linkedin</span>: Open LinkedIn profile<br>- <span class="highlight">instagram</span>: Open Instagram profile<br>- <span class="highlight">email</span>: Open default email client<br>- <span class="highlight">clear</span>: Clear terminal<br><br><span style="color:#ef4444; font-size:12px;">[RESTRICTED: \'hire-me\' protocol detected. Requires \'sudo\' privileges]</span>',
             'whoami': 'Ardyan Syahputra. Web Developer & System Integrator. I build digital ecosystems and automate factory floors.',
             'projects': '1. S2SMFG: <a href="projects/s2smfg" class="highlight" style="text-decoration: underline;">[View Case Study]</a><br>2. Direct-to-Printer Robot: <a href="projects/robot-printer" class="highlight" style="text-decoration: underline;">[View Case Study]</a><br>3. Asakai Dashboard: <a href="projects/asakai-dashboard" class="highlight" style="text-decoration: underline;">[View Case Study]</a><br>4. Logistics Driver App: <a href="projects/logistics-app" class="highlight" style="text-decoration: underline;">[View Case Study]</a>',
             'skills': 'PHP, Laravel, Livewire, Alpine.js, SQL, PowerShell, Flutter, Git, Docker, REST API.',
@@ -154,6 +154,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
+                // Social Links Logic
+                if (val === 'linkedin') {
+                    terminalOutput.innerHTML += `<p class="sys-msg">> Opening LinkedIn profile...</p>`;
+                    scrollToBottom();
+                    window.open('https://www.linkedin.com/in/ardyan-syahputra', '_blank');
+                    return;
+                }
+                
+                if (val === 'instagram') {
+                    terminalOutput.innerHTML += `<p class="sys-msg">> Opening Instagram profile...</p>`;
+                    scrollToBottom();
+                    window.open('https://www.instagram.com/ardaynsyahp', '_blank');
+                    return;
+                }
+
+                if (val === 'email') {
+                    terminalOutput.innerHTML += `<p class="sys-msg">> Opening default email client...</p>`;
+                    scrollToBottom();
+                    window.location.href = 'mailto:ardyansyahputra174@gmail.com';
+                    return;
+                }
+
                 // 1. EASTER EGG LOGIC
                 if (val === 'sudo hire-me') {
                     terminalInput.disabled = true; 
@@ -161,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         { msg: "> ACCESS GRANTED.", delay: 500 },
                         { msg: "> Executing Ardyan_Recruitment_Protocol.exe...", delay: 1500 },
                         { msg: "> CV is ready for extraction.", delay: 2500 },
-                        { msg: "<a href='CV_Ardyan_Syahputra.pdf' download='CV_Ardyan_Syahputra.pdf' class='btn btn-primary' style='margin-top:10px; display:inline-block; font-family:var(--font-mono);'>[ Unduh CV ]</a>", delay: 3500 }
+                        { msg: "<a href='CV_Ardyan_Syahputra_Software_Engineer_EN.pdf' download='CV_Ardyan_Syahputra_Software_Engineer_EN.pdf' class='btn btn-primary' style='margin-top:10px; display:inline-block; font-family:var(--font-mono); margin-right: 10px;'>[ English CV ]</a><a href='CV_Ardyan_Syahputra_Software_Engineer_ID.pdf' download='CV_Ardyan_Syahputra_Software_Engineer_ID.pdf' class='btn btn-outline' style='margin-top:10px; display:inline-block; font-family:var(--font-mono);'>[ Indonesian CV ]</a>", delay: 3500 }
                     ];
                     
                     steps.forEach(step => {
