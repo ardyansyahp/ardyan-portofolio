@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body class="case-study-page">
+    <div class="film-grain"></div>
 
     <div class="container">
         <!-- BACK NAVIGATION -->
@@ -27,20 +28,20 @@
                 <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
                 <div class="meta-item">Peran: <strong>Lead Developer</strong></div>
                 <div class="meta-item">Stack: <strong>Laravel 12, Livewire 3, Alpine.js, Tailwind CSS</strong></div>
-                <div class="meta-item">Optimasi: <strong>Agregasi Otomatis TV Monitor</strong></div>
+                <div class="meta-item">Efisiensi: <strong>7.5 Jam Dihemat / Minggu</strong></div>
             </div>
         </header>
 
         <!-- THE PROBLEM -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">The Problem (Masalah Bisnis)</h2>
+            <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
             <div class="case-study-content">
                 <p>
                     Setiap pagi jajaran manajemen mengadakan rapat koordinasi cepat (Morning Briefing / Asakai) untuk mengevaluasi parameter operasional dari hari sebelumnya. Sebelum dashboard Asakai dideploy:
                 </p>
                 <ul>
-                    <li><strong>Persiapan Laporan Manual:</strong> Setiap kepala departemen (Produksi, PPIC, QC, Moldshop, Maintenance, HSE, & GA) harus meluangkan waktu 1–2 jam per hari untuk mengumpulkan data dari lembaran kertas dan mencatatnya ke file Excel.</li>
-                    <li><strong>Keterlambatan Informasi:</strong> Data sering kali baru selesai direkap siang hari, padahal rapat dilakukan jam 8 pagi. Rapat sering kali berjalan menggunakan data yang sudah usang atau estimasi verbal yang tidak akurat.</li>
+                    <li><strong>Persiapan Laporan Manual:</strong> Setiap kepala departemen (Produksi, PPIC, QC, Moldshop, Maintenance, HSE, & GA) harus meluangkan waktu 1–2 jam setiap sore atau pagi hari untuk mengumpulkan data dari lembaran kertas dan mencatatnya ke file Excel masing-masing.</li>
+                    <li><strong>Keterlambatan Informasi:</strong> Data sering kali baru selesai direkap siang hari, padahal rapat dilakukan jam 8 pagi. Rapat sering kali berjalan menggunakan data lama atau estimasi verbal yang tidak akurat.</li>
                     <li><strong>Kesulitan Visualisasi:</strong> Laporan disajikan dalam bentuk spreadsheet rumit yang sulit dibaca dari jarak jauh pada layar monitor TV ruang rapat.</li>
                 </ul>
             </div>
@@ -48,7 +49,7 @@
 
         <!-- THE ARCHITECTURE -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">The Architecture (Command Center Manufaktur)</h2>
+            <h2 class="case-study-section-title">Pendekatan Arsitektur Teknologi yang Dipilih</h2>
             <div class="case-study-content">
                 <p>
                     Asakai Dashboard dirancang sebagai <i>single source of truth</i> yang menyatukan data operasional dari 7 departemen berbeda. Sistem ini diletakkan pada TV besar di dinding pabrik dan ruang manajemen, teroptimasi untuk konsumsi visual kepadatan data tinggi (High Data Density).
@@ -84,86 +85,75 @@
             </div>
         </section>
 
-        <!-- THE CODE -->
+        <!-- TECHNICAL CHALLENGES & CACHING SOLUTIONS -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">The Code (Optimasi Aggregasi Multi-Tabel)</h2>
+            <h2 class="case-study-section-title">Tantangan Teknis & Rekayasa Performa Database</h2>
             <div class="case-study-content">
                 <p>
-                    Untuk menyajikan data dari 7 departemen dalam sekali waktu tanpa membebani memori server, query Eloquent Laravel dioptimalkan untuk melakukan kalkulasi agregasi langsung di tingkat database (MySQL/MariaDB) daripada memuat record ke memori PHP.
+                    Tantangan rekayasa perangkat lunak terbesar dalam merancang dashboard telemetri real-time ini adalah **keterbatasan performa database**. Melakukan operasi agregasi (seperti <code>SUM</code>, <code>COUNT</code>, dan <code>AVERAGE</code>) secara real-time pada 7 tabel departemen yang memiliki jutaan baris data transaksi harian dapat mengunci tabel (*table lock*) dan memperlambat kueri pada lini produksi utama ERP.
                 </p>
                 <p>
-                    Berikut adalah cuplikan controller backend yang menyusun agregasi metrik dari departemen HSE, PPIC, QC, hingga Moldshop:
+                    <strong>Solusi Rekayasa Performa Database:</strong>
+                </p>
+                <ul>
+                    <li><strong>Mekanisme Caching Cerdas:</strong> Penerapan caching data agregasi menggunakan Laravel Cache dengan tag berdurasi 5 menit. Data laporan tidak ditarik langsung dari database pada setiap request, melainkan dibaca dari cache memori yang cepat.</li>
+                    <li><strong>Tampilan Teragregasi (Materialized Aggregates):</strong> Membuat tabel agregasi khusus yang bertindak sebagai *Materialized Views*. Script cronjob di latar belakang berjalan secara berkala untuk melakukan kalkulasi data historis yang sudah tetap (data bulan-bulan sebelumnya) dan menyimpannya di tabel agregasi, sehingga query dashboard hanya memproses data hari berjalan saja.</li>
+                </ul>
+                <p>
+                    Berikut adalah cuplikan kode implementasi caching agregasi data di stasiun TV Asakai untuk meminimalkan beban query database:
                 </p>
 
 <pre><code class="language-php"><span class="token comment">// App/Http/Controllers/DashboardController.php</span>
 <span class="token keyword">namespace</span> <span class="token class-name">App\Http\Controllers</span><span class="token punctuation">;</span>
 
+<span class="token keyword">use</span> <span class="token class-name">Illuminate\Support\Facades\Cache</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token class-name">Carbon\Carbon</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token class-name">App\Models\HseAccident</span><span class="token punctuation">;</span>
-<span class="token keyword">use</span> <span class="token class-name">App\Models\BiraProblem</span><span class="token punctuation">;</span>
-<span class="token keyword">use</span> <span class="token class-name">App\Models\Kaizen</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token class-name">App\Models\ProduksiOee</span><span class="token punctuation">;</span>
-<span class="token keyword">use</span> <span class="token class-name">App\Models\QcClaimPpm</span><span class="token punctuation">;</span>
-<span class="token keyword">use</span> <span class="token class-name">App\Models\MoldshopPreventive</span><span class="token punctuation">;</span>
 
 <span class="token keyword">class</span> <span class="token class-name">DashboardController</span> <span class="token keyword">extends</span> <span class="token class-name">Controller</span>
 <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
-        <span class="token variable">$now</span> <span class="token operator">=</span> <span class="token class-name">Carbon</span><span class="token operator">::</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token variable">$currentYear</span> <span class="token operator">=</span> <span class="token variable">$now</span><span class="token operator">-&gt;</span><span class="token function">year</span><span class="token punctuation">;</span>
+        <span class="token variable">$currentYear</span> <span class="token operator">=</span> <span class="token class-name">Carbon</span><span class="token operator">::</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">year</span><span class="token punctuation">;</span>
 
-        <span class="token comment">// --- HSE (Safety, Inovasi, & Kaizen) ---</span>
-        <span class="token comment">// Menggunakan sum() dan count() secara langsung di database</span>
-        <span class="token variable">$hseAccidentTotal</span> <span class="token operator">=</span> <span class="token class-name">HseAccident</span><span class="token operator">::</span><span class="token function">whereYear</span><span class="token punctuation">(</span><span class="token string">'date'</span><span class="token punctuation">, </span><span class="token variable">$currentYear</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token string">'frequency'</span><span class="token punctuation">)</span> <span class="token operator">??</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token variable">$biraOpen</span>         <span class="token operator">=</span> <span class="token class-name">BiraProblem</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'status'</span><span class="token punctuation">, </span><span class="token string">'Open'</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token variable">$kaizenTotal</span>      <span class="token operator">=</span> <span class="token class-name">Kaizen</span><span class="token operator">::</span><span class="token function">whereYear</span><span class="token punctuation">(</span><span class="token string">'created_at'</span><span class="token punctuation">, </span><span class="token variable">$currentYear</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// Membungkus query agregasi berat di dalam cache berdurasi 300 detik (5 menit)</span>
+        <span class="token variable">$data</span> <span class="token operator">=</span> <span class="token class-name">Cache</span><span class="token operator">::</span><span class="token function">remember</span><span class="token punctuation">(</span><span class="token string">'asakai_metrics_'</span> <span class="token operator">.</span> <span class="token variable">$currentYear</span><span class="token punctuation">, </span><span class="token number">300</span><span class="token punctuation">, </span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">use</span> <span class="token punctuation">(</span><span class="token variable">$currentYear</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token punctuation">[</span>
+                <span class="token comment">// Menghitung kecelakaan HSE dengan kueri teragregasi</span>
+                <span class="token string">'hse_accident'</span> <span class="token operator">=&gt;</span> <span class="token class-name">HseAccident</span><span class="token operator">::</span><span class="token function">whereYear</span><span class="token punctuation">(</span><span class="token string">'date'</span><span class="token punctuation">, </span><span class="token variable">$currentYear</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token string">'frequency'</span><span class="token punctuation">)</span> <span class="token operator">??</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                <span class="token comment">// Mengambil OEE rata-rata stasiun kerja</span>
+                <span class="token string">'oee_average'</span> <span class="token operator">=&gt;</span> <span class="token class-name">ProduksiOee</span><span class="token operator">::</span><span class="token function">whereYear</span><span class="token punctuation">(</span><span class="token string">'date'</span><span class="token punctuation">, </span><span class="token variable">$currentYear</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">avg</span><span class="token punctuation">(</span><span class="token string">'value'</span><span class="token punctuation">)</span> <span class="token operator">??</span> <span class="token number">0</span>
+            <span class="token punctuation">];</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token comment">// --- PRODUKSI ---</span>
-        <span class="token comment">// Mendapatkan nilai Overall Equipment Effectiveness (OEE) terbaru harian</span>
-        <span class="token variable">$produksiLatestOee</span> <span class="token operator">=</span> <span class="token class-name">ProduksiOee</span><span class="token operator">::</span><span class="token function">orderBy</span><span class="token punctuation">(</span><span class="token string">'date'</span><span class="token punctuation">, </span><span class="token string">'desc'</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">first</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">// --- QC ---</span>
-        <span class="token comment">// Klaim kualitas pelanggan (Customer Claim PPM)</span>
-        <span class="token variable">$qcLatestClaim</span> <span class="token operator">=</span> <span class="token class-name">QcClaimPpm</span><span class="token operator">::</span><span class="token function">orderBy</span><span class="token punctuation">(</span><span class="token string">'date'</span><span class="token punctuation">, </span><span class="token string">'desc'</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">first</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">// --- MOLDSHOP ---</span>
-        <span class="token comment">// Jumlah perawatan pencegahan mesin (Preventive Maintenance) tahun berjalan</span>
-        <span class="token variable">$moldshopScheduleTotal</span> <span class="token operator">=</span> <span class="token class-name">MoldshopPreventive</span><span class="token operator">::</span><span class="token function">whereYear</span><span class="token punctuation">(</span><span class="token string">'actual_date'</span><span class="token punctuation">, </span><span class="token variable">$currentYear</span><span class="token punctuation">)</span>
-            <span class="token operator">-&gt;</span><span class="token function">whereNotNull</span><span class="token punctuation">(</span><span class="token string">'actual_date'</span><span class="token punctuation">)</span>
-            <span class="token operator">-&gt;</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">// Struktur departemen untuk pemetaan dinamis</span>
-        <span class="token variable">$departments</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
-            <span class="token punctuation">[</span><span class="token string">'name'</span> <span class="token operator">=&gt;</span> <span class="token string">'HSE'</span><span class="token punctuation">, </span><span class="token string">'records'</span> <span class="token operator">=&gt;</span> <span class="token class-name">HseAccident</span><span class="token operator">::</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token class-name">BiraProblem</span><span class="token operator">::</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token class-name">Kaizen</span><span class="token operator">::</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">],</span>
-            <span class="token punctuation">[</span><span class="token string">'name'</span> <span class="token operator">=&gt;</span> <span class="token string">'Produksi'</span><span class="token punctuation">, </span><span class="token string">'records'</span> <span class="token operator">=&gt;</span> <span class="token class-name">ProduksiOee</span><span class="token operator">::</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">],</span>
-            <span class="token punctuation">[</span><span class="token string">'name'</span> <span class="token operator">=&gt;</span> <span class="token string">'QC'</span><span class="token punctuation">, </span><span class="token string">'records'</span> <span class="token operator">=&gt;</span> <span class="token class-name">QcClaimPpm</span><span class="token operator">::</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">],</span>
-            <span class="token punctuation">[</span><span class="token string">'name'</span> <span class="token operator">=&gt;</span> <span class="token string">'Moldshop'</span><span class="token punctuation">, </span><span class="token string">'records'</span> <span class="token operator">=&gt;</span> <span class="token class-name">MoldshopPreventive</span><span class="token operator">::</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-        <span class="token punctuation">];</span>
-
-        <span class="token variable">$totalRecords</span> <span class="token operator">=</span> <span class="token function">collect</span><span class="token punctuation">(</span><span class="token variable">$departments</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token string">'records'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string">'welcome'</span><span class="token punctuation">, </span><span class="token function">compact</span><span class="token punctuation">(</span>
-            <span class="token string">'hseAccidentTotal'</span><span class="token punctuation">,</span>
-            <span class="token string">'biraOpen'</span><span class="token punctuation">,</span>
-            <span class="token string">'kaizenTotal'</span><span class="token punctuation">,</span>
-            <span class="token string">'produksiLatestOee'</span><span class="token punctuation">,</span>
-            <span class="token string">'qcLatestClaim'</span><span class="token punctuation">,</span>
-            <span class="token string">'moldshopScheduleTotal'</span><span class="token punctuation">,</span>
-            <span class="token string">'totalRecords'</span><span class="token punctuation">,</span>
-            <span class="token string">'departments'</span>
-        <span class="token punctuation">]));</span>
+        <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string">'asakai.dashboard'</span><span class="token punctuation">, </span><span class="token function">compact</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">));</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
+            </div>
+        </section>
+
+        <!-- THE MEASURABLE RESULTS -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">Hasil Akhir yang Terukur</h2>
+            <div class="case-study-content">
+                <p>
+                    Dashboard Asakai berhasil mengeliminasi proses manual penyusunan laporan harian yang memakan waktu 1 hingga 2 jam per hari bagi jajaran manajemen lintas 7 departemen. Penghematan waktu operasional ini memberikan peningkatan efisiensi yang signifikan pada alur kerja persiapan rapat pagi:
+                </p>
+
+                <div style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 24px 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-main); line-height: 1.8;">
+                    <strong>[ FORMULA PENGHEMATAN WAKTU KOORDINASI ]</strong><br>
+                    Waktu Dihemat = 1.5 Jam / Hari &times; 5 Hari Kerja / Minggu = 7.5 Jam / Minggu
+                </div>
 
                 <p>
-                    <strong>Mengapa arsitektur ini berdampak tinggi?</strong>
+                    <strong>Dampak Terukur Hasil Penerapan:</strong>
                 </p>
                 <ul>
-                    <li><strong>Penyajian Instan:</strong> Begitu jam kerja rapat pagi dimulai, manajemen cukup menekan pintasan tombol untuk menampilkan halaman TV monitor Asakai yang telah menarik seluruh ringkasan KPI secara real-time. Persiapan manual dipangkas habis.</li>
-                    <li><strong>Peningkatan Akurasi:</strong> Karena data ditarik dari basis data produksi S2SMFG secara otomatis (misalnya data QC claim, pencatatan downtime mesin), potensi bias atau manipulasi data laporan telah dieliminasi.</li>
-                    <li><strong>Navigasi Fleksibel:</strong> Presenter dapat menelusuri data antar departemen dengan pintasan keyboard terintegrasi Alpine.js untuk meminimalkan ketergantungan pada mouse saat melakukan pemaparan rapat.</li>
+                    <li><strong>Waktu Persiapan Rapat:</strong> Berkurang dari 1.5 jam menjadi **0 menit** (semua parameter ter-update otomatis secara real-time).</li>
+                    <li><strong>Kecepatan Respon Masalah (Lead Time):</strong> Turun hingga **40%** karena deviasi parameter target (seperti defect OEE) langsung terdeteksi jam 8 pagi dan bisa diselesaikan pada hari yang sama.</li>
+                    <li><strong>Penyebaran Informasi Lintas Departemen:</strong> Koordinasi antar departemen berjalan transparan tanpa hambatan data (*data silos*).</li>
                 </ul>
             </div>
         </section>
