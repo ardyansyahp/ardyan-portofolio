@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
-const SECRET_PIN = '123456'; // PIN hardcoded untuk verifikasi API
+const SECRET_PIN = '1321'; // PIN hardcoded untuk verifikasi API
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 

@@ -1,5 +1,5 @@
 // PIN Security Logic
-const CORRECT_PIN = '123456'; // Ganti dengan PIN rahasia Anda nanti
+const CORRECT_PIN = '1321'; // Ganti dengan PIN rahasia Anda nanti
 let currentPin = '';
 
 const pinDots = document.querySelectorAll('.pin-dot');
@@ -73,10 +73,10 @@ function checkPin() {
 // Input Handling (Click)
 document.querySelectorAll('.key-btn[data-key]').forEach(btn => {
     btn.addEventListener('click', () => {
-        if (currentPin.length < 6) {
+        if (currentPin.length < 4) {
             currentPin += btn.getAttribute('data-key');
             updatePinDots();
-            if (currentPin.length === 6) {
+            if (currentPin.length === 4) {
                 checkPin();
             }
         }
@@ -99,7 +99,7 @@ document.addEventListener('keydown', (e) => {
     // Only listen if lockscreen is active
     if (lockscreen.style.visibility !== 'hidden') {
         if (e.key >= '0' && e.key <= '9') {
-            if (currentPin.length < 6) {
+            if (currentPin.length < 4) {
                 currentPin += e.key;
                 
                 // Visual feedback on keypad
@@ -110,7 +110,7 @@ document.addEventListener('keydown', (e) => {
                 }
 
                 updatePinDots();
-                if (currentPin.length === 6) {
+                if (currentPin.length === 4) {
                     checkPin();
                 }
             }
