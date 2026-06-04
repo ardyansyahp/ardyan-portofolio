@@ -165,6 +165,7 @@ async function loadTasks() {
         if (!res.ok) throw new Error('Gagal memuat data. PIN mungkin tidak valid di server.');
         tasks = await res.json();
         renderTasks();
+        renderCalendar();
     } catch (error) {
         console.error(error);
         taskList.innerHTML = `<p style="color: #ef4444; grid-column: 1/-1; text-align: center;">Error: ${error.message}</p>`;
@@ -270,6 +271,92 @@ function renderTasks() {
             }
         });
     });
+}
+
+// ==========================================
+// CALENDAR LOGIC
+// ==========================================
+let currentDate = new Date(); // Start with current month
+
+const calMonthYear = document.getElementById('calendar-month-year');
+const calGrid = document.getElementById('calendar-grid');
+
+document.getElementById('prev-month').addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+});
+
+document.getElementById('next-month').addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+});
+
+function renderCalendar() {
+    calGrid.innerHTML = '';
+    
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    
+    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    calMonthYear.textContent = `${monthNames[month]} ${year}`;
+
+    const daysOfWeek = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+    daysOfWeek.forEach(day => {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day-header';
+        dayDiv.textContent = day;
+        calGrid.appendChild(dayDiv);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    const today = new Date();
+    const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+
+    // Fill empty cells before 1st day
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-cell empty';
+        calGrid.appendChild(emptyCell);
+    }
+
+    // Fill days
+    for (let i = 1; i <= daysInMonth; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell';
+        if (isCurrentMonth && i === today.getDate()) {
+            cell.classList.add('today');
+        }
+
+        const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+        
+        // Find tasks for this day
+        const dayTasks = tasks.filter(t => t.target_date.startsWith(dateString));
+        
+        let dotsHTML = '';
+        if (dayTasks.length > 0) {
+            cell.classList.add('has-task');
+            dayTasks.forEach(t => {
+                let color = 'var(--text-muted)';
+                if (t.status === 'Selesai') color = '#22c55e';
+                else if (t.status === 'Testing') color = '#3b82f6';
+                else if (t.status === 'Development') color = '#eab308';
+                else if (t.status === 'Progres Awal') color = '#f97316';
+                
+                if (t.priority === 'High') color = '#ef4444'; // Override with priority color if we want, or stick to status color. Let's use status color.
+                
+                dotsHTML += `<div class="task-dot" style="background-color: ${color};" title="${t.title}"></div>`;
+            });
+        }
+
+        cell.innerHTML = `
+            <div>${i}</div>
+            <div class="calendar-dots">${dotsHTML}</div>
+        `;
+        
+        calGrid.appendChild(cell);
+    }
 }
 
 // Modal & Subtask Logic
