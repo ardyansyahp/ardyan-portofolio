@@ -355,11 +355,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 8. SUPABASE STATS (VIEWS & LIKES)
     const viewsCount = document.getElementById('views-count');
-    const likesCount = document.getElementById('likes-count');
+    const likesCounts = document.querySelectorAll('.likes-count');
     const likeBtn = document.getElementById('like-btn');
     const likeIcon = document.getElementById('like-icon');
 
-    if (viewsCount && likesCount && likeBtn) {
+    if (viewsCount && likesCounts.length > 0 && likeBtn) {
+        // Helper to update all likes displays
+        const updateLikesDisplays = (val) => {
+            likesCounts.forEach(el => {
+                el.textContent = val.toLocaleString();
+            });
+        };
+
         // A. Handle Page Views
         const hasVisited = localStorage.getItem('has_visited');
         if (!hasVisited) {
@@ -368,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     if(data && data.views !== undefined) {
                         viewsCount.textContent = data.views.toLocaleString();
-                        likesCount.textContent = data.likes.toLocaleString();
+                        updateLikesDisplays(data.likes);
                         localStorage.setItem('has_visited', 'true');
                     }
                 }).catch(e => console.error('Stats Error:', e));
@@ -378,16 +385,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     if(data && data.views !== undefined) {
                         viewsCount.textContent = data.views.toLocaleString();
-                        likesCount.textContent = data.likes.toLocaleString();
+                        updateLikesDisplays(data.likes);
                     }
                 }).catch(e => console.error('Stats Error:', e));
         }
 
-        // B. Handle Likes
+        // B. Handle Likes Style on Load
         const hasLiked = localStorage.getItem('has_liked');
         if(hasLiked) {
-            likeIcon.style.fill = 'var(--accent)';
-            likeIcon.style.color = 'var(--accent)';
+            likeBtn.classList.add('liked');
         }
 
         likeBtn.addEventListener('click', () => {
@@ -397,17 +403,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Optimistic UI update
-            likeIcon.style.fill = 'var(--accent)';
-            likeIcon.style.color = 'var(--accent)';
-            likeIcon.style.transform = 'scale(1.2)';
-            setTimeout(() => likeIcon.style.transform = 'scale(1)', 200);
-            likesCount.textContent = (parseInt(likesCount.textContent.replace(/,/g, '')) + 1).toLocaleString();
+            likeBtn.classList.add('liked');
+            
+            // Get current value and increment optimistically
+            const currentVal = parseInt(likesCounts[0].textContent.replace(/,/g, '')) || 0;
+            updateLikesDisplays(currentVal + 1);
 
             fetch('/api/stats?action=like', { method: 'POST' })
                 .then(res => res.json())
                 .then(data => {
                     if(data && data.likes !== undefined) {
-                        likesCount.textContent = data.likes.toLocaleString();
+                        updateLikesDisplays(data.likes);
                         localStorage.setItem('has_liked', 'true');
                     }
                 }).catch(e => console.error('Stats Error:', e));
