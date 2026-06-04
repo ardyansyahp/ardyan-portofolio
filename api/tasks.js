@@ -35,10 +35,10 @@ export default async function handler(req, res) {
         }
 
         if (req.method === 'POST') {
-            const { title, target_date, priority, status, summary } = req.body;
+            const { title, target_date, priority, status, summary, subtasks } = req.body;
             const { data, error } = await supabase
                 .from('ardyan_tasks')
-                .insert([{ title, target_date, priority, status, summary }])
+                .insert([{ title, target_date, priority, status, summary, subtasks }])
                 .select()
                 .single();
 
@@ -47,12 +47,12 @@ export default async function handler(req, res) {
         }
 
         if (req.method === 'PUT') {
-            const { id, title, target_date, priority, status, summary } = req.body;
+            const { id, title, target_date, priority, status, summary, subtasks } = req.body;
             if (!id) return res.status(400).json({ error: 'ID is required' });
 
             const { data, error } = await supabase
                 .from('ardyan_tasks')
-                .update({ title, target_date, priority, status, summary })
+                .update({ title, target_date, priority, status, summary, subtasks })
                 .eq('id', id)
                 .select()
                 .single();

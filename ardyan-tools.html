@@ -142,6 +142,52 @@
             border-color: rgba(255,255,255,0.2);
         }
 
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 15px 0 10px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        /* Checklists */
+        .subtasks-list {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .subtask-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+        .subtask-item input[type="checkbox"] {
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+        .subtask-item.done {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
         .badge {
             display: inline-block;
             padding: 4px 8px;
@@ -246,6 +292,39 @@
             outline: none;
             border-color: var(--accent);
         }
+        
+        .subtask-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .subtask-input-group input {
+            flex: 1;
+        }
+        .btn-remove-subtask {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 6px;
+            width: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-add-subtask {
+            background: transparent;
+            color: var(--accent);
+            border: 1px dashed var(--accent);
+            padding: 8px;
+            border-radius: 6px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
         .modal-actions {
             display: flex;
             justify-content: flex-end;
@@ -359,11 +438,21 @@
                     <div class="form-group">
                         <label>Status</label>
                         <select id="task-status">
-                            <option value="Planned">Direncanakan</option>
-                            <option value="In Progress">Sedang Berjalan</option>
-                            <option value="Completed">Selesai</option>
+                            <option value="Belum Dikerjakan">Belum Dikerjakan</option>
+                            <option value="Progres Awal">Progres Awal</option>
+                            <option value="Development">Development</option>
+                            <option value="Testing">Testing</option>
+                            <option value="Selesai">Selesai</option>
                         </select>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Subtasks / Pekerjaan Update (Checklist)</label>
+                    <div id="subtasks-container">
+                        <!-- Subtask inputs go here -->
+                    </div>
+                    <button type="button" class="btn-add-subtask" id="btn-add-subtask">+ Tambah Kerjaan</button>
                 </div>
 
                 <div class="form-group">

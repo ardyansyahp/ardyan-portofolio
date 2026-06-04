@@ -191,6 +191,35 @@ function renderTasks() {
 
         const badgeClass = task.priority === 'High' ? 'high' : (task.priority === 'Med' ? 'med' : 'low');
         
+        let statusColor = 'var(--text-muted)';
+        if (task.status === 'Selesai') statusColor = '#22c55e';
+        else if (task.status === 'Testing') statusColor = '#3b82f6';
+        else if (task.status === 'Development') statusColor = '#eab308';
+        else if (task.status === 'Progres Awal') statusColor = '#f97316';
+
+        // Subtasks Progress Calculation
+        let subtasksHTML = '';
+        let progressPercent = 0;
+        let progressText = '0/0';
+        
+        if (task.subtasks && task.subtasks.length > 0) {
+            const total = task.subtasks.length;
+            const doneCount = task.subtasks.filter(st => st.is_done).length;
+            progressPercent = Math.round((doneCount / total) * 100);
+            progressText = `${doneCount}/${total} (${progressPercent}%)`;
+            
+            subtasksHTML = '<div class="subtasks-list">';
+            task.subtasks.forEach((st, index) => {
+                subtasksHTML += `
+                    <label class="subtask-item ${st.is_done ? 'done' : ''}">
+                        <input type="checkbox" disabled ${st.is_done ? 'checked' : ''}>
+                        <span>${st.text}</span>
+                    </label>
+                `;
+            });
+            subtasksHTML += '</div>';
+        }
+
         const card = document.createElement('div');
         card.className = 'task-card';
         card.innerHTML = `
@@ -207,9 +236,19 @@ function renderTasks() {
             </div>
             <div class="task-title">${task.title}</div>
             <div class="task-date">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                ${dateStr} &bull; <span style="color: ${task.status === 'Completed' ? '#22c55e' : (task.status === 'In Progress' ? '#eab308' : 'var(--text-muted)')}">${task.status}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 5px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                ${dateStr} &bull; <span style="color: ${statusColor}; font-weight: 500; margin-left: 5px;">${task.status}</span>
             </div>
+
+            ${task.subtasks && task.subtasks.length > 0 ? `
+                <div class="progress-text">${progressText} Selesai</div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: ${progressPercent}%; background-color: ${progressPercent === 100 ? '#22c55e' : 'var(--accent)'}"></div>
+                </div>
+            ` : ''}
+
+            ${subtasksHTML}
+
             ${task.summary ? `<div class="task-summary">${task.summary}</div>` : ''}
         `;
         taskList.appendChild(card);
@@ -233,16 +272,48 @@ function renderTasks() {
     });
 }
 
-// Modal Logic
+// Modal & Subtask Logic
 const modal = document.getElementById('task-modal');
 const form = document.getElementById('task-form');
 const addBtn = document.getElementById('add-task-btn');
 const closeBtn = document.getElementById('close-modal-btn');
+const subtasksContainer = document.getElementById('subtasks-container');
+const btnAddSubtask = document.getElementById('btn-add-subtask');
+
+let currentSubtasks = [];
+
+function renderSubtaskInputs() {
+    subtasksContainer.innerHTML = '';
+    currentSubtasks.forEach((st, index) => {
+        const div = document.createElement('div');
+        div.className = 'subtask-input-group';
+        div.innerHTML = `
+            <input type="checkbox" style="width: 20px;" ${st.is_done ? 'checked' : ''} onchange="toggleSubtask(${index}, this.checked)">
+            <input type="text" value="${st.text}" placeholder="Deskripsi pekerjaan..." oninput="updateSubtaskText(${index}, this.value)" required>
+            <button type="button" class="btn-remove-subtask" onclick="removeSubtask(${index})">×</button>
+        `;
+        subtasksContainer.appendChild(div);
+    });
+}
+
+window.toggleSubtask = function(index, checked) { currentSubtasks[index].is_done = checked; }
+window.updateSubtaskText = function(index, text) { currentSubtasks[index].text = text; }
+window.removeSubtask = function(index) {
+    currentSubtasks.splice(index, 1);
+    renderSubtaskInputs();
+}
+
+btnAddSubtask.addEventListener('click', () => {
+    currentSubtasks.push({ text: '', is_done: false });
+    renderSubtaskInputs();
+});
 
 addBtn.addEventListener('click', () => {
     form.reset();
     document.getElementById('task-id').value = '';
     document.getElementById('modal-title').textContent = 'Tambah Jadwal / Tugas';
+    currentSubtasks = [];
+    renderSubtaskInputs();
     modal.style.display = 'flex';
 });
 
@@ -261,6 +332,9 @@ function openEditModal(id) {
     document.getElementById('task-status').value = task.status;
     document.getElementById('task-summary').value = task.summary || '';
     
+    currentSubtasks = task.subtasks ? JSON.parse(JSON.stringify(task.subtasks)) : [];
+    renderSubtaskInputs();
+
     document.getElementById('modal-title').textContent = 'Edit Jadwal / Aktual';
     modal.style.display = 'flex';
 }
@@ -275,7 +349,8 @@ form.addEventListener('submit', async (e) => {
         target_date: document.getElementById('task-date').value,
         priority: document.getElementById('task-priority').value,
         status: document.getElementById('task-status').value,
-        summary: document.getElementById('task-summary').value
+        summary: document.getElementById('task-summary').value,
+        subtasks: currentSubtasks
     };
 
     const method = id ? 'PUT' : 'POST';
