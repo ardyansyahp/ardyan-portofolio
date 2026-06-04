@@ -128,7 +128,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Pelacakan armada pengiriman barang jadi (finished goods) ke customer plant sebelumnya dilakukan
                     secara manual. Gudang PPIC tidak memiliki visibilitas langsung terhadap status pengiriman barang
                     dari pabrik ke stasiun perakitan pelanggan:
@@ -150,7 +150,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Pendekatan Arsitektur Teknologi yang Pilih</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Solusinya adalah aplikasi mobile cross-platform berbasis Flutter untuk platform Android yang
                     dipasang pada handphone seluruh driver armada pabrik. Aplikasi ini terintegrasi langsung dengan API
                     backend Laravel di cloud.
@@ -180,7 +180,7 @@
                     </div>
                 </div>
 
-                <p>
+                <p style="text-align: justify;">
                     Driver menggunakan pemindai QR bawaan aplikasi untuk men-scan kode di plant tujuan. Jika koordinat
                     GPS driver berada di luar radius radius pagar (geofencing) plant pelanggan, sistem akan menolak
                     konfirmasi masuk untuk mencegah kecurangan pengisian laporan kedatangan.
@@ -192,7 +192,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Langkah Sinkronisasi GPS & QR (Simulator Interaktif)</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Gunakan simulator interaktif di bawah ini untuk melihat bagaimana transisi status pengiriman
                     berjalan dari pemindaian QR di lapangan hingga sinkronisasi data lokasi ke database Laravel backend:
                 </p>
@@ -213,7 +213,7 @@
                             <span class="sim-badge"
                                 style="background-color: rgba(234, 179, 8, 0.1); color: #eab308;">Awaiting Camera
                                 Scan...</span>
-                            <p style="color: var(--text-muted);">Memindai QR Barcode pada box pengapalan atau pos
+                            <p style="text-align: justify; color: var(--text-muted);">Memindai QR Barcode pada box pengapalan atau pos
                                 gerbang stasiun perakitan pelanggan...</p>
                             <div
                                 style="background: rgba(255,255,255,0.02); border: 1px dashed var(--border-color); padding: 8px; text-align: center; margin-top: 10px;">
@@ -231,23 +231,23 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Tantangan Teknis & Integrasi Flutter-REST API</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Tantangan teknis terbesar adalah merancang sinkronisasi geofencing yang hemat baterai serta mencegah
                     kecurangan (GPS Spoofing) oleh driver di lapangan.
                 </p>
-                <p>
+                <p style="text-align: justify;">
                     <strong>Solusi GetX & Haversine Geofencing:</strong><br>
                     State management diatur menggunakan GetX untuk memproses perubahan status pengiriman secara
                     responsif. Rumus Haversine dihitung langsung di sisi backend Laravel saat API menerima payload
                     koordinat, memastikan validasi jarak fisik driver nyata dari pagar koordinat plant pelanggan sebelum
                     menyetujui transaksi kedatangan.
                 </p>
-                <p>
+                <p style="text-align: justify;">
                     Berikut adalah cuplikan controller Flutter (Dart) yang menangani pemindaian dan pengiriman
                     koordinat:
                 </p>
 
-                <pre><code class="language-dart"><span class="token comment">// driver_app/lib/app/controllers/delivery_controller.dart</span>
+                <pre style="text-align: justify;"><code class="language-dart"><span class="token comment">// driver_app/lib/app/controllers/delivery_controller.dart</span>
 <span class="token keyword">import</span> <span class="token string">'package:get/get.dart'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token string">'package:geolocator/geolocator.dart'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token string">'package:http/http.dart'</span> <span class="token keyword">as</span> <span class="token class-name">http</span><span class="token punctuation">;</span>
@@ -349,7 +349,7 @@
                         <div class="sim-phone-ui">
                             <div class="sim-title">[ Driver Client: Camera QR Scan ]</div>
                             <span class="sim-badge" style="background-color: rgba(234, 179, 8, 0.1); color: #eab308;">Awaiting Camera Scan...</span>
-                            <p style="color: var(--text-muted);">Memindai QR Barcode pada box pengapalan atau pos gerbang stasiun perakitan pelanggan...</p>
+                            <p style="text-align: justify; color: var(--text-muted);">Memindai QR Barcode pada box pengapalan atau pos gerbang stasiun perakitan pelanggan...</p>
                             <div style="background: rgba(255,255,255,0.02); border: 1px dashed var(--border-color); padding: 8px; text-align: center; margin-top: 10px;">
                                 [ |||||||||| QR CODE SCANNED |||||||||| ]<br>
                                 <span style="font-size: 11px; color: var(--accent);">SPK-OUT-99812|PLANT-3-CIKARANG|BOX-012</span>
@@ -376,7 +376,7 @@
                         <div class="sim-phone-ui">
                             <div class="sim-title">[ Geofence Validator ]</div>
                             <span class="sim-badge" style="background-color: rgba(34, 197, 94, 0.1); color: #22c55e;">Valid: Within Geofence</span>
-                            <p style="color: var(--text-muted);">Menghitung deviasi jarak koordinat pengemudi dengan pagar virtual plant pelanggan (Formula Haversine):</p>
+                            <p style="text-align: justify; color: var(--text-muted);">Menghitung deviasi jarak koordinat pengemudi dengan pagar virtual plant pelanggan (Formula Haversine):</p>
                             <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 8px; font-family: var(--font-mono); font-size: 11px; margin-top: 10px; line-height: 1.4;">
                                 Target Lat: -6.284910 | Lng: 107.168500<br>
                                 Jarak Dihitung: <span style="color: #22c55e;">42.12 Meter</span><br>
@@ -390,7 +390,7 @@
                         <div class="sim-phone-ui">
                             <div class="sim-title">[ Laravel API Sync ]</div>
                             <span class="sim-badge" style="background-color: rgba(34, 197, 94, 0.1); color: #22c55e;">Sync Success (HTTP 200)</span>
-                            <p style="color: var(--text-muted);">Mengirimkan data GPS & SPK ke REST API server dan melakukan pembaruan status pengapalan:</p>
+                            <p style="text-align: justify; color: var(--text-muted);">Mengirimkan data GPS & SPK ke REST API server dan melakukan pembaruan status pengapalan:</p>
                             <pre style="background: #050507; border: 1px solid var(--border-color); padding: 8px; font-size: 10px; margin-top: 10px; max-height: 80px; overflow-y: auto; color: #a5d6ff;">{
   "status": "success",
   "message": "Arrival verified",

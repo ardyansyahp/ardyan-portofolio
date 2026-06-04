@@ -40,7 +40,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Sebelum sistem S2SMFG dideploy, seluruh alur kerja pelacakan material dan produksi di pabrik PT.
                     Mada Wikri Tunggal masih berbasis kertas manual. Lembar "Kartu Travel" digunakan untuk mencatat
                     perpindahan barang jadi dari mesin cetak ke area karantina QC, lalu ke gudang barang jadi.
@@ -65,7 +65,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Alur Kerja Manufaktur Terintegrasi</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Sistem ini dirancang untuk mendigitalisasi dan melacak secara presisi 15 tahapan kritis dalam rantai
                     pasok dan produksi, mulai dari pemesanan material hingga pengiriman barang jadi ke pelanggan
                     (End-to-End Workflow):
@@ -140,13 +140,13 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Pendekatan Arsitektur & Desain Database</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Untuk mengatasi kekacauan tersebut, dirancang ekosistem web terintegrasi dengan basis data MariaDB
                     yang menampung 78 tabel relasional. Untuk menjamin performa pembacaan data pada tabel-tabel utama
                     yang tumbuh secara eksponensial, dilakukan perancangan skema ternormalisasi untuk mencegah anomali
                     data (insert, update, delete) sekaligus menjaga performa kueri pada tingkat transaksi tinggi.
                 </p>
-                <p>
+                <p style="text-align: justify;">
                     Berikut adalah representasi Entity-Relationship Diagram (ERD) yang disederhanakan dari tabel-tabel
                     utama yang mengelola data transaksi produksi dan pengiriman barang jadi (SPK & Finish Good Out).
                     Tabel-tabel ini dirancang untuk mengakomodasi hubungan satu-ke-banyak (1:N) antara master data part,
@@ -181,7 +181,7 @@
 
                 <h3 style="color: var(--text-main); margin-top: 32px; margin-bottom: 16px;">Pengelompokan Modul Sistem
                 </h3>
-                <p>
+                <p style="text-align: justify;">
                     Untuk mengakomodasi 15 tahapan operasional secara terpusat, alur kerja didistribusikan ke dalam 4
                     modul utama yang saling berintegrasi:
                 </p>
@@ -231,7 +231,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Implementasi Logika Bisnis (Backend Controllers)</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Tantangan teknis terbesar adalah menghindari anomali data serta mempertahankan kecepatan transaksi
                     melintasi puluhan stasiun kerja secara simultan. Berikut adalah bagaimana 3 titik krusial dalam alur
                     produksi ditangani oleh backend Laravel (didukung oleh penerapan sertifikasi DBA):
@@ -239,11 +239,11 @@
 
                 <h3 style="color: var(--text-main); margin-top: 32px; margin-bottom: 8px;">1. Fase Awal: Penerimaan
                     Material (Receiving)</h3>
-                <p>Mencegah selisih gudang sejak barang datang. Sistem otomatis memverifikasi penerimaan dengan Purchase
+                <p style="text-align: justify;">Mencegah selisih gudang sejak barang datang. Sistem otomatis memverifikasi penerimaan dengan Purchase
                     Order (PO) dan menambah stok bahan baku secara <em>real-time</em> menggunakan <em>Database
                         Transaction</em>.</p>
 
-                <pre><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/ReceivingController.php</span>
+                <pre style="text-align: justify;"><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/ReceivingController.php</span>
 <span class="token keyword">public function</span> <span class="token function">processReceiving</span><span class="token punctuation">(</span><span class="token class-name">Request</span> <span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token class-name">DB</span><span class="token operator">::</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">use</span> <span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment">// 1. Lock Purchase Order untuk mencegah penerimaan ganda (race condition)</span>
@@ -269,7 +269,7 @@
                     <em>backflush</em>), meminimalisir input manual.
                 </p>
 
-                <pre><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/ProductionController.php</span>
+                <pre style="text-align: justify;"><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/ProductionController.php</span>
 <span class="token keyword">public function</span> <span class="token function">recordProductionYield</span><span class="token punctuation">(</span><span class="token class-name">Request</span> <span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token class-name">DB</span><span class="token operator">::</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">use</span> <span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment">// 1. Catat Barang Setengah Jadi (WIP) / Hasil Produksi</span>
@@ -291,7 +291,7 @@
                     (<code>lockForUpdate</code>) dan komputasi <em>MD5 hash</em> pada <em>constraint</em> database untuk
                     akurasi pengiriman 100%.</p>
 
-                <pre><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/FinishGoodScanController.php</span>
+                <pre style="text-align: justify;"><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/FinishGoodScanController.php</span>
 <span class="token keyword">public function</span> <span class="token function">processScan</span><span class="token punctuation">(</span><span class="token class-name">Request</span> <span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token class-name">DB</span><span class="token operator">::</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">use</span> <span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment">// 1. Lock Row SPK (Surat Perintah Kerja) untuk mencegah race condition</span>
@@ -328,7 +328,7 @@
                         lokal (on-premise) yang memadai untuk penanganan skalabilitas mandiri, serta tingkat pemahaman
                         digitalisasi dan kesadaran implementasi sistem yang masih bertahap di lapangan.</li>
                 </ul>
-                <p>
+                <p style="text-align: justify;">
                     <strong>Mengapa Menggunakan Shared Hosting cPanel?</strong><br>
                     Mengingat kendala-kendala di atas, keputusan untuk men-deploy aplikasi ERP produksi utama pada
                     <strong>shared hosting cPanel</strong> merupakan keputusan rekayasa pragmatis. Deployment di cPanel
@@ -352,7 +352,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Hasil Akhir yang Terukur</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Implementasi ERP S2SMFG berhasil mengubah total operasi lantai pabrik. Data transaksi terkonsolidasi
                     secara waktu nyata. Laju beban kerja operasional yang berhasil ditangani sistem dapat dimodelkan
                     secara matematis untuk membuktikan kapasitas beban kerjanya:

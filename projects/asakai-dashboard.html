@@ -40,7 +40,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Setiap pagi jajaran manajemen mengadakan rapat koordinasi cepat (Morning Briefing / Asakai) untuk
                     mengevaluasi parameter operasional dari hari sebelumnya. Sebelum dashboard Asakai dideploy:
                 </p>
@@ -61,7 +61,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Pendekatan Arsitektur Teknologi yang Dipilih</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Asakai Dashboard dirancang sebagai <i>single source of truth</i> yang menyatukan data operasional
                     dari 7 departemen berbeda. Sistem ini diletakkan pada TV besar di dinding pabrik dan ruang
                     manajemen, teroptimasi untuk konsumsi visual kepadatan data tinggi (High Data Density).
@@ -91,7 +91,7 @@
                     </div>
                 </div>
 
-                <p>
+                <p style="text-align: justify;">
                     Sistem ini mengandalkan integrasi Tailwind CSS, Alpine.js, Laravel, dan Livewire untuk memberikan
                     pembaruan antarmuka secara instan dari server tanpa perlu menulis file JavaScript SPA yang berat dan
                     berlebihan.
@@ -103,7 +103,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Tantangan Teknis & Rekayasa Performa Database</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Tantangan rekayasa perangkat lunak terbesar dalam merancang dashboard telemetri real-time ini adalah
                     keterbatasan performa database. Melakukan operasi agregasi (seperti <code>SUM</code>,
                     <code>COUNT</code>, dan <code>AVERAGE</code>) secara real-time pada 7 tabel departemen yang memiliki
@@ -123,12 +123,12 @@
                         dan menyimpannya di tabel agregasi, sehingga query dashboard hanya memproses data hari berjalan
                         saja.</li>
                 </ul>
-                <p>
+                <p style="text-align: justify;">
                     Berikut adalah cuplikan kode implementasi caching agregasi data di stasiun TV Asakai untuk
                     meminimalkan beban query database:
                 </p>
 
-                <pre><code class="language-php"><span class="token comment">// App/Http/Controllers/DashboardController.php</span>
+                <pre style="text-align: justify;"><code class="language-php"><span class="token comment">// App/Http/Controllers/DashboardController.php</span>
 <span class="token keyword">namespace</span> <span class="token class-name">App\Http\Controllers</span><span class="token punctuation">;</span>
 
 <span class="token keyword">use</span> <span class="token class-name">Illuminate\Support\Facades\Cache</span><span class="token punctuation">;</span>

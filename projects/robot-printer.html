@@ -36,7 +36,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Saat dokumen Surat Perintah Kerja (SPK) dirilis dari sistem ERP pusat (di-host di cloud), dokumen tersebut harus segera dicetak secara fisik di printer lantai produksi masing-masing departemen. Sebelum adanya otomatisasi ini:
                 </p>
                 <ul>
@@ -51,7 +51,7 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Pendekatan Arsitektur Teknologi yang Dipilih</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Solusi yang dirancang adalah agen PowerShell lokal yang berjalan sebagai <i>background service</i> pada server lokal pabrik yang terhubung ke printer fisik. Agen ini melakukan komunikasi dua arah dengan RESTful API server ERP.
                 </p>
                 
@@ -79,7 +79,7 @@
                     </div>
                 </div>
 
-                <p>
+                <p style="text-align: justify;">
                     Karena SumatraPDF dijalankan secara silent via CLI, operator tidak terganggu oleh kemunculan GUI Reader. Dokumen langsung keluar dari printer pabrik secara instan.
                 </p>
             </div>
@@ -89,25 +89,25 @@
         <section class="case-study-section">
             <h2 class="case-study-section-title">Tantangan Teknis & Rekayasa OS</h2>
             <div class="case-study-content">
-                <p>
+                <p style="text-align: justify;">
                     Di balik kesederhanaan alur di atas, integrasi otomatisasi cetak berbasis web pada lingkungan server Windows sering kali menghadapi kendala teknis yang rumit. 
                 </p>
-                <p>
+                <p style="text-align: justify;">
                     <strong>1. Kendala Windows Session 0 Isolation (Headless Context):</strong><br>
                     Aplikasi pembaca PDF standar seperti Acrobat Reader atau SumatraPDF pada dasarnya tidak dirancang untuk berjalan dalam skenario tanpa kepala (headless). Ketika script PowerShell dipicu secara otomatis oleh sistem Windows Task Scheduler atau Windows Service, script tersebut berjalan pada <strong>Session 0</strong>. Windows secara ketat memblokir akses dari Session 0 ke subsistem Graphical Device Interface (GDI) atau spooler printer fisik. Hal ini mengakibatkan print job menggantung (freeze) tanpa pesan error.
                 </p>
-                <p>
+                <p style="text-align: justify;">
                     <strong>Solusi Session 0 Isolation:</strong> Konfigurasi parameter interaksi layanan disesuaikan dengan mendaftarkan script melalui utilitas pembungkus service yang secara eksplisit mengaktifkan interaksi desktop (*Allow service to interact with desktop*) atau dialihkan melalui sesi desktop terotentikasi yang berjalan di latar belakang menggunakan Windows Auto-Logon terenkripsi.
                 </p>
-                <p>
+                <p style="text-align: justify;">
                     <strong>2. Kendala Otentikasi Lapis Kedua (Double-Hop / Second-Hop Problem):</strong><br>
                     Ketika script PowerShell dipicu melalui koneksi jarak jauh (seperti OpenSSH / WinRM), kredensial user tidak dapat didelegasikan di luar hop pertama. Akibatnya, script kehilangan kredensial untuk mengakses printer jaringan (*Network Shared Printer*) dan menghasilkan error <i>"Access Denied"</i>.
                 </p>
-                <p>
+                <p style="text-align: justify;">
                     <strong>Solusi Second-Hop:</strong> Masalah delegasi kredensial diselesaikan dengan memodifikasi autentikasi CredSSP (Credential Security Support Provider) pada host lokal dan server target, atau menyusun objek kredensial aman <code>PSCredential</code> secara langsung dalam script untuk memaksa otentikasi spooler printer secara eksplisit:
                 </p>
 
-<pre><code class="language-powershell"><span class="token comment"># Mengatasi Double-Hop: Deklarasi kredensial lokal eksplisit untuk Windows Spooler</span>
+<pre style="text-align: justify;"><code class="language-powershell"><span class="token comment"># Mengatasi Double-Hop: Deklarasi kredensial lokal eksplisit untuk Windows Spooler</span>
 <span class="token variable">$PasswordSec</span> <span class="token operator">=</span> <span class="token function">ConvertTo-SecureString</span> <span class="token string">"P@sswordPabrik123"</span> <span class="token operator">-</span>AsPlainText <span class="token operator">-</span>Force
 <span class="token variable">$Creds</span> <span class="token operator">=</span> <span class="token function">New-Object</span> System<span class="token punctuation">.</span>Management<span class="token punctuation">.</span>Automation<span class="token punctuation">.</span>PSCredential<span class="token punctuation">(</span><span class="token string">"Administrator"</span><span class="token punctuation">,</span> <span class="token variable">$PasswordSec</span><span class="token punctuation">)</span>
 
