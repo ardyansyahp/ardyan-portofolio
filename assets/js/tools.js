@@ -214,7 +214,7 @@ function renderTasks() {
             task.subtasks.forEach((st, index) => {
                 subtasksHTML += `
                     <label class="subtask-item ${st.is_done ? 'done' : ''}">
-                        <input type="checkbox" disabled ${st.is_done ? 'checked' : ''}>
+                        <input type="checkbox" onchange="toggleSubtaskInline('${task.id}', ${index}, this.checked)" ${st.is_done ? 'checked' : ''}>
                         <span>${st.text}</span>
                     </label>
                 `;
@@ -615,3 +615,35 @@ if (btnExit) {
         window.location.href = '/';
     });
 }
+
+// Fitur untuk centang subtask langsung dari dashboard (tanpa modal edit)
+window.toggleSubtaskInline = async function(taskId, subtaskIndex, isChecked) {
+    const task = tasks.find(t => t.id == taskId);
+    if (!task) return;
+    
+    const oldStatus = task.subtasks[subtaskIndex].is_done;
+    task.subtasks[subtaskIndex].is_done = isChecked;
+    
+    // Segera perbarui tampilan UI agar terasa instan
+    renderTasks();
+    renderCalendar();
+    
+    try {
+        const response = await fetch(API_URL, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify(task)
+        });
+        
+        if (!response.ok) {
+            throw new Error('Gagal update ke server');
+        }
+    } catch (error) {
+        console.error('Error updating subtask inline:', error);
+        // Batalkan perubahan (rollback) jika gagal simpan ke server
+        task.subtasks[subtaskIndex].is_done = oldStatus;
+        renderTasks();
+        renderCalendar();
+        alert('Gagal menyimpan perubahan subtask ke server.');
+    }
+};
