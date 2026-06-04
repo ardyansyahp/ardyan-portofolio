@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ardyan Tools - Secured Access</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Lockscreen Styles */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden; /* Prevent scroll on lockscreen */
+        }
+        
+        #lockscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #070709, #13131a);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .lock-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .lock-icon {
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .pin-display {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            height: 20px;
+        }
+
+        .pin-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .pin-dot.filled {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .pin-dot.error {
+            background-color: #ef4444;
+            border-color: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 300px;
+        }
+
+        .key-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-size: 24px;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .key-btn:active, .key-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(0.95);
+        }
+
+        .key-btn.action-btn {
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Styles (Hidden initially) */
+        #dashboard {
+            display: none;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .task-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: var(--font-mono);
+            margin-bottom: 12px;
+        }
+        
+        .badge.high { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .badge.med { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+        .badge.low { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+
+        .task-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .task-date {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .task-summary {
+            font-size: 14px;
+            color: #d1d5db;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 2px solid var(--accent);
+            margin-top: 15px;
+        }
+
+        .fab-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            border: none;
+            transition: transform 0.2s ease;
+        }
+        .fab-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-family: var(--font-sans);
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            border-left-color: var(--accent);
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 20px auto;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <!-- Lockscreen UI -->
+    <div id="lockscreen">
+        <div class="lock-header">
+            <svg class="lock-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <h3 style="font-weight: 500; letter-spacing: 1px;">Masukkan PIN</h3>
+            <p id="lock-msg" style="color: var(--text-muted); font-size: 14px; margin-top: 5px;">Akses Terbatas</p>
+        </div>
+
+        <div class="pin-display" id="pin-display">
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+        </div>
+
+        <div class="keypad">
+            <div class="key-btn" data-key="1">1</div>
+            <div class="key-btn" data-key="2">2</div>
+            <div class="key-btn" data-key="3">3</div>
+            <div class="key-btn" data-key="4">4</div>
+            <div class="key-btn" data-key="5">5</div>
+            <div class="key-btn" data-key="6">6</div>
+            <div class="key-btn" data-key="7">7</div>
+            <div class="key-btn" data-key="8">8</div>
+            <div class="key-btn" data-key="9">9</div>
+            <div class="key-btn action-btn" id="btn-cancel">Cancel</div>
+            <div class="key-btn" data-key="0">0</div>
+            <div class="key-btn action-btn" id="btn-delete">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                    <line x1="18" y1="9" x2="12" y2="15"></line>
+                    <line x1="12" y1="9" x2="18" y2="15"></line>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard UI -->
+    <div id="dashboard">
+        <div class="dash-header">
+            <div>
+                <h1 style="font-size: 28px; margin-bottom: 5px;">Ardyan Tools</h1>
+                <p class="mono-subtitle">Personal Productivity & Scheduler</p>
+            </div>
+            <a href="/" class="btn btn-outline" style="border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; text-decoration: none; color: var(--text-main);">
+                Exit
+            </a>
+        </div>
+
+        <div class="spinner" id="loading-spinner"></div>
+        
+        <div class="task-grid" id="task-list">
+            <!-- Tasks will be injected here by JS -->
+        </div>
+
+        <button class="fab-btn" id="add-task-btn">+</button>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal-overlay" id="task-modal">
+        <div class="modal-content">
+            <h3 id="modal-title" style="margin-bottom: 20px;">Tambah Jadwal / Tugas</h3>
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+                
+                <div class="form-group">
+                    <label>Judul</label>
+                    <input type="text" id="task-title" required placeholder="Contoh: Belajar Vue.js">
+                </div>
+                
+                <div class="form-group">
+                    <label>Tanggal / Deadline</label>
+                    <input type="date" id="task-date" required>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Prioritas</label>
+                        <select id="task-priority">
+                            <option value="High">Tinggi (High)</option>
+                            <option value="Med">Sedang (Medium)</option>
+                            <option value="Low">Rendah (Low)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="task-status">
+                            <option value="Planned">Direncanakan</option>
+                            <option value="In Progress">Sedang Berjalan</option>
+                            <option value="Completed">Selesai</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Catatan / Ringkasan Aktual</label>
+                    <textarea id="task-summary" rows="3" placeholder="Tulis ringkasan jika sudah selesai..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="close-modal-btn" style="border: 1px solid var(--border-color); background: transparent; color: var(--text-main);">Batal</button>
+                    <button type="submit" class="btn btn-primary" style="background: var(--accent); border: none; color: white;">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/tools.js"></script>
+</body>
+</html>
