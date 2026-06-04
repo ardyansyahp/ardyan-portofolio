@@ -166,6 +166,7 @@ async function loadTasks() {
         tasks = await res.json();
         renderTasks();
         renderCalendar();
+        renderAiBrief();
     } catch (error) {
         console.error(error);
         taskList.innerHTML = `<p style="color: #ef4444; grid-column: 1/-1; text-align: center;">Error: ${error.message}</p>`;
@@ -477,21 +478,70 @@ async function deleteTask(id) {
 // ==========================================
 // AI INSIGHT LOGIC
 // ==========================================
+// ==========================================
+// AI INSIGHT LOGIC (CACHED & WIDGET SUPPORT)
+// ==========================================
 const btnAiInsight = document.getElementById('btn-ai-insight');
 const aiModal = document.getElementById('ai-modal');
 const closeAiBtn = document.getElementById('close-ai-btn');
 const aiLoading = document.getElementById('ai-loading');
 const aiResult = document.getElementById('ai-result');
+const btnRefreshAi = document.getElementById('btn-refresh-ai');
+const aiTimestamp = document.getElementById('ai-timestamp');
 
-btnAiInsight.addEventListener('click', async () => {
+// Sidebar Widget Elements
+const aiBriefCard = document.getElementById('ai-brief-card');
+const aiBriefTime = document.getElementById('ai-brief-time');
+const aiBriefContent = document.getElementById('ai-brief-content');
+const btnViewFullAi = document.getElementById('btn-view-full-ai');
+
+// Function to render AI Action Plan brief on the dashboard
+function renderAiBrief() {
+    const cachedHtml = localStorage.getItem('lastAiInsight');
+    const cachedTime = localStorage.getItem('lastAiInsightTime');
+
+    if (cachedHtml && cachedTime) {
+        aiBriefTime.textContent = cachedTime;
+        
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(cachedHtml, 'text/html');
+            const actionPlan = doc.querySelector('.ai-action-plan');
+            
+            if (actionPlan) {
+                const clonedPlan = actionPlan.cloneNode(true);
+                // Remove header and intro text from brief card to keep it clean
+                const h3 = clonedPlan.querySelector('h3');
+                if (h3) h3.remove();
+                const intro = clonedPlan.querySelector('p');
+                if (intro) intro.remove();
+                
+                aiBriefContent.innerHTML = clonedPlan.innerHTML;
+            } else {
+                // Fallback: display the first 250 characters if structure doesn't match
+                aiBriefContent.innerHTML = cachedHtml;
+            }
+            aiBriefCard.style.display = 'block';
+        } catch (e) {
+            console.error("Error parsing cached AI data: ", e);
+            aiBriefCard.style.display = 'none';
+        }
+    } else {
+        aiBriefCard.style.display = 'none';
+    }
+}
+
+// Function to trigger live Gemini API analysis
+async function fetchAiSummary() {
     if (tasks.length === 0) {
         alert('Belum ada tugas untuk dianalisis oleh AI.');
+        aiModal.style.display = 'none';
         return;
     }
 
-    aiModal.style.display = 'flex';
     aiLoading.style.display = 'block';
     aiResult.innerHTML = '';
+    aiTimestamp.textContent = 'Menganalisis...';
 
     try {
         const res = await fetch('/api/ai-summary', {
@@ -506,13 +556,51 @@ btnAiInsight.addEventListener('click', async () => {
             throw new Error(data.error || 'Gagal menghubungi AI');
         }
 
+        const now = new Date();
+        const formattedTime = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ' ' + 
+                            now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+        // Save to cache
+        localStorage.setItem('lastAiInsight', data.html);
+        localStorage.setItem('lastAiInsightTime', formattedTime);
+
+        // Display results
         aiLoading.style.display = 'none';
         aiResult.innerHTML = data.html;
+        aiTimestamp.textContent = formattedTime;
+
+        // Refresh main page sidebar brief widget
+        renderAiBrief();
     } catch (error) {
         aiLoading.style.display = 'none';
-        aiResult.innerHTML = `<p style="color: #ef4444;">Error: ${error.message}</p>`;
+        aiResult.innerHTML = `<p style="color: #ef4444; padding: 20px 0;">Error: ${error.message}</p>`;
+        aiTimestamp.textContent = 'Gagal';
     }
-});
+}
+
+// Function to open AI Modal and load cached data if present
+function openAiModal() {
+    aiModal.style.display = 'flex';
+    
+    const cachedHtml = localStorage.getItem('lastAiInsight');
+    const cachedTime = localStorage.getItem('lastAiInsightTime');
+
+    if (cachedHtml && cachedTime) {
+        aiLoading.style.display = 'none';
+        aiResult.innerHTML = cachedHtml;
+        aiTimestamp.textContent = cachedTime;
+    } else {
+        // If no cache, automatically fetch from Gemini
+        fetchAiSummary();
+    }
+}
+
+// Event Listeners
+btnAiInsight.addEventListener('click', openAiModal);
+if (btnViewFullAi) {
+    btnViewFullAi.addEventListener('click', openAiModal);
+}
+btnRefreshAi.addEventListener('click', fetchAiSummary);
 
 closeAiBtn.addEventListener('click', () => {
     aiModal.style.display = 'none';

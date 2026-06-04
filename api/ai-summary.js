@@ -45,17 +45,29 @@ Anda adalah AI Project Manager. Berikut adalah daftar tugas yang sedang saya ker
 ${tasksDataString}
 
 Tugas Anda:
-Buatkan sebuah tabel HTML murni yang merangkum semua tugas ini. 
-Tabel harus memiliki header (th) dan isi (td) dengan kolom berikut:
-1. Nama Tugas
-2. Resume / Analisis (Beri ringkasan pekerjaan berdasarkan catatan & subtasks)
-3. Skala Prioritas AI (Beri label warna menggunakan span: <span style="color:red">High</span>, <span style="color:orange">Med</span>, atau <span style="color:green">Low</span>)
-4. Alasan Prioritas (Jelaskan secara logis kenapa Anda memberi prioritas tersebut)
+Analisis seluruh tugas saya tersebut dan berikan tanggapan terstruktur dalam format HTML murni. Tanggapan Anda HARUS terdiri dari dua bagian utama:
+
+1. Rencana Eksekusi Prioritas (Action Plan) dibungkus dalam div dengan class "ai-action-plan". 
+Di dalamnya harus ada:
+   - Judul: "<h3>📋 Rencana Eksekusi Prioritas</h3>"
+   - Penjelasan singkat pembuka.
+   - Daftar langkah kerja menggunakan container dengan class "ai-steps". Setiap langkah diwakili oleh div dengan class "ai-step-card". Di dalam "ai-step-card", buat:
+     - Nomor langkah: <div class="step-num">Langkah X</div> (X adalah angka urut 1, 2, dst)
+     - Isi langkah: <div class="step-content"><strong>[Nama Tugas]</strong> (Deadline: [Tanggal])<span>[Penjelasan singkat alasan kenapa harus dikerjakan dalam urutan ini dan apa yang perlu dilakukan pertama kali]</span></div>
+Urutkan langkah berdasarkan kepentingan: prioritaskan tugas dengan Skala Prioritas Tinggi (High) yang memiliki deadline terdekat, atau tugas yang menjadi prasyarat/kritis untuk operasional.
+
+2. Detail Analisis Tugas dibungkus dalam div dengan class "ai-table-container".
+Di dalamnya harus ada:
+   - Judul: "<h3>📊 Detail Analisis Tugas</h3>"
+   - Sebuah tabel HTML murni (<table>...</table>) yang merangkum semua tugas. Tabel harus memiliki th dan td dengan kolom berikut:
+     - Nama Tugas
+     - Resume / Analisis (Beri ringkasan pekerjaan berdasarkan catatan & subtasks)
+     - Skala Prioritas AI (Beri label warna menggunakan span: <span style="color:#ef4444; font-weight:600;">High</span>, <span style="color:#eab308; font-weight:600;">Med</span>, atau <span style="color:#3b82f6; font-weight:600;">Low</span>)
+     - Alasan Prioritas (Jelaskan secara logis kenapa Anda memberi prioritas tersebut)
 
 Aturan ketat:
-- Hasil HARUS murni HTML <table>...</table>.
-- JANGAN sertakan markdown backticks (\`\`\`html) atau teks tambahan apa pun selain tag HTML.
-- Gunakan style CSS inline sederhana pada table jika perlu (seperti border-collapse: collapse; width: 100%; color: white; text-align: left;), dan tambahkan border 1px solid #333 pada th dan td beserta padding 8px.
+- Hasil HARUS murni HTML. JANGAN sertakan markdown backticks (\`\`\`html) atau teks tambahan apa pun di luar tag HTML pembungkus utama.
+- JANGAN sertakan inline style CSS untuk background putih atau teks hitam pada table, tr, th, dan td agar tabel otomatis menyatu dengan dark mode halaman kami.
 `;
 
     try {
