@@ -29,7 +29,6 @@ export default async function handler(req, res) {
     if (!API_KEY) {
         return res.status(500).json({ error: 'GEMINI_API_KEY tidak ditemukan di environment variables.' });
     }
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
     // Buat rangkuman string dari tasks untuk dikirim ke AI
     const tasksDataString = tasks.map(t => {
@@ -60,6 +59,31 @@ Aturan ketat:
 `;
 
     try {
+        // Auto-discover models
+        const modelsRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${API_KEY}`);
+        const modelsData = await modelsRes.json();
+        
+        if (!modelsRes.ok) {
+            throw new Error('Gagal meload daftar model AI: ' + (modelsData.error?.message || 'Unknown error'));
+        }
+
+        // Find a model that supports generateContent (prefer gemini-1.5-flash or gemini-1.0-pro)
+        const availableModels = modelsData.models || [];
+        let selectedModel = availableModels.find(m => m.name.includes('gemini-1.5-flash') && m.supportedGenerationMethods.includes('generateContent'));
+        
+        if (!selectedModel) {
+            selectedModel = availableModels.find(m => m.name.includes('gemini-1.0-pro') && m.supportedGenerationMethods.includes('generateContent'));
+        }
+        if (!selectedModel) {
+            selectedModel = availableModels.find(m => m.name.includes('gemini') && m.supportedGenerationMethods.includes('generateContent'));
+        }
+
+        if (!selectedModel) {
+            throw new Error('Tidak ada model Gemini yang mendukung generateContent untuk API Key ini.');
+        }
+
+        const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/${selectedModel.name}:generateContent?key=${API_KEY}`;
+
         const aiResponse = await fetch(GEMINI_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
