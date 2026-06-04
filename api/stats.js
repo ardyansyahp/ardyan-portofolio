@@ -30,45 +30,83 @@ export default async function handler(req, res) {
         const { action } = req.query; // Menangkap query parameter '?action='
 
         if (req.method === 'POST') {
-            // Kita fetch dulu nilai saat ini
+            // Kita fetch dulu nilai saat ini (atau gunakan null jika data kosong)
             const { data: current, error: fetchErr } = await supabase
                 .from('site_stats')
                 .select('views, likes')
                 .eq('id', 1)
-                .single();
+                .maybeSingle();
 
             if (fetchErr) throw fetchErr;
 
-            let updatePayload = {};
+            let views = 0;
+            let likes = 0;
+            let exists = false;
+
+            if (current) {
+                views = current.views;
+                likes = current.likes;
+                exists = true;
+            }
 
             if (action === 'view') {
-                updatePayload = { views: current.views + 1 };
+                views += 1;
             } else if (action === 'like') {
-                updatePayload = { likes: current.likes + 1 };
+                likes += 1;
             } else {
                 return res.status(400).json({ error: 'Invalid action' });
             }
 
-            // Update ke database
-            const { data: updated, error: updateErr } = await supabase
-                .from('site_stats')
-                .update(updatePayload)
-                .eq('id', 1)
-                .select()
-                .single();
+            let result;
+            if (!exists) {
+                // Inisialisasi row pertama kali
+                const { data: inserted, error: insertErr } = await supabase
+                    .from('site_stats')
+                    .insert({ id: 1, views, likes })
+                    .select('views, likes')
+                    .single();
+                if (insertErr) throw insertErr;
+                result = inserted;
+            } else {
+                // Update row yang sudah ada
+                const { data: updated, error: updateErr } = await supabase
+                    .from('site_stats')
+                    .update({ views, likes })
+                    .eq('id', 1)
+                    .select('views, likes')
+                    .single();
+                if (updateErr) throw updateErr;
+                result = updated;
+            }
 
-            if (updateErr) throw updateErr;
-            return res.status(200).json(updated);
+            return res.status(200).json(result);
         }
 
         // Kalau request GET biasa (hanya mengambil data)
-        const { data, error } = await supabase
+        let { data, error } = await supabase
             .from('site_stats')
             .select('views, likes')
             .eq('id', 1)
-            .single();
+            .maybeSingle();
 
         if (error) throw error;
+
+        if (!data) {
+            // Jika row belum ada, kita inisialisasi dengan 0 views dan 0 likes
+            const { data: inserted, error: insertErr } = await supabase
+                .from('site_stats')
+                .insert({ id: 1, views: 0, likes: 0 })
+                .select('views, likes')
+                .single();
+            
+            // Jika terjadi error (misalnya terhambat RLS), return data default virtual
+            if (insertErr) {
+                console.warn('Gagal insert default row (mungkin RLS aktif):', insertErr.message);
+                return res.status(200).json({ views: 0, likes: 0 });
+            }
+            data = inserted;
+        }
+
         return res.status(200).json(data);
 
     } catch (error) {
