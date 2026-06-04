@@ -439,6 +439,37 @@
             height: 6px;
             border-radius: 50%;
         }
+        /* AI Modal specific */
+        #ai-modal .modal-content {
+            max-width: 900px;
+        }
+        .ai-table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        .ai-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .ai-table-container th, .ai-table-container td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        .ai-table-container th {
+            background: rgba(255,255,255,0.05);
+            font-weight: 600;
+        }
+        .ai-loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        .ai-loading .spinner {
+            display: block;
+            margin: 0 auto 15px auto;
+        }
     </style>
 </head>
 <body>
@@ -490,9 +521,15 @@
                 <h1 style="font-size: 28px; margin-bottom: 5px;">Ardyan Tools</h1>
                 <p class="mono-subtitle">Personal Productivity & Scheduler</p>
             </div>
-            <a href="/" class="btn btn-outline" style="border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; text-decoration: none; color: var(--text-main);">
-                Exit
-            </a>
+            <div style="display: flex; gap: 10px;">
+                <button id="btn-ai-insight" class="btn" style="background: linear-gradient(45deg, #8b5cf6, #3b82f6); border: none; padding: 8px 16px; border-radius: 6px; color: white; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+                    Analisis AI
+                </button>
+                <a href="/" class="btn btn-outline" style="border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; text-decoration: none; color: var(--text-main); display: flex; align-items: center;">
+                    Exit
+                </a>
+            </div>
         </div>
 
         <div class="spinner" id="loading-spinner"></div>
@@ -576,6 +613,27 @@
                     <button type="submit" class="btn btn-primary" style="background: var(--accent); border: none; color: white;">Simpan</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- AI Insight Modal -->
+    <div class="modal-overlay" id="ai-modal">
+        <div class="modal-content">
+            <h2 id="ai-modal-title" style="margin-bottom: 5px; font-size: 22px;">✨ AI Project Insight</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">AI sedang mereview seluruh beban kerja Anda...</p>
+
+            <div class="ai-loading" id="ai-loading">
+                <div class="spinner"></div>
+                <p>Menganalisis tugas & prioritas...</p>
+            </div>
+
+            <div class="ai-table-container" id="ai-result">
+                <!-- AI Generated Table goes here -->
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" id="close-ai-btn">Tutup</button>
+            </div>
         </div>
     </div>
 

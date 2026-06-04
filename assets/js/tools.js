@@ -473,3 +473,47 @@ async function deleteTask(id) {
         alert(error.message);
     }
 }
+
+// ==========================================
+// AI INSIGHT LOGIC
+// ==========================================
+const btnAiInsight = document.getElementById('btn-ai-insight');
+const aiModal = document.getElementById('ai-modal');
+const closeAiBtn = document.getElementById('close-ai-btn');
+const aiLoading = document.getElementById('ai-loading');
+const aiResult = document.getElementById('ai-result');
+
+btnAiInsight.addEventListener('click', async () => {
+    if (tasks.length === 0) {
+        alert('Belum ada tugas untuk dianalisis oleh AI.');
+        return;
+    }
+
+    aiModal.style.display = 'flex';
+    aiLoading.style.display = 'block';
+    aiResult.innerHTML = '';
+
+    try {
+        const res = await fetch('/api/ai-summary', {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify({ tasks })
+        });
+
+        const data = await res.json();
+        
+        if (!res.ok) {
+            throw new Error(data.error || 'Gagal menghubungi AI');
+        }
+
+        aiLoading.style.display = 'none';
+        aiResult.innerHTML = data.html;
+    } catch (error) {
+        aiLoading.style.display = 'none';
+        aiResult.innerHTML = `<p style="color: #ef4444;">Error: ${error.message}</p>`;
+    }
+});
+
+closeAiBtn.addEventListener('click', () => {
+    aiModal.style.display = 'none';
+});
