@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     if (!API_KEY) {
         return res.status(500).json({ error: 'GEMINI_API_KEY tidak ditemukan di environment variables.' });
     }
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
     // Buat rangkuman string dari tasks untuk dikirim ke AI
     const tasksDataString = tasks.map(t => {
