@@ -7,6 +7,19 @@ const lockMsg = document.getElementById('lock-msg');
 const lockscreen = document.getElementById('lockscreen');
 const dashboard = document.getElementById('dashboard');
 
+// Session Check
+const savedPin = sessionStorage.getItem('ardyan_tools_pin');
+if (savedPin === CORRECT_PIN) {
+    currentPin = savedPin;
+    lockscreen.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    dashboard.style.display = 'block';
+    dashboard.style.opacity = '1';
+    setTimeout(() => {
+        loadTasks();
+    }, 100);
+}
+
 // Update UI Dots based on PIN length
 function updatePinDots() {
     pinDots.forEach((dot, index) => {
@@ -47,6 +60,8 @@ function showError() {
 function checkPin() {
     if (currentPin === CORRECT_PIN) {
         // Success
+        sessionStorage.setItem('ardyan_tools_pin', currentPin);
+        
         pinDots.forEach(dot => {
             dot.style.backgroundColor = '#22c55e'; // Green
             dot.style.borderColor = '#22c55e';
