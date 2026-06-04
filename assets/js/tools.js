@@ -605,3 +605,13 @@ btnRefreshAi.addEventListener('click', fetchAiSummary);
 closeAiBtn.addEventListener('click', () => {
     aiModal.style.display = 'none';
 });
+
+// Clear session on Exit
+const btnExit = document.getElementById('btn-exit');
+if (btnExit) {
+    btnExit.addEventListener('click', (e) => {
+        e.preventDefault();
+        sessionStorage.removeItem('ardyan_tools_pin');
+        window.location.href = '/';
+    });
+}
