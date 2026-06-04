@@ -353,4 +353,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealElements = document.querySelectorAll('.reveal');
     revealElements.forEach(el => revealObserver.observe(el));
 
+    // 8. SUPABASE STATS (VIEWS & LIKES)
+    const viewsCount = document.getElementById('views-count');
+    const likesCount = document.getElementById('likes-count');
+    const likeBtn = document.getElementById('like-btn');
+    const likeIcon = document.getElementById('like-icon');
+
+    if (viewsCount && likesCount && likeBtn) {
+        // A. Handle Page Views
+        const hasVisited = localStorage.getItem('has_visited');
+        if (!hasVisited) {
+            fetch('/api/stats?action=view', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    if(data && data.views !== undefined) {
+                        viewsCount.textContent = data.views.toLocaleString();
+                        likesCount.textContent = data.likes.toLocaleString();
+                        localStorage.setItem('has_visited', 'true');
+                    }
+                }).catch(e => console.error('Stats Error:', e));
+        } else {
+            fetch('/api/stats')
+                .then(res => res.json())
+                .then(data => {
+                    if(data && data.views !== undefined) {
+                        viewsCount.textContent = data.views.toLocaleString();
+                        likesCount.textContent = data.likes.toLocaleString();
+                    }
+                }).catch(e => console.error('Stats Error:', e));
+        }
+
+        // B. Handle Likes
+        const hasLiked = localStorage.getItem('has_liked');
+        if(hasLiked) {
+            likeIcon.style.fill = 'var(--accent)';
+            likeIcon.style.color = 'var(--accent)';
+        }
+
+        likeBtn.addEventListener('click', () => {
+            if(localStorage.getItem('has_liked')) {
+                alert('Anda sudah menyukai portofolio ini! Terima kasih! 💖');
+                return;
+            }
+
+            // Optimistic UI update
+            likeIcon.style.fill = 'var(--accent)';
+            likeIcon.style.color = 'var(--accent)';
+            likeIcon.style.transform = 'scale(1.2)';
+            setTimeout(() => likeIcon.style.transform = 'scale(1)', 200);
+            likesCount.textContent = (parseInt(likesCount.textContent.replace(/,/g, '')) + 1).toLocaleString();
+
+            fetch('/api/stats?action=like', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    if(data && data.likes !== undefined) {
+                        likesCount.textContent = data.likes.toLocaleString();
+                        localStorage.setItem('has_liked', 'true');
+                    }
+                }).catch(e => console.error('Stats Error:', e));
+        });
+    }
+
 });

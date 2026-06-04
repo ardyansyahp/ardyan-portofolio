@@ -1,0 +1,11 @@
+{
+  "name": "ardyan-portofolio",
+  "version": "1.0.0",
+  "description": "Portofolio with Vercel API and Supabase",
+  "scripts": {
+    "start": "node"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.0"
+  }
+}
