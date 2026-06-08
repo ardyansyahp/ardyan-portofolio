@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ardyan Tools - Secured Access</title>
     <link rel="icon" type="image/x-icon" href="assets/images/star.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         /* Lockscreen Styles */
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            overflow: hidden; /* Prevent scroll on lockscreen */
+            overflow: hidden;
+            /* Prevent scroll on lockscreen */
         }
-        
+
         #lockscreen {
             position: fixed;
             top: 0;
@@ -91,7 +95,8 @@
             backdrop-filter: blur(5px);
         }
 
-        .key-btn:active, .key-btn.active {
+        .key-btn:active,
+        .key-btn.active {
             background: rgba(255, 255, 255, 0.15);
             transform: scale(0.95);
         }
@@ -136,10 +141,10 @@
             position: relative;
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
-        
+
         .task-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(255,255,255,0.2);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         /* Progress Bar */
@@ -151,12 +156,14 @@
             margin: 15px 0 10px 0;
             overflow: hidden;
         }
+
         .progress-bar {
             height: 100%;
             background: var(--accent);
             border-radius: 3px;
             transition: width 0.3s ease, background-color 0.3s ease;
         }
+
         .progress-text {
             font-size: 12px;
             color: var(--text-muted);
@@ -171,6 +178,7 @@
             flex-direction: column;
             gap: 8px;
         }
+
         .subtask-item {
             display: flex;
             align-items: flex-start;
@@ -178,11 +186,13 @@
             font-size: 13px;
             color: var(--text-main);
         }
+
         .subtask-item input[type="checkbox"] {
             margin-top: 2px;
             cursor: pointer;
             accent-color: var(--accent);
         }
+
         .subtask-item.done {
             text-decoration: line-through;
             color: var(--text-muted);
@@ -199,10 +209,21 @@
             font-family: var(--font-mono);
             margin-bottom: 12px;
         }
-        
-        .badge.high { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .badge.med { background: rgba(234, 179, 8, 0.15); color: #eab308; }
-        .badge.low { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+
+        .badge.high {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .badge.med {
+            background: rgba(234, 179, 8, 0.15);
+            color: #eab308;
+        }
+
+        .badge.low {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
 
         .task-title {
             font-size: 18px;
@@ -247,6 +268,7 @@
             border: none;
             transition: transform 0.2s ease;
         }
+
         .fab-btn:hover {
             transform: scale(1.1);
         }
@@ -254,14 +276,18 @@
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(4px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
         }
+
         .modal-content {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -271,43 +297,57 @@
             max-height: 90vh;
             overflow-y: auto;
             padding: 30px;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
+
         .modal-content::-webkit-scrollbar {
-            display: none; /* Chrome, Safari and Opera */
+            display: none;
+            /* Chrome, Safari and Opera */
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 8px;
             color: var(--text-muted);
             font-size: 13px;
         }
-        .form-group input, .form-group select, .form-group textarea {
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 10px 12px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             color: var(--text-main);
             font-family: var(--font-sans);
         }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--accent);
         }
-        
+
         .subtask-input-group {
             display: flex;
             gap: 10px;
             margin-bottom: 8px;
         }
+
         .subtask-input-group input {
             flex: 1;
         }
+
         .btn-remove-subtask {
             background: rgba(239, 68, 68, 0.1);
             color: #ef4444;
@@ -320,6 +360,7 @@
             cursor: pointer;
             font-weight: bold;
         }
+
         .btn-add-subtask {
             background: transparent;
             color: var(--accent);
@@ -341,15 +382,21 @@
 
         /* Loading Spinner */
         .spinner {
-            border: 3px solid rgba(255,255,255,0.1);
-            width: 30px; height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             border-left-color: var(--accent);
             animation: spin 1s linear infinite;
             display: none;
             margin: 20px auto;
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
         /* Dashboard Layout & Calendar */
         .dashboard-layout {
@@ -357,25 +404,28 @@
             grid-template-columns: 1fr;
             gap: 30px;
         }
+
         @media (min-width: 1024px) {
             .dashboard-layout {
                 grid-template-columns: 350px 1fr;
                 align-items: flex-start;
             }
         }
-        
+
         .calendar-wrapper {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
         }
+
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
+
         .calendar-nav-btn {
             background: transparent;
             border: 1px solid var(--border-color);
@@ -388,26 +438,30 @@
             align-items: center;
             justify-content: center;
         }
+
         .calendar-month-year {
             font-size: 15px;
             font-weight: 600;
             font-family: var(--font-mono);
         }
+
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 5px;
             text-align: center;
         }
+
         .calendar-day-header {
             font-size: 11px;
             color: var(--text-muted);
             margin-bottom: 5px;
             font-weight: 600;
         }
+
         .calendar-cell {
             aspect-ratio: 1;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             border: 1px solid transparent;
             border-radius: 6px;
             display: flex;
@@ -417,15 +471,21 @@
             font-size: 13px;
             position: relative;
         }
-        .calendar-cell.empty { background: transparent; }
+
+        .calendar-cell.empty {
+            background: transparent;
+        }
+
         .calendar-cell.today {
             border-color: var(--accent);
             color: var(--accent);
             font-weight: bold;
         }
+
         .calendar-cell.has-task {
             border-bottom: 2px solid var(--accent);
         }
+
         .calendar-dots {
             display: flex;
             gap: 2px;
@@ -434,16 +494,18 @@
             justify-content: center;
             padding: 0 2px;
         }
+
         .cal-dot {
             width: 6px;
             height: 6px;
             border-radius: 50%;
         }
+
         /* AI Modal specific */
         #ai-modal .modal-content {
             max-width: 900px;
         }
-        
+
         /* AI Action Plan Styles */
         .ai-action-plan {
             margin-bottom: 30px;
@@ -452,6 +514,7 @@
             border: 1px solid rgba(139, 92, 246, 0.15);
             border-radius: 8px;
         }
+
         .ai-action-plan h3 {
             font-size: 16px;
             font-weight: 600;
@@ -461,16 +524,19 @@
             align-items: center;
             gap: 8px;
         }
+
         .ai-action-plan p {
             font-size: 13px;
             color: var(--text-muted);
             margin-bottom: 15px;
         }
+
         .ai-steps {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
+
         .ai-step-card {
             display: flex;
             gap: 15px;
@@ -481,11 +547,13 @@
             align-items: center;
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
+
         .ai-step-card:hover {
             transform: translateX(4px);
             border-color: rgba(139, 92, 246, 0.3);
             background: rgba(139, 92, 246, 0.02);
         }
+
         .step-num {
             font-family: var(--font-mono);
             font-size: 11px;
@@ -498,14 +566,17 @@
             letter-spacing: 0.5px;
             white-space: nowrap;
         }
+
         .step-content {
             font-size: 13px;
             line-height: 1.5;
         }
+
         .step-content strong {
             color: var(--text-main);
             font-weight: 600;
         }
+
         .step-content span {
             color: var(--text-muted);
             display: block;
@@ -517,28 +588,33 @@
             margin-top: 20px;
             overflow-x: auto;
         }
+
         .ai-table-container h3 {
             font-size: 16px;
             font-weight: 600;
             color: var(--text-main);
             margin-bottom: 12px;
         }
+
         .ai-table-container table {
             width: 100% !important;
             border-collapse: collapse !important;
             font-size: 13px !important;
             color: var(--text-main) !important;
-            background: rgba(0,0,0,0.1) !important;
+            background: rgba(0, 0, 0, 0.1) !important;
             border-radius: 6px !important;
             overflow: hidden !important;
         }
-        .ai-table-container th, .ai-table-container td {
+
+        .ai-table-container th,
+        .ai-table-container td {
             border: 1px solid var(--border-color) !important;
             padding: 12px 14px !important;
             text-align: left !important;
             vertical-align: top !important;
             background: transparent !important;
         }
+
         .ai-table-container th {
             background: rgba(255, 255, 255, 0.03) !important;
             color: var(--text-main) !important;
@@ -547,34 +623,40 @@
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
         }
+
         .ai-table-container td {
             color: var(--text-muted) !important;
             line-height: 1.5 !important;
         }
+
         .ai-table-container tr:nth-child(even) {
             background: rgba(255, 255, 255, 0.01) !important;
         }
+
         .ai-table-container tr:hover {
             background: rgba(255, 255, 255, 0.02) !important;
         }
-        
+
         .ai-loading {
             text-align: center;
             padding: 40px;
             display: none;
         }
+
         .ai-loading .spinner {
             display: block;
             margin: 0 auto 15px auto;
         }
     </style>
 </head>
+
 <body>
 
     <!-- Lockscreen UI -->
     <div id="lockscreen">
         <div class="lock-header">
-            <svg class="lock-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="lock-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
@@ -619,18 +701,24 @@
                 <p class="mono-subtitle">Personal Productivity & Scheduler</p>
             </div>
             <div style="display: flex; gap: 10px;">
-                <button id="btn-ai-insight" class="btn" style="background: linear-gradient(45deg, #8b5cf6, #3b82f6); border: none; padding: 8px 16px; border-radius: 6px; color: white; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+                <button id="btn-ai-insight" class="btn"
+                    style="background: linear-gradient(45deg, #8b5cf6, #3b82f6); border: none; padding: 8px 16px; border-radius: 6px; color: white; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83">
+                        </path>
+                    </svg>
                     Analisis AI
                 </button>
-                <a href="/" id="btn-exit" class="btn btn-outline" style="border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; text-decoration: none; color: var(--text-main); display: flex; align-items: center;">
+                <a href="/" id="btn-exit" class="btn btn-outline"
+                    style="border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; text-decoration: none; color: var(--text-main); display: flex; align-items: center;">
                     Exit
                 </a>
             </div>
         </div>
 
         <div class="spinner" id="loading-spinner"></div>
-        
+
         <div class="dashboard-layout">
             <!-- Sidebar column (Calendar & AI Work Plan) -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
@@ -647,17 +735,22 @@
                 </div>
 
                 <!-- Last AI Insight Preview Box -->
-                <div id="ai-brief-card" class="calendar-wrapper" style="display: none; background: rgba(139, 92, 246, 0.02); border-color: rgba(139, 92, 246, 0.2);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(139, 92, 246, 0.1);">
-                        <h4 style="font-size: 14px; color: #a78bfa; font-weight: 600; display: flex; align-items: center; gap: 6px; margin: 0;">
+                <div id="ai-brief-card" class="calendar-wrapper"
+                    style="display: none; background: rgba(139, 92, 246, 0.02); border-color: rgba(139, 92, 246, 0.2);">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(139, 92, 246, 0.1);">
+                        <h4
+                            style="font-size: 14px; color: #a78bfa; font-weight: 600; display: flex; align-items: center; gap: 6px; margin: 0;">
                             ✨ Rencana Kerja AI
                         </h4>
-                        <span id="ai-brief-time" style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono);"></span>
+                        <span id="ai-brief-time"
+                            style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono);"></span>
                     </div>
                     <div id="ai-brief-content" style="max-height: 280px; overflow-y: auto; scrollbar-width: none;">
                         <!-- AI steps injected here -->
                     </div>
-                    <button id="btn-view-full-ai" class="btn" style="width: 100%; margin-top: 12px; padding: 8px 12px; font-size: 12px; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.2); color: #c084fc; border-radius: 4px; cursor: pointer; font-weight: 500; display: block; font-family: var(--font-sans);">
+                    <button id="btn-view-full-ai" class="btn"
+                        style="width: 100%; margin-top: 12px; padding: 8px 12px; font-size: 12px; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.2); color: #c084fc; border-radius: 4px; cursor: pointer; font-weight: 500; display: block; font-family: var(--font-sans);">
                         Lihat Detail Analisis
                     </button>
                 </div>
@@ -678,17 +771,17 @@
             <h3 id="modal-title" style="margin-bottom: 20px;">Tambah Jadwal / Tugas</h3>
             <form id="task-form">
                 <input type="hidden" id="task-id">
-                
+
                 <div class="form-group">
                     <label>Judul</label>
                     <input type="text" id="task-title" required placeholder="Contoh: Belajar Vue.js">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Tanggal / Deadline</label>
                     <input type="date" id="task-date" required>
                 </div>
-                
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="form-group">
                         <label>Prioritas</label>
@@ -698,7 +791,7 @@
                             <option value="Low">Rendah (Low)</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Status</label>
                         <select id="task-status">
@@ -725,8 +818,10 @@
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" id="close-modal-btn" style="border: 1px solid var(--border-color); background: transparent; color: var(--text-main);">Batal</button>
-                    <button type="submit" class="btn btn-primary" style="background: var(--accent); border: none; color: white;">Simpan</button>
+                    <button type="button" class="btn btn-outline" id="close-modal-btn"
+                        style="border: 1px solid var(--border-color); background: transparent; color: var(--text-main);">Batal</button>
+                    <button type="submit" class="btn btn-primary"
+                        style="background: var(--accent); border: none; color: white;">Simpan</button>
                 </div>
             </form>
         </div>
@@ -735,12 +830,16 @@
     <!-- AI Insight Modal -->
     <div class="modal-overlay" id="ai-modal">
         <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
                 <div>
-                    <h2 id="ai-modal-title" style="margin-bottom: 5px; font-size: 22px; margin-top: 0;">✨ AI Project Insight</h2>
-                    <p id="ai-modal-subtitle" style="color: var(--text-muted); font-size: 13px; margin: 0;">AI menganalisis seluruh tugas Anda dan menyusun rencana kerja.</p>
+                    <h2 id="ai-modal-title" style="margin-bottom: 5px; font-size: 22px; margin-top: 0;">✨ AI Project
+                        Insight</h2>
+                    <p id="ai-modal-subtitle" style="color: var(--text-muted); font-size: 13px; margin: 0;">AI
+                        menganalisis seluruh tugas Anda dan menyusun rencana kerja.</p>
                 </div>
-                <div id="ai-timestamp" style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); background: rgba(255,255,255,0.03); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                <div id="ai-timestamp"
+                    style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); background: rgba(255,255,255,0.03); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color);">
                     Belum ada data
                 </div>
             </div>
@@ -754,9 +853,13 @@
                 <!-- AI Generated Table goes here -->
             </div>
 
-            <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px;">
-                <button type="button" class="btn btn-outline" id="btn-refresh-ai" style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa; display: flex; align-items: center; gap: 6px; font-family: var(--font-sans);">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <div class="modal-actions"
+                style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 30px;">
+                <button type="button" class="btn btn-outline" id="btn-refresh-ai"
+                    style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa; display: flex; align-items: center; gap: 6px; font-family: var(--font-sans);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                    </svg>
                     Perbarui Analisis
                 </button>
                 <button type="button" class="btn btn-outline" id="close-ai-btn">Tutup</button>
@@ -765,5 +868,11 @@
     </div>
 
     <script src="assets/js/tools.js"></script>
+    <!-- Vercel Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
+
 </html>
