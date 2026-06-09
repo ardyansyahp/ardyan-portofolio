@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -46,12 +46,12 @@
 
     <!-- Custom Favicon -->
     <link rel="icon" type="image/x-icon" href="https://ardyan-syahputra.com/assets/images/star.ico">
-    <link rel="stylesheet" href="assets/css/style.css?v=4">
-    <!-- Google Fonts: Inter for reading, JetBrains Mono for tech accent -->
+    <link rel="stylesheet" href="assets/css/style.css?v=6">
+    <!-- Google Fonts: Plus Jakarta Sans for headings, Inter for body -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
 </head>
 
@@ -61,12 +61,12 @@
 
     <nav class="navbar">
         <div class="container nav-content">
-            <a href="#" class="logo">ARDYAN.</a>
+            <a href="#" class="logo">AS.</a>
             <div class="nav-right" style="display: flex; align-items: center; gap: 24px;">
                 <ul class="nav-links">
                     <li><a href="#about">About</a></li>
                     <li><a href="#experience">Experience</a></li>
-                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#projects">Work</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li>
                         <button id="factory-mode-btn" class="btn-outline"
@@ -84,66 +84,54 @@
     <main>
         <!-- HERO -->
         <section class="hero reveal" id="home">
-            <div class="container hero-grid">
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        Software <br> <span style="color: var(--accent);">Engineer</span>.
-                    </h1>
-                    <p class="hero-desc" style="font-size: 18px; line-height: 1.7; max-width: 600px; text-align: justify;">
-                        Saya membangun website enterprise yang mengotomatisasi logika bisnis. Mengembangkan ekosistem
-                        mini-ERP yang menangani 100+ transaksi harian
-                        dan mengurangi friksi distribusi hingga 90%.
-                    </p>
+            <div class="container">
+                <div class="hero-header">
+                    <div class="availability-badge">
+                        <span class="avail-dot"></span>
+                        <span class="avail-text">Open to work &mdash; Jakarta, Indonesia</span>
+                    </div>
+                    <div class="hero-name-line">
+                        <h1 class="hero-name">Ardyan Syahputra</h1>
+                        <span class="hero-dash">—</span>
+                        <span class="hero-role-inline">Software Engineer</span>
+                    </div>
+                    <div class="hero-divider"></div>
+                </div>
 
-                    <!-- IMPACT METRICS -->
-                    <div class="hero-metrics">
-                        <div class="metric">
-                            <div style="display: flex; align-items: baseline;">
-                                <h3 class="metric-number" data-target="4">0</h3><span class="metric-plus"></span>
-                            </div>
-                            <p class="metric-label">Sistem & Aplikasi</p>
-                        </div>
-                        <div class="metric">
-                            <div style="display: flex; align-items: baseline;">
-                                <h3 class="metric-number" data-target="100">0</h3><span class="metric-plus"
-                                    style="margin-left: 2px;">+</span>
-                            </div>
-                            <p class="metric-label">Transaksi Harian</p>
-                        </div>
-                        <div class="metric">
-                            <div style="display: flex; align-items: baseline;">
-                                <h3 class="metric-number" data-target="90">0</h3><span class="metric-plus"
-                                    style="margin-left: 2px;">%</span>
-                            </div>
-                            <p class="metric-label">Efisiensi Rantai Pasok</p>
+                <div class="hero-body">
+                    <p class="hero-desc">
+                        Saya membangun sistem enterprise yang mengotomatisasi logika bisnis di industri manufaktur —
+                        dari pengadaan material hingga distribusi barang jadi.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn btn-primary">Lihat Proyek</a>
+                        <a href="#contact" class="btn btn-outline">Say Hello</a>
+                        <div class="cv-links">
+                            <a href="CV_Ardyan_Syahputra_Software_Engineer_EN.pdf" download class="cv-link">↓ CV (EN)</a>
+                            <a href="CV_Ardyan_Syahputra_Software_Engineer_ID.pdf" download class="cv-link">↓ CV (ID)</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="hero-visual">
-                    <div class="terminal-window">
-                        <div class="film-grain"></div>
-                        <div class="terminal-header">
-                            <div class="terminal-buttons">
-                                <span class="close"></span>
-                                <span class="minimize"></span>
-                                <span class="maximize"></span>
-                            </div>
-                            <div class="terminal-title">guest@ardyan-sys:~</div>
+                <!-- IMPACT METRICS -->
+                <div class="hero-metrics">
+                    <div class="metric">
+                        <div style="display: flex; align-items: baseline; gap: 2px;">
+                            <h3 class="metric-number" data-target="4">0</h3>
                         </div>
-                        <div class="terminal-body" id="terminal-body">
-                            <div class="terminal-output" id="terminal-output">
-                                <p><span class="prompt">guest@ardyan-sys:~$</span> ./welcome.sh</p>
-                                <p class="sys-msg">Welcome to Ardyan's Interactive Terminal.</p>
-                                <p class="sys-msg">Type <span class="highlight">'help'</span> to see available commands.
-                                </p>
-                            </div>
-                            <div class="terminal-input-line">
-                                <span class="prompt">guest@ardyan-sys:~$</span>
-                                <input type="text" id="terminal-input" autocomplete="off" spellcheck="false"
-                                    placeholder="Ketik perintah di sini...">
-                            </div>
+                        <p class="metric-label">Sistem & Aplikasi</p>
+                    </div>
+                    <div class="metric">
+                        <div style="display: flex; align-items: baseline; gap: 2px;">
+                            <h3 class="metric-number" data-target="100">0</h3><span class="metric-plus">+</span>
                         </div>
+                        <p class="metric-label">Transaksi Harian</p>
+                    </div>
+                    <div class="metric">
+                        <div style="display: flex; align-items: baseline; gap: 2px;">
+                            <h3 class="metric-number" data-target="90">0</h3><span class="metric-plus">%</span>
+                        </div>
+                        <p class="metric-label">Efisiensi Rantai Pasok</p>
                     </div>
                 </div>
             </div>
@@ -153,63 +141,44 @@
         <section class="about section" id="about">
             <div class="container reveal">
                 <div class="section-header">
-                    <h2 class="section-title">01. Tentang Saya</h2>
-                    <div class="line"></div>
+                    <span class="section-label">About</span>
                 </div>
                 <div class="about-grid">
                     <div class="about-text">
-                        <p style="text-align: justify;">Berpengalaman merancang arsitektur ekosistem digital terintegrasi, mulai dari sistem
+                        <p>Berpengalaman merancang arsitektur ekosistem digital terintegrasi, mulai dari sistem
                             pelaporan kualitas, pemantauan operasional real-time, hingga otomasi alur kerja produksi di
                             industri manufaktur.</p>
-                        <p style="text-align: justify;">Saya tidak sekadar menulis kode, tetapi juga menganalisis masalah bisnis dan merancang solusi
+                        <p>Saya tidak sekadar menulis kode, tetapi juga menganalisis masalah bisnis dan merancang solusi
                             teknologi yang berdampak langsung pada efisiensi rantai pasok perusahaan.</p>
 
-                        <h3 class="skill-title" style="margin-top: 48px; font-size: 18px; margin-bottom: 24px;">
-                            Arsitektur & Teknologi:</h3>
-                        <div class="tech-stack-grid">
-                            <div class="tech-category">
-                                <h4 class="tech-cat-title">Languages & Databases</h4>
-                                <div class="tech-tags">
-                                    <span>PHP</span><span>JavaScript</span><span>SQL/MariaDB</span><span>HTML5</span><span>CSS3</span><span>PowerShell</span>
-                                </div>
-                            </div>
-                            <div class="tech-category">
-                                <h4 class="tech-cat-title">Frameworks & Libraries</h4>
-                                <div class="tech-tags">
-                                    <span>Laravel</span><span>Livewire</span><span>Alpine.js</span><span>Tailwind
-                                        CSS</span><span>Flutter</span>
-                                </div>
-                            </div>
-                            <div class="tech-category">
-                                <h4 class="tech-cat-title">Web Services & Integration</h4>
-                                <div class="tech-tags">
-                                    <span>RESTful API</span><span>AJAX/Fetch API</span>
-                                </div>
-                            </div>
-                            <div class="tech-category">
-                                <h4 class="tech-cat-title">Infrastructure & Tools</h4>
-                                <div class="tech-tags">
-                                    <span>Docker</span><span>Git</span><span>cPanel</span><span>Laragon</span><span>VS
-                                        Code</span><span>HeidiSQL</span><span>DBeaver</span><span>Netbeans</span>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- CREDENTIALS -->
-                        <div style="margin-top: 48px; text-align: left;">
-                            <div style="border-top: 1px dashed var(--border-color); padding-top: 32px;">
-                                <h3
-                                    style="font-size: 16px; margin-bottom: 12px; color: var(--text-main); font-family: var(--font-sans); display: flex; align-items: center; gap: 8px;">
-                                    <span style="color: var(--accent); font-family: var(--font-mono);">[ Cert ]</span>
-                                    Sertifikasi Kompetensi Resmi
-                                </h3>
-                                <p style="color: var(--text-muted); font-size: 14px; line-height: 1.7; text-align: justify;">
-                                    Memiliki sertifikasi kompetensi resmi <strong>Database Administrator</strong> dari
-                                    <strong>BNSP (Badan Nasional Sertifikasi Profesi)</strong> yang berlaku hingga
-                                    <strong>Oktober 2028</strong>. Sertifikasi ini menjamin pemahaman standar industri
-                                    dalam merancang skema relasional, optimasi kueri kompleks, serta pencegahan anomali
-                                    data pada sistem transaksi beban tinggi.
-                                </p>
+                        <div class="cert-block">
+                            <span class="cert-tag">[ Cert ]</span>
+                            <p>Memiliki sertifikasi kompetensi resmi <strong>Database Administrator</strong> dari
+                                <strong>BNSP</strong> yang berlaku hingga <strong>Oktober 2028</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="about-stack">
+                        <h3 class="stack-title">Stack</h3>
+                        <div class="stack-list">
+                            <div class="stack-group">
+                                <span class="stack-group-label">Languages</span>
+                                <div class="stack-items">
+                                    <span>PHP</span><span>JavaScript</span><span>SQL</span><span>HTML/CSS</span><span>PowerShell</span>
+                                </div>
+                            </div>
+                            <div class="stack-group">
+                                <span class="stack-group-label">Frameworks</span>
+                                <div class="stack-items">
+                                    <span>Laravel</span><span>Livewire</span><span>Alpine.js</span><span>Flutter</span>
+                                </div>
+                            </div>
+                            <div class="stack-group">
+                                <span class="stack-group-label">Tools</span>
+                                <div class="stack-items">
+                                    <span>Docker</span><span>Git</span><span>RESTful API</span><span>MySQL</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -221,111 +190,76 @@
         <section class="projects section" id="projects">
             <div class="container reveal">
                 <div class="section-header">
-                    <h2 class="section-title">02. Proyek Pilihan</h2>
-                    <div class="line"></div>
+                    <span class="section-label">Work</span>
                 </div>
-                <div class="project-grid">
 
-                    <!-- S2SMFG -->
-                    <article class="project-card reveal">
-                        <div class="project-content">
-                            <p class="mono-subtitle project-overline">Manufacturing ERP</p>
-                            <h3 class="project-title" style="margin-bottom: 8px;">S2SMFG (Procure to Ship)</h3>
-                            <div
-                                style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 16px; font-weight: bold;">
-                                [ 78 Tabel DB | 50+ User Aktif ]
+                <div class="project-list">
+
+                    <article class="project-item reveal">
+                        <div class="project-item-meta">
+                            <span class="project-item-tag">Manufacturing ERP</span>
+                            <span class="project-item-year">2024</span>
+                        </div>
+                        <div class="project-item-body">
+                            <h3 class="project-item-title">S2SMFG (Procure to Ship)</h3>
+                            <p class="project-item-desc">Platform komprehensif yang mendigitalkan seluruh siklus rantai pasok pabrik end-to-end. Mengintegrasikan pengadaan material, tracking barcode produksi, hingga logistik barang jadi.</p>
+                            <div class="project-item-footer">
+                                <div class="project-item-tech">
+                                    <span>Laravel</span><span>MySQL</span><span>Barcode/QR</span>
+                                </div>
+                                <a href="projects/s2smfg" class="project-item-link">Case Study →</a>
                             </div>
-                            <div class="project-desc">
-                                <p style="text-align: justify;">Platform komprehensif yang mendigitalkan seluruh siklus rantai pasok pabrik
-                                    end-to-end. Mengintegrasikan pengadaan material, tracking barcode produksi, hingga
-                                    logistik barang jadi.</p>
-                            </div>
-                            <ul class="project-tech mono-subtitle" style="margin-bottom: 24px;">
-                                <li>Laravel</li>
-                                <li>MySQL</li>
-                                <li>Barcode/QR</li>
-                            </ul>
-                            <a href="projects/s2smfg" class="mono-subtitle"
-                                style="text-decoration: none; font-weight: bold; font-size: 13px; color: var(--accent); transition: color 0.2s;">
-                                [ Baca Case Study &rarr; ]
-                            </a>
                         </div>
                     </article>
 
-                    <!-- PRINTER ROBOT -->
-                    <article class="project-card reveal" style="transition-delay: 0.05s;">
-                        <div class="project-content">
-                            <p class="mono-subtitle project-overline">Hardware Automation</p>
-                            <h3 class="project-title" style="margin-bottom: 8px;">Direct-to-Printer Robot</h3>
-                            <div
-                                style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 16px; font-weight: bold;">
-                                [ 3s Polling | 90% Distribusi Lebih Cepat ]
+                    <article class="project-item reveal">
+                        <div class="project-item-meta">
+                            <span class="project-item-tag">Hardware Automation</span>
+                            <span class="project-item-year">2024</span>
+                        </div>
+                        <div class="project-item-body">
+                            <h3 class="project-item-title">Direct-to-Printer Robot</h3>
+                            <p class="project-item-desc">Sistem background service Windows Script menggunakan PowerShell untuk membaca antrean cetak via REST API dan mengirimkan dokumen SPK ke printer thermal secara silent. 90% lebih cepat dari proses manual.</p>
+                            <div class="project-item-footer">
+                                <div class="project-item-tech">
+                                    <span>PowerShell</span><span>Laravel API</span><span>SumatraPDF</span>
+                                </div>
+                                <a href="projects/robot-printer" class="project-item-link">Case Study →</a>
                             </div>
-                            <div class="project-desc">
-                                <p style="text-align: justify;">Sistem background service Windows Script menggunakan PowerShell untuk membaca antrean
-                                    cetak via REST API dan mengirimkan dokumen SPK ke printer thermal secara silent.</p>
-                            </div>
-                            <ul class="project-tech mono-subtitle" style="margin-bottom: 24px;">
-                                <li>PowerShell</li>
-                                <li>Laravel API</li>
-                                <li>SumatraPDF</li>
-                            </ul>
-                            <a href="projects/robot-printer" class="mono-subtitle"
-                                style="text-decoration: none; font-weight: bold; font-size: 13px; color: var(--accent); transition: color 0.2s;">
-                                [ Baca Case Study &rarr; ]
-                            </a>
                         </div>
                     </article>
 
-                    <!-- ASAKAI & DATA QC -->
-                    <article class="project-card reveal" style="transition-delay: 0.1s;">
-                        <div class="project-content">
-                            <p class="mono-subtitle project-overline">Analytics & Control</p>
-                            <h3 class="project-title" style="margin-bottom: 8px;">Asakai & DataQC</h3>
-                            <div
-                                style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 16px; font-weight: bold;">
-                                [ 7 Departemen | Agregasi Telemetri TV ]
+                    <article class="project-item reveal">
+                        <div class="project-item-meta">
+                            <span class="project-item-tag">Analytics & Control</span>
+                            <span class="project-item-year">2024</span>
+                        </div>
+                        <div class="project-item-body">
+                            <h3 class="project-item-title">Asakai & DataQC</h3>
+                            <p class="project-item-desc">Dashboard telemetri real-time untuk visualisasi KPI operasional harian jajaran manajemen pada rapat pagi (Asakai), serta sistem pelaporan inspeksi kualitas barang dari 7 departemen.</p>
+                            <div class="project-item-footer">
+                                <div class="project-item-tech">
+                                    <span>Laravel</span><span>Livewire</span><span>Alpine.js</span>
+                                </div>
+                                <a href="projects/asakai-dashboard" class="project-item-link">Case Study →</a>
                             </div>
-                            <div class="project-desc">
-                                <p style="text-align: justify;">Dashboard telemetri real-time untuk visualisasi KPI operasional harian jajaran
-                                    manajemen pada rapat pagi (Asakai), serta sistem pelaporan inspeksi kualitas barang.
-                                </p>
-                            </div>
-                            <ul class="project-tech mono-subtitle" style="margin-bottom: 24px;">
-                                <li>Laravel</li>
-                                <li>Livewire</li>
-                                <li>Alpine.js</li>
-                            </ul>
-                            <a href="projects/asakai-dashboard" class="mono-subtitle"
-                                style="text-decoration: none; font-weight: bold; font-size: 13px; color: var(--accent); transition: color 0.2s;">
-                                [ Baca Case Study &rarr; ]
-                            </a>
                         </div>
                     </article>
 
-                    <!-- LOGISTICS APP -->
-                    <article class="project-card reveal" style="transition-delay: 0.15s;">
-                        <div class="project-content">
-                            <p class="mono-subtitle project-overline">Mobile Logistics</p>
-                            <h3 class="project-title" style="margin-bottom: 8px;">Logistics Driver App</h3>
-                            <div
-                                style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 16px; font-weight: bold;">
-                                [ 20 Driver | 95% Konfirmasi Lebih Cepat ]
+                    <article class="project-item reveal">
+                        <div class="project-item-meta">
+                            <span class="project-item-tag">Mobile Logistics</span>
+                            <span class="project-item-year">2024</span>
+                        </div>
+                        <div class="project-item-body">
+                            <h3 class="project-item-title">Logistics Driver App</h3>
+                            <p class="project-item-desc">Aplikasi mobile Android untuk pengemudi logistik guna memantau surat jalan, melacak GPS real-time armada pengiriman barang, dan mengonfirmasi kedatangan via QR Scan. Digunakan 20 driver aktif.</p>
+                            <div class="project-item-footer">
+                                <div class="project-item-tech">
+                                    <span>Flutter</span><span>GetX</span><span>GPS Tracking</span>
+                                </div>
+                                <a href="projects/logistics-app" class="project-item-link">Case Study →</a>
                             </div>
-                            <div class="project-desc">
-                                <p style="text-align: justify;">Aplikasi mobile Android untuk pengemudi logistik guna memantau surat jalan, melacak
-                                    GPS real-time armada pengiriman barang, dan mengonfirmasi kedatangan via QR Scan.
-                                </p>
-                            </div>
-                            <ul class="project-tech mono-subtitle" style="margin-bottom: 24px;">
-                                <li>Flutter</li>
-                                <li>GetX</li>
-                                <li>GPS Tracking</li>
-                            </ul>
-                            <a href="projects/logistics-app" class="mono-subtitle"
-                                style="text-decoration: none; font-weight: bold; font-size: 13px; color: var(--accent); transition: color 0.2s;">
-                                [ Baca Case Study &rarr; ]
-                            </a>
                         </div>
                     </article>
 
@@ -337,8 +271,7 @@
         <section class="experience section" id="experience">
             <div class="container reveal">
                 <div class="section-header">
-                    <h2 class="section-title">03. Pengalaman Kerja</h2>
-                    <div class="line"></div>
+                    <span class="section-label">Experience</span>
                 </div>
                 <div class="timeline">
                     <div class="timeline-item">
@@ -347,33 +280,15 @@
                             <h3 class="timeline-role">Web Developer</h3>
                             <h4 class="timeline-company">PT. Mada Wikri Tunggal</h4>
                             <ul
-                                style="list-style-type: disc; margin-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 14px; line-height: 1.6; text-align: justify;">
+                                style="list-style-type: disc; margin-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 14px; line-height: 1.6;">
                                 <li>Merancang website Procure to Ship terintegrasi 78 database tables yang digunakan
-                                    oleh 50+ user aktif harian di area produksi, gudang, dan QC. Sistem ini memproses
-                                    rata-rata 100+ SPK (Surat Perintah Kerja) dan 100+ transaksi inventaris harian,
-                                    menggantikan pencatatan kertas manual dan meminimalisir risiko human error pada
-                                    pelacakan material.</li>
+                                    oleh 50+ user aktif harian di area produksi, gudang, dan QC.</li>
                                 <li>Mengembangkan layanan otomasi "Robot Printer" berbasis script PowerShell dan RESTful
-                                    API dengan background polling interval 3 detik menggunakan SumatraPDF. Sistem ini
-                                    memangkas waktu distribusi SPK hingga 90% (berjalan otomatis di latar belakang dalam
-                                    &lt;10 detik setelah rilis dari hosting), mengeliminasi friksi operasional bagi
-                                    operator pabrik yang kurang terbiasa mengunduh dan mencetak file PDF secara manual.
-                                </li>
-                                <li>Membangun Dashboard Asakai sebagai sistem analitik rapat pagi (morning meeting)
-                                    jajaran manajemen untuk memantau KPI operasional dari 7 departemen (Produksi, PPIC,
-                                    QC, Moldshop, Maintenance, HSE, &amp; GA). Menghemat waktu persiapan laporan harian
-                                    manajemen dari 1–2 jam per hari menjadi penyajian visual data agregasi secara
-                                    otomatis pada layar TV pabrik.</li>
-                                <li>Mengembangkan aplikasi Android berbasis Flutter &amp; GetX untuk digitalisasi armada
-                                    logistik yang digunakan 100% oleh 20 driver operasional pabrik. Integrasi fitur QR
-                                    Scanner dan pelacakan GPS berhasil mengotomatisasi konfirmasi kedatangan barang di
-                                    lokasi pelanggan, mempercepat proses pelaporan pengiriman hingga 95% lebih cepat
-                                    dibanding pencatatan kertas manual, serta memantau pergerakan 40 trip armada harian
-                                    secara presisi.</li>
-                                <li>Mengeksekusi seluruh siklus pengembangan perangkat lunak (SDLC) secara menyeluruh,
-                                    mulai dari analisis kebutuhan (planning), penulisan kode (execution), pengujian
-                                    sistem (testing), hingga pendampingan dan pelatihan langsung kepada pengguna (user
-                                    training) pada fase implementasi.</li>
+                                    API — memangkas waktu distribusi SPK hingga 90%.</li>
+                                <li>Membangun Dashboard Asakai untuk memantau KPI operasional dari 7 departemen,
+                                    menghemat waktu persiapan laporan harian dari 1–2 jam menjadi otomatis.</li>
+                                <li>Mengembangkan aplikasi Android berbasis Flutter & GetX untuk 20 driver logistik —
+                                    mempercepat pelaporan pengiriman hingga 95% dibanding pencatatan kertas.</li>
                             </ul>
                         </div>
                     </div>
@@ -383,11 +298,10 @@
                             <h3 class="timeline-role">Elementary Class Teacher</h3>
                             <h4 class="timeline-company">BBC Ciracas</h4>
                             <ul
-                                style="list-style-type: disc; margin-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 14px; line-height: 1.6; text-align: justify;">
+                                style="list-style-type: disc; margin-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 14px; line-height: 1.6;">
                                 <li>Melaksanakan kegiatan belajar-mengajar yang interaktif guna meningkatkan
                                     keterlibatan serta pemahaman siswa di kelas.</li>
-                                <li>Memastikan materi pembelajaran tersampaikan dengan efektif sesuai dengan target dan
-                                    standar kurikulum dasar yang ditetapkan.</li>
+                                <li>Memastikan materi pembelajaran tersampaikan dengan efektif sesuai standar kurikulum.</li>
                             </ul>
                         </div>
                     </div>
@@ -397,11 +311,9 @@
                             <h3 class="timeline-role">Data Entry Administration</h3>
                             <h4 class="timeline-company">Kemenkumham RI</h4>
                             <ul
-                                style="list-style-type: disc; margin-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 14px; line-height: 1.6; text-align: justify;">
-                                <li>Melakukan entri data administrasi persuratan resmi instansi hingga pengolahan data
-                                    ke dalam sistem basis data secara sistematis.</li>
-                                <li>Memproses dokumen pengajuan Hak Kekayaan Intelektual (HAKI) guna memastikan seluruh
-                                    berkas tercatat dengan tingkat akurasi yang tinggi.</li>
+                                style="list-style-type: disc; margin-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); font-size: 14px; line-height: 1.6;">
+                                <li>Melakukan entri data administrasi persuratan resmi instansi ke dalam sistem basis data.</li>
+                                <li>Memproses dokumen pengajuan Hak Kekayaan Intelektual (HAKI) dengan akurasi tinggi.</li>
                             </ul>
                         </div>
                     </div>
@@ -411,13 +323,18 @@
 
         <!-- CONTACT -->
         <section class="contact section reveal" id="contact">
-            <div class="container text-center">
-                <p class="mono-subtitle">04. Apa Selanjutnya?</p>
-                <h2 class="contact-title">Mari Berkolaborasi</h2>
-                <p class="contact-desc">Saya sedang terbuka untuk peluang baru. Baik Anda memiliki pertanyaan atau
-                    sekadar ingin menyapa, saya akan membalas secepat mungkin.</p>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ardyansyahputra174@gmail.com&su=Halo%20Ardyan!"
-                    target="_blank" class="btn btn-primary" id="btn-email">Say Hello</a>
+            <div class="container">
+                <div class="contact-inner">
+                    <div class="contact-left">
+                        <span class="section-label">Contact</span>
+                        <h2 class="contact-title">Let's build<br>something.</h2>
+                    </div>
+                    <div class="contact-right">
+                        <p class="contact-desc">Saya sedang terbuka untuk peluang baru. Baik Anda memiliki pertanyaan atau sekadar ingin menyapa, saya akan membalas secepat mungkin.</p>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ardyansyahputra174@gmail.com&su=Halo%20Ardyan!"
+                            target="_blank" class="btn btn-primary" id="btn-email">Say Hello</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -426,7 +343,7 @@
     <footer class="site-footer">
         <div class="container footer-content">
             <div class="footer-left">
-                <a href="#" class="logo">ARDYAN.</a>
+                <a href="#" class="logo">AS.</a>
                 <p class="footer-tagline">Arsitektur & Sistem Digital</p>
             </div>
             <div class="footer-right">

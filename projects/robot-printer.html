@@ -1,150 +1,133 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robot Printer Case Study - Ardyan Syahputra</title>
+    <title>Direct-to-Printer Robot — Case Study | Ardyan Syahputra</title>
     <link rel="icon" type="image/x-icon" href="../assets/images/star.ico">
-    <link rel="stylesheet" href="../assets/css/style.css?v=4">
+    <link rel="stylesheet" href="../assets/css/style.css?v=6">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body class="case-study-page">
     <div class="film-grain"></div>
-
     <div class="container">
-        <!-- BACK NAVIGATION -->
-        <a href="../#projects" class="back-link">
-            <span>&larr;</span> [ Kembali ke Beranda ]
-        </a>
 
-        <!-- HEADER -->
+        <a href="../#projects" class="back-link">← Back to Work</a>
+
         <header class="case-study-header">
-            <p class="mono-subtitle" style="text-transform: uppercase;">02. Case Study: Hardware Automation</p>
+            <p class="mono-subtitle">Case Study · Hardware Automation</p>
             <h1 class="case-study-title">Direct-to-Printer Robot</h1>
-            
             <div class="case-study-meta">
-                <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
-                <div class="meta-item">Peran: <strong>Backend & Automation Engineer</strong></div>
-                <div class="meta-item">Stack: <strong>PowerShell, SumatraPDF, Laravel REST API</strong></div>
-                <div class="meta-item">Frek. Polling: <strong>0.33 Hz (Interval 3 Detik)</strong></div>
+                <div class="meta-item">Client: <strong>PT. Mada Wikri Tunggal</strong></div>
+                <div class="meta-item">Role: <strong>Backend & Automation Engineer</strong></div>
+                <div class="meta-item">Stack: <strong>PowerShell, SumatraPDF CLI, Laravel API</strong></div>
+                <div class="meta-item">Result: <strong>90% Reduction in SPK Distribution Time</strong></div>
             </div>
         </header>
 
-        <!-- THE PROBLEM -->
+        <!-- THE SITUATION -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
+            <h2 class="case-study-section-title">The Situation</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Saat dokumen Surat Perintah Kerja (SPK) dirilis dari sistem ERP pusat (di-host di cloud), dokumen tersebut harus segera dicetak secara fisik di printer lantai produksi masing-masing departemen. Sebelum adanya otomatisasi ini:
-                </p>
-                <ul>
-                    <li><strong>Prosedur Berbelit:</strong> Operator stasiun kerja harus membuka browser web, login ke sistem ERP, mencari nomor SPK, mengunduh file PDF secara manual, membuka PDF Reader (seperti Adobe Reader), memanggil dialog box cetak (Ctrl+P), mencocokkan pengaturan printer lokal, dan mengklik konfirmasi cetak.</li>
-                    <li><strong>Friksi Operasional:</strong> Operator pabrik sering kali gagap mengoperasikan komputer, yang berujung pada kekeliruan cetak (salah ukuran kertas, orientasi terpotong, atau salah printer tujuan).</li>
-                    <li><strong>Bottleneck Penugasan:</strong> Waktu rilis SPK dari admin hingga operator memegang dokumen kerja fisik memakan waktu rata-rata 2 hingga 3 menit.</li>
-                </ul>
+                <p>Setiap kali admin merilis sebuah SPK (Surat Perintah Kerja) dari sistem ERP, dokumen itu harus sampai ke tangan operator di lantai produksi dalam hitungan detik. Produksi tidak bisa menunggu.</p>
+                <p>Kenyataannya, operator harus melakukan ini sendiri: buka browser → login ke ERP → cari nomor SPK → unduh PDF → buka PDF Reader → tekan Ctrl+P → pilih printer yang benar → konfirmasi cetak. <strong>2 sampai 3 menit</strong> untuk setiap SPK. Di pabrik yang merilis puluhan SPK per hari, itu bottleneck yang nyata.</p>
+                <p>Yang lebih parah: operator pabrik bukan pengguna komputer yang terlatih. Mis-print karena salah pilih ukuran kertas, orientasi terpotong, atau salah printer bukan kejadian langka — itu kejadian harian yang menghambat lini produksi.</p>
+            </div>
+        </section>
+
+        <!-- THE INSIGHT -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Insight</h2>
+            <div class="case-study-content">
+                <p>Masalah ini bukan masalah UX — bukan soal membuat tampilannya lebih mudah. Masalahnya adalah <strong>operator tidak seharusnya terlibat dalam proses cetak sama sekali</strong>. Begitu SPK dirilis, printer harusnya langsung mencetak. Otomatis. Tanpa satu pun klik dari operator.</p>
+                <p>Solusinya adalah sebuah agen kecil yang berjalan diam-diam di background server lokal pabrik — memonitor antrean cetak dari cloud setiap 3 detik, dan mengeksekusi print job secara silent langsung ke printer fisik yang dituju.</p>
             </div>
         </section>
 
         <!-- THE ARCHITECTURE -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Pendekatan Arsitektur Teknologi yang Dipilih</h2>
+            <h2 class="case-study-section-title">The Architecture</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Solusi yang dirancang adalah agen PowerShell lokal yang berjalan sebagai <i>background service</i> pada server lokal pabrik yang terhubung ke printer fisik. Agen ini melakukan komunikasi dua arah dengan RESTful API server ERP.
-                </p>
-                
                 <div class="arch-diagram-container">
                     <div class="arch-grid">
                         <div class="arch-node">
                             <div class="arch-node-title">1. Laravel Cloud ERP</div>
-                            Admin merilis SPK. Job cetak dimasukkan ke tabel antrean <code>TPrintQueue</code>.
+                            Admin rilis SPK → job masuk ke tabel <code>TPrintQueue</code> dengan status <code>pending</code>.
                         </div>
-                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-arrow">→</div>
                         <div class="arch-node">
-                            <div class="arch-node-title">2. PS Script (3s Agent)</div>
-                            PowerShell lokal melakukan polling <code>GET /api/print-queue/pending</code> tiap 3 detik.
+                            <div class="arch-node-title">2. PS Agent (3s loop)</div>
+                            Script PowerShell lokal polling <code>GET /api/print-queue/pending</code> setiap 3 detik. Berjalan di background.
                         </div>
-                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-arrow">→</div>
                         <div class="arch-node">
-                            <div class="arch-node-title">3. Silent Printer Agent</div>
-                            Mengunduh PDF, memanggil SumatraPDF CLI untuk cetak silent tanpa GUI dialog box.
+                            <div class="arch-node-title">3. SumatraPDF CLI</div>
+                            PDF diunduh, dicetak silent tanpa GUI. Parameter printer sudah hardcoded di server — operator tidak bisa salah.
                         </div>
-                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-arrow">→</div>
                         <div class="arch-node">
-                            <div class="arch-node-title">4. Server Callback</div>
-                            Mengirim status sukses <code>POST /api/print-queue/complete/{id}</code> ke server.
+                            <div class="arch-node-title">4. Callback</div>
+                            <code>POST /api/print-queue/complete/{id}</code> dikirim ke server. Status diupdate, job selesai.
                         </div>
                     </div>
                 </div>
-
-                <p style="text-align: justify;">
-                    Karena SumatraPDF dijalankan secara silent via CLI, operator tidak terganggu oleh kemunculan GUI Reader. Dokumen langsung keluar dari printer pabrik secara instan.
-                </p>
             </div>
         </section>
 
-        <!-- TECHNICAL CHALLENGES (SESSION 0 & SECOND HOP) -->
+        <!-- TECHNICAL DEPTH -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Tantangan Teknis & Rekayasa OS</h2>
+            <h2 class="case-study-section-title">The Hard Parts</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Di balik kesederhanaan alur di atas, integrasi otomatisasi cetak berbasis web pada lingkungan server Windows sering kali menghadapi kendala teknis yang rumit. 
-                </p>
-                <p style="text-align: justify;">
-                    <strong>1. Kendala Windows Session 0 Isolation (Headless Context):</strong><br>
-                    Aplikasi pembaca PDF standar seperti Acrobat Reader atau SumatraPDF pada dasarnya tidak dirancang untuk berjalan dalam skenario tanpa kepala (headless). Ketika script PowerShell dipicu secara otomatis oleh sistem Windows Task Scheduler atau Windows Service, script tersebut berjalan pada <strong>Session 0</strong>. Windows secara ketat memblokir akses dari Session 0 ke subsistem Graphical Device Interface (GDI) atau spooler printer fisik. Hal ini mengakibatkan print job menggantung (freeze) tanpa pesan error.
-                </p>
-                <p style="text-align: justify;">
-                    <strong>Solusi Session 0 Isolation:</strong> Konfigurasi parameter interaksi layanan disesuaikan dengan mendaftarkan script melalui utilitas pembungkus service yang secara eksplisit mengaktifkan interaksi desktop (*Allow service to interact with desktop*) atau dialihkan melalui sesi desktop terotentikasi yang berjalan di latar belakang menggunakan Windows Auto-Logon terenkripsi.
-                </p>
-                <p style="text-align: justify;">
-                    <strong>2. Kendala Otentikasi Lapis Kedua (Double-Hop / Second-Hop Problem):</strong><br>
-                    Ketika script PowerShell dipicu melalui koneksi jarak jauh (seperti OpenSSH / WinRM), kredensial user tidak dapat didelegasikan di luar hop pertama. Akibatnya, script kehilangan kredensial untuk mengakses printer jaringan (*Network Shared Printer*) dan menghasilkan error <i>"Access Denied"</i>.
-                </p>
-                <p style="text-align: justify;">
-                    <strong>Solusi Second-Hop:</strong> Masalah delegasi kredensial diselesaikan dengan memodifikasi autentikasi CredSSP (Credential Security Support Provider) pada host lokal dan server target, atau menyusun objek kredensial aman <code>PSCredential</code> secara langsung dalam script untuk memaksa otentikasi spooler printer secara eksplisit:
-                </p>
+                <p>Dua masalah OS-level yang tidak terlihat di permukaan tapi menjadi blocker kritis:</p>
 
-<pre style="text-align: justify;"><code class="language-powershell"><span class="token comment"># Mengatasi Double-Hop: Deklarasi kredensial lokal eksplisit untuk Windows Spooler</span>
-<span class="token variable">$PasswordSec</span> <span class="token operator">=</span> <span class="token function">ConvertTo-SecureString</span> <span class="token string">"P@sswordPabrik123"</span> <span class="token operator">-</span>AsPlainText <span class="token operator">-</span>Force
+                <p><strong>1. Windows Session 0 Isolation</strong><br>
+                Task Scheduler menjalankan script di Session 0 — sebuah sesi terisolasi yang diblokir Windows dari akses ke GDI dan printer spooler. Print job menggantung tanpa pesan error. Solusinya: mendaftarkan script lewat wrapper yang secara eksplisit mengaktifkan interaksi desktop, atau mengalihkan ke sesi terotentikasi via Windows Auto-Logon terenkripsi.</p>
+
+                <p><strong>2. Double-Hop Authentication</strong><br>
+                Ketika script dipicu dari remote connection, kredensial hilang di hop pertama. Script kehilangan akses ke network printer dan menghasilkan <em>"Access Denied"</em> diam-diam. Diselesaikan dengan <code>PSCredential</code> eksplisit atau konfigurasi CredSSP.</p>
+
+<pre><code class="language-powershell"><span class="token comment"># Mengatasi Double-Hop: PSCredential eksplisit untuk Windows Spooler</span>
+<span class="token variable">$PasswordSec</span> <span class="token operator">=</span> <span class="token function">ConvertTo-SecureString</span> <span class="token string">"P@ssword"</span> <span class="token operator">-</span>AsPlainText <span class="token operator">-</span>Force
 <span class="token variable">$Creds</span> <span class="token operator">=</span> <span class="token function">New-Object</span> System<span class="token punctuation">.</span>Management<span class="token punctuation">.</span>Automation<span class="token punctuation">.</span>PSCredential<span class="token punctuation">(</span><span class="token string">"Administrator"</span><span class="token punctuation">,</span> <span class="token variable">$PasswordSec</span><span class="token punctuation">)</span>
 
-<span class="token comment"># Eksekusi SumatraPDF silent print menggunakan kredensial aman</span>
-<span class="token keyword">Start-Process</span> <span class="token operator">-</span>FilePath <span class="token string">"$SumatraPath"</span> <span class="token operator">-</span>ArgumentList <span class="token string">"-print-to `"$PrinterName`" -silent `"$safePdf`""</span> <span class="token operator">-</span>Credential <span class="token variable">$Creds</span> <span class="token operator">-</span>NoNewWindow <span class="token operator">-</span>Wait
-</code></pre>
+<span class="token comment"># Silent print — operator tidak terlibat sama sekali</span>
+<span class="token keyword">Start-Process</span> <span class="token operator">-</span>FilePath <span class="token string">"$SumatraPath"</span> <span class="token operator">-</span>ArgumentList <span class="token string">"-print-to `"$PrinterName`" -silent `"$safePdf`""</span> <span class="token operator">-</span>Credential <span class="token variable">$Creds</span> <span class="token operator">-</span>NoNewWindow <span class="token operator">-</span>Wait</code></pre>
             </div>
         </section>
 
-        <!-- MEASURABLE RESULTS -->
+        <!-- THE RESULTS -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Hasil Akhir yang Terukur</h2>
+            <h2 class="case-study-section-title">The Outcome</h2>
             <div class="case-study-content">
-                <p>
-                    Pemrosesan antrean cetak berjalan secara otomatis dan stabil di latar belakang server Windows. Kapasitas dan efisiensi waktu pemrosesan sistem dianalisis secara kuantitatif:
-                </p>
-
-                <div style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 24px 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-main); line-height: 1.8;">
-                    <strong>[ FREKUENSI JAJAK PENDAPAT (POLLING FREQUENCY) ]</strong><br>
-                    f<sub>polling</sub> = 1 / t<sub>interval</sub> = 1 / 3 s &approx; 0.33 Hz<br><br>
-                    <strong>[ FORMULA EFISIENSI DISTRIBUSI SPK ]</strong><br>
-                    &Delta;T<sub>distribusi</sub> = (T<sub>manual</sub> - T<sub>otomatis</sub>) / T<sub>manual</sub> &times; 100%<br>
-                    &Delta;T<sub>distribusi</sub> = (150 s - 15 s) / 150 s &times; 100% = 90%
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 0 0 24px; font-family: var(--font-mono); font-size: 13px; line-height: 1.9;">
+                    ΔT = (T<sub>manual</sub> − T<sub>auto</sub>) / T<sub>manual</sub> × 100%<br>
+                    ΔT = (150s − 15s) / 150s × 100% = <strong>90%</strong>
                 </div>
 
-                <p>
-                    <strong>Dampak Terukur Hasil Penerapan:</strong>
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <div class="w-step-number">BEFORE</div>
+                        <div class="w-step-title">2–3 menit rata-rata dari SPK dirilis hingga dokumen di tangan operator (150 detik)</div>
+                    </div>
+                    <div class="workflow-card">
+                        <div class="w-step-number">AFTER</div>
+                        <div class="w-step-title">&lt;15 detik. Printer bergerak sendiri. Operator fokus bekerja, bukan mengoperasikan komputer</div>
+                    </div>
+                    <div class="workflow-card">
+                        <div class="w-step-number">ERROR RATE</div>
+                        <div class="w-step-title">0% kesalahan cetak. Semua parameter hardcoded di server — tidak ada variabel dari sisi operator</div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 24px; padding: 20px; border-left: 3px solid var(--accent); color: var(--text-muted); font-style: italic;">
+                    "Solusi terbaik untuk masalah UX kadang bukan memperbaiki UI-nya. Tapi menghilangkan kebutuhan user untuk berinteraksi dengan UI sama sekali."
                 </p>
-                <ul>
-                    <li><strong>Efisiensi Waktu Distribusi SPK:</strong> Durasi dari SPK dirilis hingga tercetak fisik berkurang sebesar <strong>90%</strong> (dari rata-rata 2.5 menit menjadi &lt;15 detik).</li>
-                    <li><strong>Reduksi Kesalahan Cetak:</strong> Kesalahan pengaturan orientasi kertas, printer, atau PDF rusak turun menjadi <strong>0%</strong> karena semua parameter cetak sudah di-hardcode di sisi script server.</li>
-                    <li><strong>Pencegahan Kemacetan Lini Produksi:</strong> Menghilangkan bottleneck cetak SPK harian, memastikan operator langsung mendapatkan lembar kerja secara instan tanpa perlu melangkah ke komputer admin.</li>
-                </ul>
             </div>
         </section>
+
     </div>
-    <!-- Vercel Analytics -->
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>

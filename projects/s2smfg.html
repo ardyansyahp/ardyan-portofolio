@@ -1,392 +1,146 @@
 <!DOCTYPE html>
-<html lang="id">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S2SMFG Case Study - Ardyan Syahputra</title>
+    <title>S2SMFG — ERP Case Study | Ardyan Syahputra</title>
     <link rel="icon" type="image/x-icon" href="../assets/images/star.ico">
-    <link rel="stylesheet" href="../assets/css/style.css?v=4">
+    <link rel="stylesheet" href="../assets/css/style.css?v=6">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
-
 <body class="case-study-page">
     <div class="film-grain"></div>
-
     <div class="container">
-        <!-- BACK NAVIGATION -->
-        <a href="../#projects" class="back-link">
-            <span>&larr;</span> [ Kembali ke Beranda ]
-        </a>
 
-        <!-- HEADER -->
+        <a href="../#projects" class="back-link">← Back to Work</a>
+
         <header class="case-study-header">
-            <p class="mono-subtitle" style="text-transform: uppercase;">01. Case Study: Enterprise System</p>
-            <h1 class="case-study-title">S2SMFG (Procure to Ship ERP)</h1>
-
+            <p class="mono-subtitle">Case Study · Enterprise ERP System</p>
+            <h1 class="case-study-title">S2SMFG — Procure to Ship</h1>
             <div class="case-study-meta">
-                <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
-                <div class="meta-item">Peran: <strong>Lead Database & Full-Stack Developer</strong></div>
-                <div class="meta-item">Kredensial: <strong>Sertifikasi DBA BNSP (Aktif s.d. Okt 2028)</strong></div>
-                <div class="meta-item">Skala: <strong>78 Tabel Relasional | 50+ User Aktif</strong></div>
+                <div class="meta-item">Client: <strong>PT. Mada Wikri Tunggal</strong></div>
+                <div class="meta-item">Role: <strong>Lead Full-Stack Developer</strong></div>
+                <div class="meta-item">Stack: <strong>Laravel, MariaDB, PHP</strong></div>
+                <div class="meta-item">Scale: <strong>78 Tables · 50+ Daily Users</strong></div>
             </div>
         </header>
 
-        <!-- THE PROBLEM -->
+        <!-- THE SITUATION -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
+            <h2 class="case-study-section-title">The Situation</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Sebelum sistem S2SMFG dideploy, seluruh alur kerja pelacakan material dan produksi di pabrik PT.
-                    Mada Wikri Tunggal masih berbasis kertas manual. Lembar "Kartu Travel" digunakan untuk mencatat
-                    perpindahan barang jadi dari mesin cetak ke area karantina QC, lalu ke gudang barang jadi.
-                </p>
-                <p>
-                    Metode manual ini menyebabkan beberapa masalah kritis pada rantai pasok:
-                </p>
-                <ul>
-                    <li><strong>Kehilangan Data Fisik:</strong> Kartu travel kertas sering kotor, robek, atau bahkan
-                        hilang di area lantai pabrik yang sibuk, sehingga melumpuhkan pelacakan riwayat lot produksi.
-                    </li>
-                    <li><strong>Delay Sinkronisasi Inventaris:</strong> Stok barang di gudang hanya direkap sekali dalam
-                        24 jam ke dalam spreadsheet Excel. PPIC tidak memiliki data riil saat melakukan perencanaan
-                        jadwal produksi harian.</li>
-                    <li><strong>Human Error Tinggi:</strong> Kesalahan pengetikan kode part yang mirip menyebabkan
-                        selisih inventaris bernilai puluhan juta rupiah.</li>
-                </ul>
+                <p>Di lantai produksi PT. Mada Wikri Tunggal, setiap material yang bergerak mengikuti sebuah kartu fisik — disebut <em>Kartu Travel</em>. Kartu ini adalah satu-satunya jejak yang mencatat material telah melewati proses apa, dari mana, menuju mana.</p>
+                <p>Masalahnya: kartu ini dari kertas. Di lantai pabrik yang ramai dengan mesin, oli, dan pergerakan forklift, kartu itu robek, kotor, dan hilang. Ketika hilang, riwayat satu lot material ikut hilang bersamanya. PPIC tidak tahu stok sesungguhnya sampai rekap Excel malam hari selesai dikerjakan — <strong>24 jam kemudian</strong>.</p>
+                <p>Dalam kondisi itu, kesalahan ketik satu digit pada kode part yang mirip bisa mengakibatkan pengurangan stok yang salah — dan satu insiden seperti itu nilainya bisa mencapai <strong>puluhan juta rupiah</strong>.</p>
             </div>
         </section>
 
-        <!-- E2E WORKFLOW -->
+        <!-- THE CHALLENGE -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Alur Kerja Manufaktur Terintegrasi</h2>
+            <h2 class="case-study-section-title">The Engineering Challenge</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Sistem ini dirancang untuk mendigitalisasi dan melacak secara presisi 15 tahapan kritis dalam rantai
-                    pasok dan produksi, mulai dari pemesanan material hingga pengiriman barang jadi ke pelanggan
-                    (End-to-End Workflow):
-                </p>
+                <p>Tantangan sesungguhnya bukan memindahkan Excel ke web. Tantangannya adalah membangun sistem yang bisa dipercaya oleh 50+ operator yang mengaksesnya bersamaan, memproses 600 transaksi per hari, tanpa satu pun yang boleh double-counted atau terlewat.</p>
 
                 <div class="workflow-grid">
                     <div class="workflow-card">
-                        <div class="w-step-number">01</div>
-                        <div class="w-step-title">Pembuatan PO Supplier</div>
+                        <div class="w-step-number">CHALLENGE 01</div>
+                        <div class="w-step-title">Concurrency — Dua operator tidak boleh bisa menerima PO yang sama di saat bersamaan</div>
                     </div>
                     <div class="workflow-card">
-                        <div class="w-step-number">02</div>
-                        <div class="w-step-title">Receiving Material</div>
+                        <div class="w-step-number">CHALLENGE 02</div>
+                        <div class="w-step-title">Accuracy — Backflushing otomatis: operator hanya lapor hasil, sistem yang hitung material terpakai dari BOM</div>
                     </div>
                     <div class="workflow-card">
-                        <div class="w-step-number">03</div>
-                        <div class="w-step-title">Planning Produksi</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">04</div>
-                        <div class="w-step-title">Picking Inject</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">05</div>
-                        <div class="w-step-title">Mixing Inject</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">06</div>
-                        <div class="w-step-title">Picking Assy</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">07</div>
-                        <div class="w-step-title">Produksi Inject</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">08</div>
-                        <div class="w-step-title">Inject Out</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">09</div>
-                        <div class="w-step-title">WIP (Gudang Sementara)</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">10</div>
-                        <div class="w-step-title">Produksi Assy</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">11</div>
-                        <div class="w-step-title">Assy Out</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">12</div>
-                        <div class="w-step-title">Masuk Finish Good</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">13</div>
-                        <div class="w-step-title">SPK (Sales Order)</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">14</div>
-                        <div class="w-step-title">Out Finish Good</div>
-                    </div>
-                    <div class="workflow-card">
-                        <div class="w-step-number">15</div>
-                        <div class="w-step-title">Delivery Customer</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- THE ARCHITECTURE & ERD -->
-        <section class="case-study-section">
-            <h2 class="case-study-section-title">Pendekatan Arsitektur & Desain Database</h2>
-            <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Untuk mengatasi kekacauan tersebut, dirancang ekosistem web terintegrasi dengan basis data MariaDB
-                    yang menampung 78 tabel relasional. Untuk menjamin performa pembacaan data pada tabel-tabel utama
-                    yang tumbuh secara eksponensial, dilakukan perancangan skema ternormalisasi untuk mencegah anomali
-                    data (insert, update, delete) sekaligus menjaga performa kueri pada tingkat transaksi tinggi.
-                </p>
-                <p style="text-align: justify;">
-                    Berikut adalah representasi Entity-Relationship Diagram (ERD) yang disederhanakan dari tabel-tabel
-                    utama yang mengelola data transaksi produksi dan pengiriman barang jadi (SPK & Finish Good Out).
-                    Tabel-tabel ini dirancang untuk mengakomodasi hubungan satu-ke-banyak (1:N) antara master data part,
-                    SPK, dan transaksi keluar barang jadi, dengan penekanan pada integritas referensial dan optimasi
-                    indeks untuk kecepatan akses data.
-                </p>
-
-                <pre
-                    style="background-color: #0d0d11; border: 1px solid var(--border-color); color: #a5d6ff; line-height: 1.4;"><code class="language-text">  +-------------------+              +-----------------------+
-  |      m_part       |              |        t_spk          |
-  +-------------------+              +-----------------------+
-  | PK | id           |&lt;------------+| PK | id                |
-  |    | part_code    | (1:N relation|    | nomor_spk         |
-  |    | part_name    |  on detail)  |    | status            |
-  +-------------------+              +-----------------------+
-            ^                                    ^
-            | (1:N)                              | (1:N)
-            +-------------------+----------------+
-                                |
-                                v
-                   +---------------------------+
-                   |    t_finish_good_out      |
-                   +---------------------------+
-                   | PK | id                   |
-                   | FK | spk_id               |
-                   | FK | part_id (m_part)     |
-                   |    | cycle                |
-                   |    | qty                  |
-                   | UK | qr_hash              |
-                   |    | status               |
-                   +---------------------------+</code></pre>
-
-                <h3 style="color: var(--text-main); margin-top: 32px; margin-bottom: 16px;">Pengelompokan Modul Sistem
-                </h3>
-                <p style="text-align: justify;">
-                    Untuk mengakomodasi 15 tahapan operasional secara terpusat, alur kerja didistribusikan ke dalam 4
-                    modul utama yang saling berintegrasi:
-                </p>
-
-                <div class="arch-grid" style="margin-bottom: 32px;">
-                    <div class="arch-node">
-                        <div class="arch-node-title">1. Procurement</div>
-                        PO &amp; Receiving
-                    </div>
-                    <div class="arch-arrow">→</div>
-                    <div class="arch-node">
-                        <div class="arch-node-title">2. Manufacturing</div>
-                        Plan, Mix, Inject, Assy
-                    </div>
-                    <div class="arch-arrow">→</div>
-                    <div class="arch-node">
-                        <div class="arch-node-title">3. Inventory</div>
-                        WIP &amp; Finish Good
-                    </div>
-                    <div class="arch-arrow">→</div>
-                    <div class="arch-node">
-                        <div class="arch-node-title">4. Shipping</div>
-                        SPK &amp; Delivery
+                        <div class="w-step-number">CHALLENGE 03</div>
+                        <div class="w-step-title">Integrity — Satu box barang jadi tidak boleh bisa di-scan dua kali ke dalam truk yang berbeda</div>
                     </div>
                 </div>
 
-                <p>
-                    <strong>Teknik Optimasi Indeks Database:</strong>
-                </p>
-                <ul>
-                    <li><strong>Composite Unique Key:</strong> Kolom <code>qr_hash</code> dikonfigurasi sebagai Unique
-                        Key untuk mencegah box finished good divalidasi lebih dari satu kali (mencegah duplikasi data).
-                    </li>
-                    <li><strong>Foreign Key Indexing:</strong> Indeks dibuat secara eksplisit pada kolom foreign key
-                        <code>spk_id</code> dan <code>part_id</code> di tabel transaksi <code>t_finish_good_out</code>
-                        untuk mengeliminasi operasi <i>full table scan</i> saat proses join query laporan bulanan.
-                    </li>
-                    <li><strong>Covering Index:</strong> Membuat indeks komposit
-                        <code>idx_spk_status (spk_id, status)</code> untuk mempercepat laju kalkulasi dashboard
-                        real-time yang hanya mencari box bertanda 'scanned' dari SPK aktif tertentu.
-                    </li>
-                </ul>
+                <p>Setiap tantangan itu bisa mengakibatkan kerugian nyata jika tidak ditangani di level arsitektur database — bukan hanya di level UI.</p>
             </div>
         </section>
 
-        <!-- IMPLEMENTASI LOGIKA BISNIS & CONTROLLER -->
+        <!-- THE SOLUTION -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Implementasi Logika Bisnis (Backend Controllers)</h2>
+            <h2 class="case-study-section-title">The Architecture</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Tantangan teknis terbesar adalah menghindari anomali data serta mempertahankan kecepatan transaksi
-                    melintasi puluhan stasiun kerja secara simultan. Berikut adalah bagaimana 3 titik krusial dalam alur
-                    produksi ditangani oleh backend Laravel (didukung oleh penerapan sertifikasi DBA):
-                </p>
+                <p>Saya merancang sistem dengan <strong>78 tabel relasional</strong> di MariaDB yang merepresentasikan 15 tahap alur kerja dari Procurement hingga Shipping. Tiga pola kritis yang menjadi tulang punggung integritas data:</p>
 
-                <h3 style="color: var(--text-main); margin-top: 32px; margin-bottom: 8px;">1. Fase Awal: Penerimaan
-                    Material (Receiving)</h3>
-                <p style="text-align: justify;">Mencegah selisih gudang sejak barang datang. Sistem otomatis memverifikasi penerimaan dengan Purchase
-                    Order (PO) dan menambah stok bahan baku secara <em>real-time</em> menggunakan <em>Database
-                        Transaction</em>.</p>
-
-                <pre style="text-align: justify;"><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/ReceivingController.php</span>
-<span class="token keyword">public function</span> <span class="token function">processReceiving</span><span class="token punctuation">(</span><span class="token class-name">Request</span> <span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token class-name">DB</span><span class="token operator">::</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">use</span> <span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment">// 1. Lock Purchase Order untuk mencegah penerimaan ganda (race condition)</span>
-        <span class="token variable">$po</span> <span class="token operator">=</span> <span class="token class-name">PurchaseOrder</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'po_number'</span><span class="token punctuation">, </span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">po_number</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">lockForUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">firstOrFail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        
-        <span class="token comment">// 2. Validasi Qty Kedatangan vs Sisa Qty Order</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qty_received</span> <span class="token operator">&gt;</span> <span class="token variable">$po</span><span class="token operator">-&gt;</span><span class="token function">remaining_qty</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span><span class="token string">'error'</span> <span class="token operator">=&gt;</span> <span class="token string">'Over receipt detected!'</span><span class="token punctuation">], </span><span class="token number">422</span><span class="token punctuation">);</span>
-        <span class="token punctuation">}</span>
-
-        <span class="token comment">// 3. Update Master Inventory Material</span>
-        <span class="token class-name">Inventory</span><span class="token operator">::</span><span class="token function">incrementMaterialStock</span><span class="token punctuation">(</span><span class="token variable">$po</span><span class="token operator">-&gt;</span><span class="token function">material_id</span><span class="token punctuation">, </span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qty_received</span><span class="token punctuation">);</span>
-        <span class="token variable">$po</span><span class="token operator">-&gt;</span><span class="token function">decrement</span><span class="token punctuation">(</span><span class="token string">'remaining_qty'</span><span class="token punctuation">, </span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qty_received</span><span class="token punctuation">);</span>
-        
-        <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span><span class="token string">'success'</span> <span class="token operator">=&gt;</span> <span class="token string">'Material diterima & stok bertambah.'</span><span class="token punctuation">]);</span>
-    <span class="token punctuation">});</span>
-<span class="token punctuation">}</span></code></pre>
-
-                <h3 style="color: var(--text-main); margin-top: 32px; margin-bottom: 8px;">2. Fase Tengah: Produksi
-                    &amp; Backflushing (WIP)</h3>
-                <p>Saat mesin mencetak produk, operator hanya melaporkan "Hasil Jadi". Sistem menggunakan <em>Bill of
-                        Materials (BOM)</em> untuk memotong stok bijih plastik secara otomatis (metode
-                    <em>backflush</em>), meminimalisir input manual.
-                </p>
-
-                <pre style="text-align: justify;"><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/ProductionController.php</span>
-<span class="token keyword">public function</span> <span class="token function">recordProductionYield</span><span class="token punctuation">(</span><span class="token class-name">Request</span> <span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token class-name">DB</span><span class="token operator">::</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">use</span> <span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment">// 1. Catat Barang Setengah Jadi (WIP) / Hasil Produksi</span>
-        <span class="token variable">$yield</span> <span class="token operator">=</span> <span class="token class-name">ProductionYield</span><span class="token operator">::</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">);</span>
-        
-        <span class="token comment">// 2. Ambil resep material (BOM) untuk produk ini</span>
-        <span class="token variable">$bom</span> <span class="token operator">=</span> <span class="token class-name">BillOfMaterial</span><span class="token operator">::</span><span class="token function">getRecipeFor</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">part_id</span><span class="token punctuation">);</span>
-        
-        <span class="token comment">// 3. Auto-deduct (Backflush) stok material mentah (BOM x Qty Produksi)</span>
-        <span class="token class-name">Inventory</span><span class="token operator">::</span><span class="token function">decrementMaterialStock</span><span class="token punctuation">(</span><span class="token variable">$bom</span><span class="token operator">-&gt;</span><span class="token function">raw_material_id</span><span class="token punctuation">, </span><span class="token punctuation">(</span><span class="token variable">$bom</span><span class="token operator">-&gt;</span><span class="token function">usage_per_pcs</span> <span class="token operator">*</span> <span class="token variable">$yield</span><span class="token operator">-&gt;</span><span class="token function">qty</span><span class="token punctuation">)</span><span class="token punctuation">);</span>
-        
-        <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span><span class="token string">'success'</span> <span class="token operator">=&gt;</span> <span class="token string">'Hasil dicatat, stok mentah terpotong otomatis.'</span><span class="token punctuation">]);</span>
-    <span class="token punctuation">});</span>
-<span class="token punctuation">}</span></code></pre>
-
-                <h3 style="color: var(--text-main); margin-top: 32px; margin-bottom: 8px;">3. Fase Akhir: Pengiriman
-                    Finish Good (Shipping)</h3>
-                <p>Mencegah <em>double-scan</em> box barang jadi ke dalam truk. Menerapkan <em>Optimistic Locking</em>
-                    (<code>lockForUpdate</code>) dan komputasi <em>MD5 hash</em> pada <em>constraint</em> database untuk
-                    akurasi pengiriman 100%.</p>
-
-                <pre style="text-align: justify;"><code class="language-php"><span class="token comment">// App/Http/Controllers/Api/FinishGoodScanController.php</span>
-<span class="token keyword">public function</span> <span class="token function">processScan</span><span class="token punctuation">(</span><span class="token class-name">Request</span> <span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token class-name">DB</span><span class="token operator">::</span><span class="token function">transaction</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">use</span> <span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment">// 1. Lock Row SPK (Surat Perintah Kerja) untuk mencegah race condition</span>
-        <span class="token variable">$spk</span> <span class="token operator">=</span> <span class="token class-name">TSpk</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">, </span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">spk_id</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">lockForUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">firstOrFail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">// 2. Periksa duplikasi scan box melalui Unique Constraint Hash (MD5)</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">TFinishGoodOut</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'qr_hash'</span><span class="token punctuation">, </span><span class="token function">md5</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qr_content</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span><span class="token string">'error'</span> <span class="token operator">=&gt;</span> <span class="token string">'Box ini sudah discan sebelumnya'</span><span class="token punctuation">], </span><span class="token number">422</span><span class="token punctuation">);</span>
-        <span class="token punctuation">}</span>
-
-        <span class="token comment">// 3. Catat scan pengiriman barang & update progress SPK</span>
-        <span class="token class-name">TFinishGoodOut</span><span class="token operator">::</span><span class="token function">recordScan</span><span class="token punctuation">(</span><span class="token variable">$request</span><span class="token punctuation">);</span>
-        <span class="token variable">$spk</span><span class="token operator">-&gt;</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token string">'total_scanned_qty'</span><span class="token punctuation">, </span><span class="token variable">$request</span><span class="token operator">-&gt;</span><span class="token function">qty</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">return</span> <span class="token function">response</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-&gt;</span><span class="token function">json</span><span class="token punctuation">([</span><span class="token string">'success'</span> <span class="token operator">=&gt;</span> <span class="token string">'Box berhasil divalidasi ke truk pengiriman.'</span><span class="token punctuation">]);</span>
-    <span class="token punctuation">});</span>
-<span class="token punctuation">}</span></code></pre>
-            </div>
-        </section>
-
-        <!-- INFRASTRUCTURE CHALLENGES & DEPLOYMENT RATIONALE -->
-        <section class="case-study-section">
-            <h2 class="case-study-section-title">Konteks Infrastruktur & Rationale Deployment cPanel</h2>
-            <div class="case-study-content">
-                <p>
-                    PT. Mada Wikri Tunggal merupakan perusahaan manufaktur konvensional yang secara bisnis sudah matang
-                    tetapi secara kultur teknologi digital masih berkembang. Selama proses rekayasa sistem ERP ini, kami
-                    dihadapkan pada kendala infrastruktur nyata:
-                </p>
-                <ul>
-                    <li><strong>Keterbatasan Sumber Daya Manusia:</strong> Tim IT sangat minimalis (kurang orang),
-                        sehingga pengerjaan seluruh siklus pengembangan (SDLC) dilakukan secara mandiri.</li>
-                    <li><strong>Infrastruktur Jaringan & Server Pabrik:</strong> Belum tersedianya infrastruktur server
-                        lokal (on-premise) yang memadai untuk penanganan skalabilitas mandiri, serta tingkat pemahaman
-                        digitalisasi dan kesadaran implementasi sistem yang masih bertahap di lapangan.</li>
-                </ul>
-                <p style="text-align: justify;">
-                    <strong>Mengapa Menggunakan Shared Hosting cPanel?</strong><br>
-                    Mengingat kendala-kendala di atas, keputusan untuk men-deploy aplikasi ERP produksi utama pada
-                    <strong>shared hosting cPanel</strong> merupakan keputusan rekayasa pragmatis. Deployment di cPanel
-                    sangat meminimalkan beban pengelolaan server harian (server administration/maintenance overhead)
-                    sehingga pengembang tunggal dapat berfokus penuh pada stabilitas kode dan logika bisnis rantai pasok
-                    tanpa tersita oleh urusan sysadmin dan pemeliharaan server secara manual.
-                </p>
-                <div
-                    style="background-color: var(--accent-light); border: 1px solid var(--border-color); padding: 20px; border-radius: 4px; font-size: 13px; line-height: 1.6; font-family: var(--font-mono); color: var(--text-muted); margin-top: 24px;">
-                    <strong style="color: var(--accent);">[ Rekomendasi Jamstack ]</strong><br>
-                    Meskipun sistem operasional pabrik berjalan di shared hosting cPanel karena tuntutan legacy, untuk
-                    situs web portofolio statis/profil profesional sangat direkomendasikan menerapkan arsitektur
-                    <strong>Jamstack (seperti Netlify atau Vercel)</strong>. Jamstack menawarkan kecepatan pemuatan
-                    maksimal melalui CDN global, tingkat keamanan tinggi tanpa database, serta biaya operasional gratis
-                    (nihil) untuk pengembang.
-                </div>
-            </div>
-        </section>
-
-        <!-- THE MEASURABLE RESULTS & MATH MODELS -->
-        <section class="case-study-section">
-            <h2 class="case-study-section-title">Hasil Akhir yang Terukur</h2>
-            <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Implementasi ERP S2SMFG berhasil mengubah total operasi lantai pabrik. Data transaksi terkonsolidasi
-                    secara waktu nyata. Laju beban kerja operasional yang berhasil ditangani sistem dapat dimodelkan
-                    secara matematis untuk membuktikan kapasitas beban kerjanya:
-                </p>
-
-                <div
-                    style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 24px 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-main); line-height: 1.8;">
-                    <strong>[ PEMODELAN BEBAN TRANSAKSI HARIAN ]</strong><br>
-                    Beban Transaksi Harian = 100 SPK + 500 Transaksi Inventaris = 600 Aktivitas / Hari<br><br>
-                    Dengan asumsi waktu operasional pabrik berjalan selama 8 jam per hari, maka laju pemrosesan
-                    transaksi rata-rata yang dikelola sistem adalah:<br>
-                    Laju Pemrosesan = 600 Transaksi / 8 Jam = 75 Transaksi / Jam
+                <div class="arch-diagram-container">
+                    <div class="arch-grid">
+                        <div class="arch-node">
+                            <div class="arch-node-title">Receiving</div>
+                            <code>DB::transaction()</code> + <code>lockForUpdate()</code> memastikan tidak ada double-receive pada PO yang sama.
+                        </div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">Production</div>
+                            BOM-based backflushing otomatis. Operator lapor yield, sistem deduct raw material sesuai Bill of Materials.
+                        </div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-node">
+                            <div class="arch-node-title">Shipping</div>
+                            MD5 hash unique constraint pada setiap scan QR box. Satu scan berhasil, scan kedua ditolak di level database.
+                        </div>
+                    </div>
                 </div>
 
-                <p>
-                    <strong>Dampak Terukur Hasil Penerapan:</strong>
-                </p>
-                <ul>
-                    <li><strong>Reduksi Kehilangan Dokumen:</strong> Kehilangan lembar SPK & Kartu Travel fisik turun
-                        hingga <strong>0%</strong> karena seluruh alur penugasan dipantau di layar stasiun kerja.</li>
-                    <li><strong>Akurasi Rekonsiliasi Inventaris:</strong> Laporan perbedaan stok di PPIC berhasil
-                        diminimalisir hingga mendekati 99.9% kecocokan fisik berkat validasi QR code unik.</li>
-                    <li><strong>Kecepatan Perencanaan:</strong> Tim PPIC dapat merancang jadwal produksi <strong>2 jam
-                            lebih cepat</strong> setiap sore karena data stok bahan baku ter-update secara instan tanpa
-                        rekap manual.</li>
-                </ul>
+                <p>ERD dibangun berpusat pada tiga tabel kritis: <code>m_part</code> (master material), <code>t_spk</code> (work order), dan <code>t_finish_good_out</code> (pengiriman). Dengan composite index dan covering index (<code>idx_spk_status</code>), query yang awalnya lambat pada volume 600 transaksi/hari tetap responsif tanpa timeout.</p>
+
+                <pre><code class="language-php"><span class="token comment">// ReceivingController — mencegah double-receive pada PO yang sama</span>
+<span class="token keyword">public function</span> <span class="token function">processReceiving</span>(<span class="token variable">$poId</span>)
+{
+    <span class="token keyword">return</span> DB::<span class="token function">transaction</span>(<span class="token keyword">function</span> () <span class="token keyword">use</span> (<span class="token variable">$poId</span>) {
+        <span class="token variable">$po</span> = PurchaseOrder::<span class="token function">lockForUpdate</span>()-><span class="token function">findOrFail</span>(<span class="token variable">$poId</span>);
+
+        <span class="token keyword">if</span> (<span class="token variable">$po</span>->status === <span class="token string">'received'</span>) {
+            <span class="token keyword">throw new</span> <span class="token class-name">\Exception</span>(<span class="token string">'PO sudah diterima oleh user lain.'</span>);
+        }
+
+        <span class="token variable">$po</span>-><span class="token function">update</span>([<span class="token string">'status'</span> => <span class="token string">'received'</span>]);
+        <span class="token comment">// ... BOM backflush logic</span>
+    });
+}</code></pre>
             </div>
         </section>
+
+        <!-- THE RESULTS -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Outcome</h2>
+            <div class="case-study-content">
+                <p>Sistem berjalan di production dengan beban nyata sejak awal 2024. Ini bukan prototype — ini sistem operasional yang menggantikan seluruh proses kertas di lantai pabrik:</p>
+
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <div class="w-step-number">ACCURACY</div>
+                        <div class="w-step-title">Akurasi rekonsiliasi inventaris mencapai ~99.9% — dari sebelumnya bergantung pada rekap manual yang rawan typo</div>
+                    </div>
+                    <div class="workflow-card">
+                        <div class="w-step-number">SPEED</div>
+                        <div class="w-step-title">PPIC mendapat data real-time. Waktu perencanaan produksi harian berkurang 2 jam per hari</div>
+                    </div>
+                    <div class="workflow-card">
+                        <div class="w-step-number">SCALE</div>
+                        <div class="w-step-title">78 tabel · 50+ user aktif · 600 transaksi/hari (100 SPK + 500 inventory movement) berjalan stabil</div>
+                    </div>
+                    <div class="workflow-card">
+                        <div class="w-step-number">LOSS</div>
+                        <div class="w-step-title">Kehilangan dokumen fisik: 0%. Risiko kerugian puluhan juta akibat selisih stok dieliminasi</div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 24px; padding: 20px; border-left: 3px solid var(--accent); color: var(--text-muted); font-style: italic;">
+                    "Yang paling berdampak bukan fiturnya — tapi keputusan arsitektur di level database yang memastikan tidak ada satu transaksi pun yang bisa bocor, terduplikasi, atau hilang, bahkan ketika 50 orang mengakses sistem secara bersamaan."
+                </p>
+            </div>
+        </section>
+
     </div>
-    <!-- Vercel Analytics -->
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
 </body>
-
 </html>

@@ -1,418 +1,140 @@
 <!DOCTYPE html>
-<html lang="id">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistics App Case Study - Ardyan Syahputra</title>
+    <title>Logistics Driver App — Case Study | Ardyan Syahputra</title>
     <link rel="icon" type="image/x-icon" href="../assets/images/star.ico">
-    <link rel="stylesheet" href="../assets/css/style.css?v=4">
+    <link rel="stylesheet" href="../assets/css/style.css?v=6">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
-    <style>
-        /* Custom Simulator Styling */
-        .simulator-box {
-            background-color: #0b0b0f;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 32px;
-            margin: 32px 0;
-        }
-
-        .sim-steps-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .sim-step-btn {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 12px;
-            font-family: var(--font-mono);
-            font-size: 12px;
-            cursor: pointer;
-            text-align: center;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .sim-step-btn.active {
-            border-color: var(--accent);
-            color: var(--text-main);
-            background-color: rgba(59, 130, 246, 0.1);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
-        }
-
-        .sim-screen {
-            background-color: #050507;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 24px;
-            min-height: 220px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            font-family: var(--font-mono);
-            font-size: 13px;
-            line-height: 1.6;
-            color: var(--text-main);
-            position: relative;
-        }
-
-        .sim-phone-ui {
-            width: 100%;
-            max-width: 320px;
-            margin: 0 auto;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            background: #0d0d11;
-        }
-
-        .sim-title {
-            color: var(--accent);
-            font-weight: bold;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-
-        .sim-badge {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            display: inline-block;
-            margin-bottom: 12px;
-        }
-
-        @media (max-width: 768px) {
-            .sim-steps-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
-
 <body class="case-study-page">
     <div class="film-grain"></div>
-
     <div class="container">
-        <!-- BACK NAVIGATION -->
-        <a href="../#projects" class="back-link">
-            <span>&larr;</span> [ Kembali ke Beranda ]
-        </a>
 
-        <!-- HEADER -->
+        <a href="../#projects" class="back-link">← Back to Work</a>
+
         <header class="case-study-header">
-            <p class="mono-subtitle" style="text-transform: uppercase;">04. Case Study: Mobile App & Integration</p>
+            <p class="mono-subtitle">Case Study · Mobile App & Fleet Integration</p>
             <h1 class="case-study-title">Logistics Driver App</h1>
-
             <div class="case-study-meta">
-                <div class="meta-item">Klien: <strong>PT. Mada Wikri Tunggal</strong></div>
-                <div class="meta-item">Peran: <strong>Lead Mobile Developer (Flutter)</strong></div>
-                <div class="meta-item">Tingkat Adopsi: <strong>100% (Oleh 20 Driver Operasional)</strong></div>
-                <div class="meta-item">Stack: <strong>Flutter, GetX, GPS, QR Scanner, REST API</strong></div>
+                <div class="meta-item">Client: <strong>PT. Mada Wikri Tunggal</strong></div>
+                <div class="meta-item">Role: <strong>Lead Mobile Developer</strong></div>
+                <div class="meta-item">Stack: <strong>Flutter, GetX, GPS, Laravel API</strong></div>
+                <div class="meta-item">Adoption: <strong>100% — 20/20 Drivers</strong></div>
             </div>
         </header>
 
-        <!-- THE PROBLEM -->
+        <!-- THE SITUATION -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Masalah Operasional Awal</h2>
+            <h2 class="case-study-section-title">The Situation</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Pelacakan armada pengiriman barang jadi (finished goods) ke customer plant sebelumnya dilakukan
-                    secara manual. Gudang PPIC tidak memiliki visibilitas langsung terhadap status pengiriman barang
-                    dari pabrik ke stasiun perakitan pelanggan:
-                </p>
-                <ul>
-                    <li><strong>Buta Lokasi Armada:</strong> Tim logistik tidak mengetahui posisi truk pengiriman secara
-                        real-time, sehingga harus berulang kali menelpon pengemudi saat di jalan.</li>
-                    <li><strong>Proses Manual Lambat:</strong> Konfirmasi penerimaan barang hanya bisa divalidasi
-                        setelah pengemudi kembali ke pabrik pada sore hari untuk menyerahkan fisik Surat Jalan bertanda
-                        tangan.</li>
-                    <li><strong>Sengketa Waktu Pengiriman:</strong> Ketiadaan catatan timestamp digital yang akurat
-                        menyulitkan penelusuran jika terjadi klaim keterlambatan pasokan (just-in-time) oleh pelanggan.
-                    </li>
-                </ul>
+                <p>Setiap hari, 20 truk milik PT. Mada Wikri Tunggal berangkat ke pabrik-pabrik pelanggan untuk mengantar barang jadi. Tidak ada yang tahu secara real-time truk mana sudah tiba, mana yang masih di jalan, mana yang terlambat.</p>
+                <p>Tim logistik harus menelepon driver satu per satu untuk mendapat update. Driver menelepon balik untuk mengonfirmasi tiba. Surat Jalan — bukti serah terima barang — baru bisa divalidasi ketika driver kembali ke pabrik di sore hari membawa kertas yang sudah ditandatangan pelanggan. <strong>8 jam penundaan</strong> antara barang diterima pelanggan dan sistem mencatatnya.</p>
+                <p>Ketika pelanggan mengklaim barang terlambat atau kurang, tidak ada timestamp digital yang bisa menjadi bukti bantahan. Perusahaan tidak punya data.</p>
+            </div>
+        </section>
+
+        <!-- THE INSIGHT -->
+        <section class="case-study-section">
+            <h2 class="case-study-section-title">The Insight</h2>
+            <div class="case-study-content">
+                <p>Setiap driver sudah membawa smartphone. Masalah bukan perangkat keras — masalahnya adalah tidak ada sistem yang memanfaatkannya. Jika driver bisa scan QR di gerbang pabrik pelanggan, GPS otomatis mencatat koordinat dan timestamp, dan backend memvalidasi bahwa posisi driver memang sesuai lokasi — maka seluruh proses konfirmasi manual menjadi tidak relevan.</p>
+                <p>Satu scan. Selesai. Data tersedia di sistem dalam 10 detik.</p>
             </div>
         </section>
 
         <!-- THE ARCHITECTURE -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Pendekatan Arsitektur Teknologi yang Pilih</h2>
+            <h2 class="case-study-section-title">The Architecture</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Solusinya adalah aplikasi mobile cross-platform berbasis Flutter untuk platform Android yang
-                    dipasang pada handphone seluruh driver armada pabrik. Aplikasi ini terintegrasi langsung dengan API
-                    backend Laravel di cloud.
-                </p>
+                <p>Tantangan teknis utama: bagaimana mencegah driver melakukan konfirmasi dari lokasi yang salah (spoofing GPS atau scan dari jarak jauh). Solusinya: validasi geofence dilakukan di backend, bukan di aplikasi client.</p>
 
                 <div class="arch-diagram-container">
                     <div class="arch-grid">
                         <div class="arch-node">
-                            <div class="arch-node-title">1. Flutter Driver Client</div>
-                            Memuat daftar trip surat jalan. Mengakses modul GPS & Scanner QR HP.
+                            <div class="arch-node-title">Flutter Client</div>
+                            Driver scan QR di gerbang. Geolocator package ambil koordinat GPS dengan akurasi tinggi (<code>LocationAccuracy.high</code>).
                         </div>
-                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-arrow">→</div>
                         <div class="arch-node">
-                            <div class="arch-node-title">2. Geo-Location Loop</div>
-                            Perekaman koordinat lokasi (Latitude/Longitude) secara periodik saat perjalanan aktif.
+                            <div class="arch-node-title">Laravel API</div>
+                            Terima payload: QR ID + lat/lng. Hitung jarak ke lokasi target dengan <strong>Haversine Formula</strong>.
                         </div>
-                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-arrow">→</div>
                         <div class="arch-node">
-                            <div class="arch-node-title">3. Scan QR on Arrival</div>
-                            Driver memindai QR Code di gerbang pelanggan untuk memicu tanda terima digital.
+                            <div class="arch-node-title">Geofence Validation</div>
+                            Jika jarak &gt; 200 meter dari lokasi pelanggan → konfirmasi ditolak. Anti-spoofing by design.
                         </div>
-                        <div class="arch-arrow">&rarr;</div>
+                        <div class="arch-arrow">→</div>
                         <div class="arch-node">
-                            <div class="arch-node-title">4. Laravel API & DB</div>
-                            Menyimpan timestamp log presisi GPS untuk diverifikasi oleh tim internal PPIC.
+                            <div class="arch-node-title">GPS Timestamp Log</div>
+                            Koordinat + timestamp disimpan permanen. Bukti digital yang bisa digunakan jika pelanggan mengajukan klaim.
                         </div>
                     </div>
                 </div>
 
-                <p style="text-align: justify;">
-                    Driver menggunakan pemindai QR bawaan aplikasi untuk men-scan kode di plant tujuan. Jika koordinat
-                    GPS driver berada di luar radius radius pagar (geofencing) plant pelanggan, sistem akan menolak
-                    konfirmasi masuk untuk mencegah kecurangan pengisian laporan kedatangan.
-                </p>
+                <p>Validasi Haversine di backend adalah keputusan arsitektur yang disengaja — jika validasi ada di client (Flutter), driver bisa saja memanipulasi koordinat yang dikirim. Dengan validasi di server, tidak ada jalan untuk berbuat curang.</p>
+
+<pre><code class="language-php"><span class="token comment">// Laravel — Haversine geofence validation (server-side, anti-spoofing)</span>
+<span class="token keyword">function</span> <span class="token function">haversineDistance</span>(<span class="token variable">$lat1</span>, <span class="token variable">$lng1</span>, <span class="token variable">$lat2</span>, <span class="token variable">$lng2</span>): <span class="token keyword">float</span>
+{
+    <span class="token variable">$R</span> = <span class="token number">6371000</span>; <span class="token comment">// Earth radius in meters</span>
+    <span class="token variable">$φ1</span> = <span class="token function">deg2rad</span>(<span class="token variable">$lat1</span>); <span class="token variable">$φ2</span> = <span class="token function">deg2rad</span>(<span class="token variable">$lat2</span>);
+    <span class="token variable">$Δφ</span> = <span class="token function">deg2rad</span>(<span class="token variable">$lat2</span> - <span class="token variable">$lat1</span>);
+    <span class="token variable">$Δλ</span> = <span class="token function">deg2rad</span>(<span class="token variable">$lng2</span> - <span class="token variable">$lng1</span>);
+
+    <span class="token variable">$a</span> = <span class="token function">sin</span>(<span class="token variable">$Δφ</span>/2)**2 + <span class="token function">cos</span>(<span class="token variable">$φ1</span>) * <span class="token function">cos</span>(<span class="token variable">$φ2</span>) * <span class="token function">sin</span>(<span class="token variable">$Δλ</span>/2)**2;
+    <span class="token keyword">return</span> <span class="token variable">$R</span> * 2 * <span class="token function">atan2</span>(<span class="token function">sqrt</span>(<span class="token variable">$a</span>), <span class="token function">sqrt</span>(1-<span class="token variable">$a</span>));
+}
+
+<span class="token comment">// Tolak konfirmasi jika driver > 200m dari lokasi pelanggan</span>
+<span class="token keyword">if</span> (<span class="token function">haversineDistance</span>(<span class="token variable">$driverLat</span>, <span class="token variable">$driverLng</span>, <span class="token variable">$plantLat</span>, <span class="token variable">$plantLng</span>) > <span class="token number">200</span>) {
+    <span class="token keyword">return</span> <span class="token function">response</span>()->json([<span class="token string">'error'</span> => <span class="token string">'Konfirmasi ditolak: posisi terlalu jauh dari lokasi tujuan.'</span>], <span class="token number">422</span>);
+}</code></pre>
             </div>
         </section>
 
-        <!-- INTERACTIVE SIMULATOR (VISUAL PROOF) -->
+        <!-- THE RESULTS -->
         <section class="case-study-section">
-            <h2 class="case-study-section-title">Langkah Sinkronisasi GPS & QR (Simulator Interaktif)</h2>
+            <h2 class="case-study-section-title">The Outcome</h2>
             <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Gunakan simulator interaktif di bawah ini untuk melihat bagaimana transisi status pengiriman
-                    berjalan dari pemindaian QR di lapangan hingga sinkronisasi data lokasi ke database Laravel backend:
-                </p>
-
-                <!-- SIMULATOR WIDGET -->
-                <div class="simulator-box">
-                    <div class="sim-steps-grid">
-                        <button class="sim-step-btn active" onclick="showSimStep(1)">1. Pindai Kode QR</button>
-                        <button class="sim-step-btn" onclick="showSimStep(2)">2. Tarik Koordinat GPS</button>
-                        <button class="sim-step-btn" onclick="showSimStep(3)">3. Validasi Geofencing</button>
-                        <button class="sim-step-btn" onclick="showSimStep(4)">4. Sinkronisasi Backend</button>
-                    </div>
-
-                    <div class="sim-screen" id="sim-screen-content">
-                        <!-- Step 1 Content by Default -->
-                        <div class="sim-phone-ui">
-                            <div class="sim-title">[ Driver Client: Camera QR Scan ]</div>
-                            <span class="sim-badge"
-                                style="background-color: rgba(234, 179, 8, 0.1); color: #eab308;">Awaiting Camera
-                                Scan...</span>
-                            <p style="text-align: justify; color: var(--text-muted);">Memindai QR Barcode pada box pengapalan atau pos
-                                gerbang stasiun perakitan pelanggan...</p>
-                            <div
-                                style="background: rgba(255,255,255,0.02); border: 1px dashed var(--border-color); padding: 8px; text-align: center; margin-top: 10px;">
-                                [ |||||||||| QR CODE SCANNED |||||||||| ]<br>
-                                <span
-                                    style="font-size: 11px; color: var(--accent);">SPK-OUT-99812|PLANT-3-CIKARANG|BOX-012</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- THE CODE -->
-        <section class="case-study-section">
-            <h2 class="case-study-section-title">Tantangan Teknis & Integrasi Flutter-REST API</h2>
-            <div class="case-study-content">
-                <p style="text-align: justify;">
-                    Tantangan teknis terbesar adalah merancang sinkronisasi geofencing yang hemat baterai serta mencegah
-                    kecurangan (GPS Spoofing) oleh driver di lapangan.
-                </p>
-                <p style="text-align: justify;">
-                    <strong>Solusi GetX & Haversine Geofencing:</strong><br>
-                    State management diatur menggunakan GetX untuk memproses perubahan status pengiriman secara
-                    responsif. Rumus Haversine dihitung langsung di sisi backend Laravel saat API menerima payload
-                    koordinat, memastikan validasi jarak fisik driver nyata dari pagar koordinat plant pelanggan sebelum
-                    menyetujui transaksi kedatangan.
-                </p>
-                <p style="text-align: justify;">
-                    Berikut adalah cuplikan controller Flutter (Dart) yang menangani pemindaian dan pengiriman
-                    koordinat:
-                </p>
-
-                <pre style="text-align: justify;"><code class="language-dart"><span class="token comment">// driver_app/lib/app/controllers/delivery_controller.dart</span>
-<span class="token keyword">import</span> <span class="token string">'package:get/get.dart'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'package:geolocator/geolocator.dart'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'package:http/http.dart'</span> <span class="token keyword">as</span> <span class="token class-name">http</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'dart:convert'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">class</span> <span class="token class-name">DeliveryController</span> <span class="token keyword">extends</span> <span class="token class-name">GetxController</span> <span class="token punctuation">{</span>
-  <span class="token keyword">var</span> isLoading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">.</span>obs<span class="token punctuation">;</span>
-  <span class="token keyword">var</span> currentPosition <span class="token operator">=</span> <span class="token class-name">Rxn</span><span class="token operator">&lt;</span><span class="token class-name">Position</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token class-name">Future</span><span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token operator">&gt;</span> <span class="token function">confirmArrival</span><span class="token punctuation">(</span><span class="token keyword">int</span> spkId<span class="token punctuation">,</span> <span class="token class-name">String</span> qrCodeContent<span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-      isLoading<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-      
-      <span class="token comment">// Ambil koordinat GPS terkini perangkat driver</span>
-      <span class="token class-name">Position</span> position <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token class-name">Geolocator</span><span class="token punctuation">.</span><span class="token function">getCurrentPosition</span><span class="token punctuation">(</span>
-        desiredAccuracy<span class="token operator">:</span> <span class="token class-name">LocationAccuracy</span><span class="token punctuation">.</span>high
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-      currentPosition<span class="token punctuation">.</span>value <span class="token operator">=</span> position<span class="token punctuation">;</span>
-
-      <span class="token comment">// Kirim ke REST API server Laravel</span>
-      <span class="token keyword">final</span> response <span class="token operator">=</span> <span class="token keyword">await</span> http<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span>
-        <span class="token class-name">Uri</span><span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">'https://s2smfg.biz.id/api/delivery/arrival-confirm'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        headers<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token string">'Content-Type'</span><span class="token operator">:</span> <span class="token string">'application/json'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-        body: jsonEncode<span class="token punctuation">(</span><span class="token punctuation">{</span>
-          <span class="token string">'spk_id'</span><span class="token operator">:</span> spkId<span class="token punctuation">,</span>
-          <span class="token string">'qr_content'</span><span class="token operator">:</span> qrCodeContent<span class="token punctuation">,</span>
-          <span class="token string">'latitude'</span><span class="token operator">:</span> position<span class="token punctuation">.</span>latitude<span class="token punctuation">,</span>
-          <span class="token string">'longitude'</span><span class="token operator">:</span> position<span class="token punctuation">.</span>longitude
-        <span class="token punctuation">}</span><span class="token punctuation">)</span>
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-      <span class="token keyword">return</span> response<span class="token punctuation">.</span>statusCode <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
-      isLoading<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-  <span class="token class-name">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
-            </div>
-        </section>
-
-        <!-- THE MEASURABLE RESULTS -->
-        <section class="case-study-section">
-            <h2 class="case-study-section-title">Hasil Akhir yang Terukur</h2>
-            <div class="case-study-content">
-                <p>
-                    Aplikasi mobile Android ini sukses disebarkan secara instan ke seluruh armada pengiriman. Efisiensi
-                    pencatatan waktu kirim meningkat pesat secara kuantitatif:
-                </p>
-
-                <div
-                    style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 24px 0; font-family: var(--font-mono); font-size: 14px; color: var(--text-main); line-height: 1.8;">
-                    <strong>[ FORMULA EFISIENSI WAKTU PELAPORAN ]</strong><br>
-                    &Delta;T<sub>pelaporan</sub> = (T<sub>manual</sub> - T<sub>aplikasi</sub>) / T<sub>manual</sub>
-                    &times; 100%<br>
-                    &Delta;T<sub>pelaporan</sub> = (28800 s - 10 s) / 28800 s &times; 100% &approx; 99.9% (Real-time
-                    Sync)<br><br>
-                    <strong>[ TINGKAT ADOPSI ARMADA ]</strong><br>
-                    Adopsi Driver = 20 Driver Aktif / 20 Driver Armada = 100%
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 24px; border-radius: 4px; margin: 0 0 24px; font-family: var(--font-mono); font-size: 13px; line-height: 1.9;">
+                    ΔT = (T<sub>manual</sub> − T<sub>digital</sub>) / T<sub>manual</sub> × 100%<br>
+                    ΔT = (28,800s − 10s) / 28,800s × 100% ≈ <strong>99.9%</strong>
                 </div>
 
-                <p>
-                    <strong>Dampak Terukur Hasil Penerapan:</strong>
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <div class="w-step-number">BEFORE</div>
+                        <div class="w-step-title">Konfirmasi pengiriman: 8 jam penundaan. Driver kembali sore hari dengan kertas fisik yang sudah ditandatangan</div>
+                    </div>
+                    <div class="workflow-card">
+                        <div class="w-step-number">AFTER</div>
+                        <div class="w-step-title">10 detik setelah scan QR di gerbang pelanggan, data sudah ada di sistem. Timestamp dan koordinat GPS tersimpan permanen</div>
+                    </div>
+                    <div class="workflow-card">
+                        <div class="w-step-number">ADOPTION</div>
+                        <div class="w-step-title">100% adoption — 20 dari 20 driver menggunakan aplikasi untuk seluruh operasional logistik harian</div>
+                    </div>
+                    <div class="workflow-card">
+                        <div class="w-step-number">ACCOUNTABILITY</div>
+                        <div class="w-step-title">Klaim keterlambatan dari pelanggan kini bisa direspons dengan data GPS timestamp yang tidak bisa dipalsukan</div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 24px; padding: 20px; border-left: 3px solid var(--accent); color: var(--text-muted); font-style: italic;">
+                    "Yang paling sering diabaikan dalam sistem logistics bukan kecepatan pengirimannya — tapi bukti bahwa pengiriman itu benar-benar terjadi. Aplikasi ini menyelesaikan keduanya."
                 </p>
-                <ul>
-                    <li><strong>Kecepatan Rekap Laporan:</strong> Dari rekap manual lembar fisik ke Excel di sore hari
-                        (delay 8 jam) menjadi instan 10 detik saat QR discan di plant customer.</li>
-                    <li><strong>Akurasi Pelacakan GPS Trip:</strong> Mengeliminasi komplain klaim keterlambatan sepihak
-                        dari pelanggan karena sistem mencatat koordinat dan waktu tiba presisi.</li>
-                    <li><strong>Tingkat Adopsi Driver:</strong> 100% adopsi sukses dari 20 driver berkat desain UI/UX
-                        tombol yang ramah bagi operator.</li>
-                </ul>
             </div>
         </section>
+
     </div>
-
-    <!-- Simulator Script -->
-    <script>
-        function showSimStep(step) {
-            // Update Active Buttons
-            const buttons = document.querySelectorAll('.sim-step-btn');
-            buttons.forEach((btn, idx) => {
-                if (idx === (step - 1)) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
-            // Update Screen Content
-            const screen = document.getElementById('sim-screen-content');
-            let content = '';
-
-            switch (step) {
-                case 1:
-                    content = `
-                        <div class="sim-phone-ui">
-                            <div class="sim-title">[ Driver Client: Camera QR Scan ]</div>
-                            <span class="sim-badge" style="background-color: rgba(234, 179, 8, 0.1); color: #eab308;">Awaiting Camera Scan...</span>
-                            <p style="text-align: justify; color: var(--text-muted);">Memindai QR Barcode pada box pengapalan atau pos gerbang stasiun perakitan pelanggan...</p>
-                            <div style="background: rgba(255,255,255,0.02); border: 1px dashed var(--border-color); padding: 8px; text-align: center; margin-top: 10px;">
-                                [ |||||||||| QR CODE SCANNED |||||||||| ]<br>
-                                <span style="font-size: 11px; color: var(--accent);">SPK-OUT-99812|PLANT-3-CIKARANG|BOX-012</span>
-                            </div>
-                        </div>
-                    `;
-                    break;
-                case 2:
-                    content = `
-                        <div class="sim-phone-ui">
-                            <div class="sim-title">[ Driver Client: Get Coordinates ]</div>
-                            <span class="sim-badge" style="background-color: rgba(59, 130, 246, 0.1); color: #3b82f6;">GPS GPS Lock: OK</span>
-                            <p style="color: var(--text-muted);">Mengakses modul hardware GPS handphone driver via Geolocator API...</p>
-                            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 8px; font-family: var(--font-mono); font-size: 11px; margin-top: 10px;">
-                                Latitude: <span style="color: #22c55e;">-6.284712</span><br>
-                                Longitude: <span style="color: #22c55e;">107.168344</span><br>
-                                Accuracy: <span style="color: #3b82f6;">4.2 meters</span>
-                            </div>
-                        </div>
-                    `;
-                    break;
-                case 3:
-                    content = `
-                        <div class="sim-phone-ui">
-                            <div class="sim-title">[ Geofence Validator ]</div>
-                            <span class="sim-badge" style="background-color: rgba(34, 197, 94, 0.1); color: #22c55e;">Valid: Within Geofence</span>
-                            <p style="text-align: justify; color: var(--text-muted);">Menghitung deviasi jarak koordinat pengemudi dengan pagar virtual plant pelanggan (Formula Haversine):</p>
-                            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 8px; font-family: var(--font-mono); font-size: 11px; margin-top: 10px; line-height: 1.4;">
-                                Target Lat: -6.284910 | Lng: 107.168500<br>
-                                Jarak Dihitung: <span style="color: #22c55e;">42.12 Meter</span><br>
-                                Batas Toleransi: <span style="color: #eab308;">&le; 200 Meter</span>
-                            </div>
-                        </div>
-                    `;
-                    break;
-                case 4:
-                    content = `
-                        <div class="sim-phone-ui">
-                            <div class="sim-title">[ Laravel API Sync ]</div>
-                            <span class="sim-badge" style="background-color: rgba(34, 197, 94, 0.1); color: #22c55e;">Sync Success (HTTP 200)</span>
-                            <p style="text-align: justify; color: var(--text-muted);">Mengirimkan data GPS & SPK ke REST API server dan melakukan pembaruan status pengapalan:</p>
-                            <pre style="background: #050507; border: 1px solid var(--border-color); padding: 8px; font-size: 10px; margin-top: 10px; max-height: 80px; overflow-y: auto; color: #a5d6ff;">{
-  "status": "success",
-  "message": "Arrival verified",
-  "payload": {
-    "spk_id": 99812,
-    "status": "arrived",
-    "timestamp": "2026-06-02 07:05:48"
-  }
-}</pre>
-                        </div>
-                    `;
-                    break;
-            }
-
-            screen.innerHTML = content;
-        }
-    </script>
-    <!-- Vercel Analytics -->
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
 </body>
-
 </html>
