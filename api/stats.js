@@ -30,6 +30,10 @@ export default async function handler(req, res) {
         const { action } = req.query; // Menangkap query parameter '?action='
 
         if (req.method === 'POST') {
+            // Cek apakah request berasal dari bot (Googlebot, Bing, dll)
+            const userAgent = req.headers['user-agent'] ? req.headers['user-agent'].toLowerCase() : '';
+            const isBot = /bot|crawler|spider|crawling|slurp|vercel|headless|chrome-lighthouse/i.test(userAgent);
+
             // Kita fetch dulu nilai saat ini (atau gunakan null jika data kosong)
             const { data: current, error: fetchErr } = await supabase
                 .from('site_stats')
@@ -38,6 +42,42 @@ export default async function handler(req, res) {
                 .maybeSingle();
 
             if (fetchErr) throw fetchErr;
+
+            // Jika bot, langsung return angka saat ini tanpa menambahkannya di database
+            if (isBot) {
+                return res.status(200).json(current || { views: 0, likes: 0 });
+            }
+
+            // --- FITUR PELACAKAN IP & ANTI-SPAM ---
+            const ipRaw = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || req.socket?.remoteAddress || 'Unknown IP';
+            const ip = typeof ipRaw === 'string' ? ipRaw.split(',')[0].trim() : 'Unknown IP';
+
+            if (ip !== 'Unknown IP') {
+                // 1. Cek apakah IP ini sudah pernah melakukan action yang sama
+                const { data: existingLog, error: logErr } = await supabase
+                    .from('visitor_logs')
+                    .select('id')
+                    .eq('ip_address', ip)
+                    .eq('action', action)
+                    .limit(1)
+                    .maybeSingle();
+
+                // Jika sudah pernah (dan tidak ada error query), abaikan dan return angka sekarang
+                if (!logErr && existingLog) {
+                    return res.status(200).json(current || { views: 0, likes: 0 });
+                }
+
+                // 2. Simpan IP ke log secara diam-diam di background (fire and forget)
+                // Jika tabel visitor_logs belum dibuat, perintah ini akan gagal diam-diam tanpa merusak API
+                supabase.from('visitor_logs').insert({
+                    ip_address: ip,
+                    user_agent: userAgent,
+                    action: action
+                }).then(({ error }) => {
+                    if (error) console.log("Gagal simpan IP, mungkin tabel visitor_logs belum dibuat.");
+                });
+            }
+            // -------------------------------------
 
             let views = 0;
             let likes = 0;
