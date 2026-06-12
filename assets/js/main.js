@@ -420,12 +420,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 9. SECRET PROTOCOL (Ardyan Tools)
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.shiftKey && e.code === 'Digit1') {
-            e.preventDefault();
-            window.location.href = '/ardyan-tools.html';
-        }
-    });
-
 });
