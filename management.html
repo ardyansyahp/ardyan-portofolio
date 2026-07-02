@@ -513,18 +513,17 @@
             height: 100vh;
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(8px);
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             z-index: 1500;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.25s ease;
         }
 
         .dialog-overlay.active {
+            display: flex;
             opacity: 1;
-            pointer-events: auto;
         }
 
         .dialog-box {
@@ -868,70 +867,68 @@
                 </div>
 
             </section>
-        </main>
-    </div>
 
-    <!-- 3. DIALOG MODAL: ADD / EDIT SKILL -->
-    <div class="dialog-overlay" id="skill-dialog">
-        <div class="dialog-box">
-            <div class="dialog-header">
-                <span class="dialog-title" id="skill-dialog-title">[ ADD PROGRAMMING SKILL ]</span>
+            <!-- 3. DIALOG MODAL: ADD / EDIT SKILL -->
+            <div class="dialog-overlay" id="skill-dialog">
+                <div class="dialog-box">
+                    <div class="dialog-header">
+                        <span class="dialog-title" id="skill-dialog-title">[ ADD PROGRAMMING SKILL ]</span>
+                    </div>
+                    <form id="skill-form">
+                        <input type="hidden" id="skill-id">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label" for="skill-name">Skill Name / Technology</label>
+                                <input type="text" class="form-input" id="skill-name" required placeholder="e.g. PHP, Laravel, Docker">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="skill-category">Category</label>
+                                <select class="form-select" id="skill-category" required>
+                                    <option value="Language">Language</option>
+                                    <option value="Framework">Framework</option>
+                                    <option value="Database">Database</option>
+                                    <option value="Tool">Tool / Devops</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="skill-status">Status</label>
+                                <select class="form-select" id="skill-status" required>
+                                    <option value="planned">Planned (Rencana)</option>
+                                    <option value="learning">Learning (Sedang Dipelajari)</option>
+                                    <option value="learned">Learned (Dikuasai)</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label" for="skill-level">Proficiency Level</label>
+                                <select class="form-select" id="skill-level">
+                                    <option value="beginner">Beginner (Dasar)</option>
+                                    <option value="intermediate">Intermediate (Menengah)</option>
+                                    <option value="advanced">Advanced (Mahir)</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label" for="skill-notes">Catatan Belajar / Rencana Kegiatan</label>
+                                <textarea class="form-textarea" id="skill-notes" placeholder="Tulis rencana, materi yang dipelajari, atau proyek implementasi skill ini..."></textarea>
+                            </div>
+                        </div>
+                        <div class="dialog-footer">
+                            <button type="button" class="btn btn-outline" id="btn-cancel-skill">Cancel</button>
+                            <button type="submit" class="btn btn-primary">[ Save Skill ]</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <form id="skill-form">
-                <input type="hidden" id="skill-id">
-                <div class="form-grid">
-                    <div class="form-group full-width">
-                        <label class="form-label" for="skill-name">Skill Name / Technology</label>
-                        <input type="text" class="form-input" id="skill-name" required placeholder="e.g. PHP, Laravel, Docker">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="skill-category">Category</label>
-                        <select class="form-select" id="skill-category" required>
-                            <option value="Language">Language</option>
-                            <option value="Framework">Framework</option>
-                            <option value="Database">Database</option>
-                            <option value="Tool">Tool / Devops</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="skill-status">Status</label>
-                        <select class="form-select" id="skill-status" required>
-                            <option value="planned">Planned (Rencana)</option>
-                            <option value="learning">Learning (Sedang Dipelajari)</option>
-                            <option value="learned">Learned (Dikuasai)</option>
-                        </select>
-                    </div>
-                    <div class="form-group full-width">
-                        <label class="form-label" for="skill-level">Proficiency Level</label>
-                        <select class="form-select" id="skill-level">
-                            <option value="beginner">Beginner (Dasar)</option>
-                            <option value="intermediate">Intermediate (Menengah)</option>
-                            <option value="advanced">Advanced (Mahir)</option>
-                        </select>
-                    </div>
-                    <div class="form-group full-width">
-                        <label class="form-label" for="skill-notes">Catatan Belajar / Rencana Kegiatan</label>
-                        <textarea class="form-textarea" id="skill-notes" placeholder="Tulis rencana, materi yang dipelajari, atau proyek implementasi skill ini..."></textarea>
-                    </div>
-                </div>
-                <div class="dialog-footer">
-                    <button type="button" class="btn btn-outline" id="btn-cancel-skill">Cancel</button>
-                    <button type="submit" class="btn btn-primary">[ Save Skill ]</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- 4. DIALOG MODAL: ADD / EDIT COMPANY RESEARCH -->
-    <div class="dialog-overlay" id="job-dialog">
-        <div class="dialog-box wide">
-            <div class="dialog-header">
-                <span class="dialog-title" id="job-dialog-title">[ ADD COMPANY RESEARCH ]</span>
-            </div>
-            <form id="job-form">
-                <input type="hidden" id="job-id">
-                <div class="form-grid">
+            <!-- 4. DIALOG MODAL: ADD / EDIT COMPANY RESEARCH -->
+            <div class="dialog-overlay" id="job-dialog">
+                <div class="dialog-box wide">
+                    <div class="dialog-header">
+                        <span class="dialog-title" id="job-dialog-title">[ ADD COMPANY RESEARCH ]</span>
+                    </div>
+                    <form id="job-form">
+                        <input type="hidden" id="job-id">
+                        <div class="form-grid">
                     <!-- Basic details -->
                     <div class="form-group">
                         <label class="form-label" for="job-company">Company Name</label>
@@ -1017,17 +1014,20 @@
                         <label class="form-label" for="job-notes">Internal Notes & History log</label>
                         <textarea class="form-textarea" id="job-notes" placeholder="Catatan proses wawancara, pertanyaan teknis yang ditanyakan, negosiasi gaji, dll..."></textarea>
                     </div>
-                </div>
-                <div class="dialog-footer">
-                    <button type="button" class="btn btn-outline" id="btn-cancel-job">Cancel</button>
-                    <button type="submit" class="btn btn-primary">[ Save Company ]</button>
-                </div>
-            </form>
+                    </div>
+                    <div class="dialog-footer">
+                        <button type="button" class="btn btn-outline" id="btn-cancel-job">Cancel</button>
+                        <button type="submit" class="btn btn-primary">[ Save Company ]</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <!-- 5. TOAST NOTIFICATION -->
-    <div class="toast" id="toast-notify">Action completed.</div>
+        <!-- 5. TOAST NOTIFICATION -->
+        <div class="toast" id="toast-notify">Action completed.</div>
+
+        </main>
+    </div>
 
     <!-- Scripts -->
     <script>
