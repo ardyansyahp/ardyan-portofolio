@@ -864,72 +864,73 @@
                             <!-- Table rows populated dynamically -->
                         </tbody>
                     </table>
-                </div>
-
+             
             </section>
 
-            <!-- 3. DIALOG MODAL: ADD / EDIT SKILL -->
-            <div class="dialog-overlay" id="skill-dialog">
-                <div class="dialog-box">
-                    <div class="dialog-header">
-                        <span class="dialog-title" id="skill-dialog-title">[ ADD PROGRAMMING SKILL ]</span>
-                    </div>
-                    <form id="skill-form">
-                        <input type="hidden" id="skill-id">
-                        <div class="form-grid">
-                            <div class="form-group full-width">
-                                <label class="form-label" for="skill-name">Skill Name / Technology</label>
-                                <input type="text" class="form-input" id="skill-name" required placeholder="e.g. PHP, Laravel, Docker">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="skill-category">Category</label>
-                                <select class="form-select" id="skill-category" required>
-                                    <option value="Language">Language</option>
-                                    <option value="Framework">Framework</option>
-                                    <option value="Database">Database</option>
-                                    <option value="Tool">Tool / Devops</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="skill-status">Status</label>
-                                <select class="form-select" id="skill-status" required>
-                                    <option value="planned">Planned (Rencana)</option>
-                                    <option value="learning">Learning (Sedang Dipelajari)</option>
-                                    <option value="learned">Learned (Dikuasai)</option>
-                                </select>
-                            </div>
-                            <div class="form-group full-width">
-                                <label class="form-label" for="skill-level">Proficiency Level</label>
-                                <select class="form-select" id="skill-level">
-                                    <option value="beginner">Beginner (Dasar)</option>
-                                    <option value="intermediate">Intermediate (Menengah)</option>
-                                    <option value="advanced">Advanced (Mahir)</option>
-                                </select>
-                            </div>
-                            <div class="form-group full-width">
-                                <label class="form-label" for="skill-notes">Catatan Belajar / Rencana Kegiatan</label>
-                                <textarea class="form-textarea" id="skill-notes" placeholder="Tulis rencana, materi yang dipelajari, atau proyek implementasi skill ini..."></textarea>
-                            </div>
-                        </div>
-                        <div class="dialog-footer">
-                            <button type="button" class="btn btn-outline" id="btn-cancel-skill">Cancel</button>
-                            <button type="submit" class="btn btn-primary">[ Save Skill ]</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        </main>
+    </div><!-- end #admin-workspace -->
 
-            <!-- 4. DIALOG MODAL: ADD / EDIT COMPANY RESEARCH -->
-            <div class="dialog-overlay" id="job-dialog">
-                <div class="dialog-box wide">
-                    <div class="dialog-header">
-                        <span class="dialog-title" id="job-dialog-title">[ ADD COMPANY RESEARCH ]</span>
+    <!-- 3. DIALOG MODAL: ADD / EDIT SKILL -->
+    <div class="dialog-overlay" id="skill-dialog" style="display:none;">
+        <div class="dialog-box">
+            <div class="dialog-header">
+                <span class="dialog-title" id="skill-dialog-title">[ ADD PROGRAMMING SKILL ]</span>
+            </div>
+            <form id="skill-form">
+                <input type="hidden" id="skill-id">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label class="form-label" for="skill-name">Skill Name / Technology</label>
+                        <input type="text" class="form-input" id="skill-name" required placeholder="e.g. PHP, Laravel, Docker">
                     </div>
-                    <form id="job-form">
-                        <input type="hidden" id="job-id">
-                        <div class="form-grid">
-                    <!-- Basic details -->
+                    <div class="form-group">
+                        <label class="form-label" for="skill-category">Category</label>
+                        <select class="form-select" id="skill-category" required>
+                            <option value="Language">Language</option>
+                            <option value="Framework">Framework</option>
+                            <option value="Database">Database</option>
+                            <option value="Tool">Tool / Devops</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="skill-status">Status</label>
+                        <select class="form-select" id="skill-status" required>
+                            <option value="planned">Planned (Rencana)</option>
+                            <option value="learning">Learning (Sedang Dipelajari)</option>
+                            <option value="learned">Learned (Dikuasai)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label" for="skill-level">Proficiency Level</label>
+                        <select class="form-select" id="skill-level">
+                            <option value="beginner">Beginner (Dasar)</option>
+                            <option value="intermediate">Intermediate (Menengah)</option>
+                            <option value="advanced">Advanced (Mahir)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label" for="skill-notes">Catatan Belajar / Rencana Kegiatan</label>
+                        <textarea class="form-textarea" id="skill-notes" placeholder="Tulis rencana, materi yang dipelajari, atau proyek implementasi skill ini..."></textarea>
+                    </div>
+                </div>
+                <div class="dialog-footer">
+                    <button type="button" class="btn btn-outline" id="btn-cancel-skill">Cancel</button>
+                    <button type="submit" class="btn btn-primary">[ Save Skill ]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. DIALOG MODAL: ADD / EDIT COMPANY RESEARCH -->
+    <div class="dialog-overlay" id="job-dialog" style="display:none;">
+        <div class="dialog-box wide">
+            <div class="dialog-header">
+                <span class="dialog-title" id="job-dialog-title">[ ADD COMPANY RESEARCH ]</span>
+            </div>
+            <form id="job-form">
+                <input type="hidden" id="job-id">
+                <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label" for="job-company">Company Name</label>
                         <input type="text" class="form-input" id="job-company" required placeholder="e.g. PT. Makmur Jaya">
@@ -938,7 +939,6 @@
                         <label class="form-label" for="job-location">Location</label>
                         <input type="text" class="form-input" id="job-location" placeholder="e.g. Cikarang, Bekasi">
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label" for="job-distance">Distance (km)</label>
                         <input type="text" class="form-input" id="job-distance" placeholder="e.g. 10 km">
@@ -947,7 +947,6 @@
                         <label class="form-label" for="job-time">Travel Time</label>
                         <input type="text" class="form-input" id="job-time" placeholder="e.g. 26 m">
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="job-status">Main Status</label>
                         <select class="form-select" id="job-status">
@@ -964,12 +963,10 @@
                         <label class="form-label" for="job-applied-date">Applied Date</label>
                         <input type="date" class="form-input" id="job-applied-date">
                     </div>
-
                     <!-- Platform links -->
                     <div class="form-group full-width" style="margin-top: 10px; margin-bottom: 5px;">
-                        <span class="form-label" style="font-weight: bold; border-bottom: 1px dashed var(--border-color); padding-bottom: 4px;">Platform & Application Links</span>
+                        <span class="form-label" style="font-weight: bold; border-bottom: 1px dashed var(--border-color); padding-bottom: 4px;">Platform &amp; Application Links</span>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="job-link-web">Company Website Link</label>
                         <input type="url" class="form-input" id="job-link-web" placeholder="https://example.com">
@@ -1002,31 +999,27 @@
                         <label class="form-label" for="job-link-ta">Tech In Asia Link</label>
                         <input type="url" class="form-input" id="job-link-ta" placeholder="https://techinasia.com/...">
                     </div>
-
-
-
                     <!-- Requirements & Notes -->
                     <div class="form-group full-width">
-                        <label class="form-label" for="job-requirements">Company Technology Requirements (Kebutuhan Perusahaan)</label>
-                        <textarea class="form-textarea" id="job-requirements" placeholder="e.g. PHP 8.2, Laravel 10, MySQL, REST API, TailwindCSS (Tulis kebutuhan keahlian di sini)"></textarea>
+                        <label class="form-label" for="job-requirements">Company Technology Requirements</label>
+                        <textarea class="form-textarea" id="job-requirements" placeholder="e.g. PHP 8.2, Laravel 10, MySQL, REST API, TailwindCSS"></textarea>
                     </div>
                     <div class="form-group full-width">
-                        <label class="form-label" for="job-notes">Internal Notes & History log</label>
+                        <label class="form-label" for="job-notes">Internal Notes &amp; History log</label>
                         <textarea class="form-textarea" id="job-notes" placeholder="Catatan proses wawancara, pertanyaan teknis yang ditanyakan, negosiasi gaji, dll..."></textarea>
                     </div>
-                    </div>
-                    <div class="dialog-footer">
-                        <button type="button" class="btn btn-outline" id="btn-cancel-job">Cancel</button>
-                        <button type="submit" class="btn btn-primary">[ Save Company ]</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="dialog-footer">
+                    <button type="button" class="btn btn-outline" id="btn-cancel-job">Cancel</button>
+                    <button type="submit" class="btn btn-primary">[ Save Company ]</button>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <!-- 5. TOAST NOTIFICATION -->
-        <div class="toast" id="toast-notify">Action completed.</div>
+    <!-- 5. TOAST NOTIFICATION -->
+    <div class="toast" id="toast-notify">Action completed.</div>
 
-        </main>
     </div>
 
     <!-- Scripts -->
@@ -1178,6 +1171,17 @@
             }, 3000);
         }
 
+        // Utility: Show / Hide Dialogs (menggunakan style.display langsung agar tidak konflik CSS)
+        function showDialog(el) {
+            el.style.display = 'flex';
+            el.style.opacity = '0';
+            setTimeout(() => { el.style.opacity = '1'; }, 10);
+        }
+        function hideDialog(el) {
+            el.style.opacity = '0';
+            setTimeout(() => { el.style.display = 'none'; el.style.opacity = ''; }, 250);
+        }
+
         // C. INTERACTIVE LOGIC (TABS, MODALS, RENDERING)
         let allSkills = [];
         let allJobs = [];
@@ -1236,11 +1240,11 @@
             skillForm.reset();
             skillIdInp.value = '';
             document.getElementById('skill-dialog-title').textContent = '[ ADD PROGRAMMING SKILL ]';
-            skillDialog.classList.add('active');
+            showDialog(skillDialog);
         });
 
         document.getElementById('btn-cancel-skill').addEventListener('click', () => {
-            skillDialog.classList.remove('active');
+            hideDialog(skillDialog);
         });
 
         skillForm.addEventListener('submit', async (e) => {
@@ -1262,7 +1266,7 @@
                     await db.request('/api/skills', 'POST', payload);
                     showToast('Skill successfully created!');
                 }
-                skillDialog.classList.remove('active');
+                hideDialog(skillDialog);
                 await loadSkillsData();
             } catch (err) {
                 showToast('Action failed: ' + err.message, true);
@@ -1348,7 +1352,7 @@
                     skillLevelInp.value = s.level || 'beginner';
                     skillNotesInp.value = s.notes || '';
                     document.getElementById('skill-dialog-title').textContent = '[ EDIT SKILL DETAILS ]';
-                    skillDialog.classList.add('active');
+                    showDialog(skillDialog);
                 });
 
                 card.querySelector('.delete-btn').addEventListener('click', async () => {
@@ -1410,11 +1414,11 @@
             jobIdInp.value = '';
             jobAppliedDateInp.value = new Date().toISOString().split('T')[0];
             document.getElementById('job-dialog-title').textContent = '[ ADD COMPANY RESEARCH ]';
-            jobDialog.classList.add('active');
+            showDialog(jobDialog);
         });
 
         document.getElementById('btn-cancel-job').addEventListener('click', () => {
-            jobDialog.classList.remove('active');
+            hideDialog(jobDialog);
         });
 
         jobForm.addEventListener('submit', async (e) => {
@@ -1449,7 +1453,7 @@
                     await db.request('/api/applications', 'POST', payload);
                     showToast('Job application created successfully!');
                 }
-                jobDialog.classList.remove('active');
+                hideDialog(jobDialog);
                 await loadJobsData();
             } catch (err) {
                 showToast('Action failed: ' + err.message, true);
@@ -1606,7 +1610,7 @@
                     jobNotesInp.value = j.notes || '';
 
                     document.getElementById('job-dialog-title').textContent = '[ EDIT COMPANY RESEARCH ]';
-                    jobDialog.classList.add('active');
+                    showDialog(jobDialog);
                 });
 
                 // Bind Delete Button
