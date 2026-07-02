@@ -511,18 +511,14 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(10, 10, 10, 0.85);
+            background: rgba(10, 10, 10, 0.88);
             backdrop-filter: blur(8px);
             display: none;
             justify-content: center;
-            align-items: center;
-            z-index: 1500;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        .dialog-overlay.active {
-            display: flex;
+            align-items: flex-start;
+            padding-top: 60px;
+            z-index: 9000;
+            transition: opacity 0.2s ease;
             opacity: 1;
         }
 
@@ -1171,15 +1167,12 @@
             }, 3000);
         }
 
-        // Utility: Show / Hide Dialogs (menggunakan style.display langsung agar tidak konflik CSS)
+        // Utility: Show / Hide Dialogs
         function showDialog(el) {
             el.style.display = 'flex';
-            el.style.opacity = '0';
-            setTimeout(() => { el.style.opacity = '1'; }, 10);
         }
         function hideDialog(el) {
-            el.style.opacity = '0';
-            setTimeout(() => { el.style.display = 'none'; el.style.opacity = ''; }, 250);
+            el.style.display = 'none';
         }
 
         // C. INTERACTIVE LOGIC (TABS, MODALS, RENDERING)
