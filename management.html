@@ -437,26 +437,27 @@
         /* Checkable Step Cells */
         .step-cell {
             padding: 0 !important;
+        /* Status Badge Colors (Job Applications) */
+        .status-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
             text-align: center;
-            cursor: pointer;
-            transition: background-color 0.15s ease;
-            user-select: none;
-            min-width: 24px;
-            height: 32px;
+            letter-spacing: 0.5px;
+            border: 1px solid transparent;
         }
 
-        .step-cell:hover {
-            background: rgba(255, 255, 255, 0.08) !important;
-        }
-
-        /* Active Fill Colors */
-        .step-cell.active-1, .step-cell.active-2, .step-cell.active-3 { background-color: rgba(6, 182, 212, 0.35); color: #22d3ee; }
-        .step-cell.active-4, .step-cell.active-5, .step-cell.active-6 { background-color: rgba(217, 70, 239, 0.35); color: #f472b6; }
-        .step-cell.active-7, .step-cell.active-8, .step-cell.active-9 { background-color: rgba(249, 115, 22, 0.35); color: #fdba74; }
-        .step-cell.active-10, .step-cell.active-11, .step-cell.active-12 { background-color: rgba(234, 179, 8, 0.35); color: #fef08a; }
-        .step-cell.active-13, .step-cell.active-14, .step-cell.active-15 { background-color: rgba(59, 130, 246, 0.35); color: #93c5fd; }
-        .step-cell.active-16, .step-cell.active-17, .step-cell.active-18 { background-color: rgba(34, 197, 94, 0.35); color: #86efac; }
-        .step-cell.active-19, .step-cell.active-20, .step-cell.active-21 { background-color: rgba(239, 68, 68, 0.35); color: #fca5a5; }
+        .status-applied { background-color: rgba(6, 182, 212, 0.1); color: var(--applied-color); border-color: rgba(6, 182, 212, 0.2); }
+        .status-reachout { background-color: rgba(217, 70, 239, 0.1); color: var(--reachout-color); border-color: rgba(217, 70, 239, 0.2); }
+        .status-notice { background-color: rgba(249, 115, 22, 0.1); color: var(--notice-color); border-color: rgba(249, 115, 22, 0.2); }
+        .status-interview { background-color: rgba(234, 179, 8, 0.1); color: var(--interview-color); border-color: rgba(234, 179, 8, 0.2); }
+        .status-tech { background-color: rgba(59, 130, 246, 0.1); color: var(--tech-color); border-color: rgba(59, 130, 246, 0.2); }
+        .status-accept { background-color: rgba(34, 197, 94, 0.1); color: var(--accept-color); border-color: rgba(34, 197, 94, 0.2); }
+        .status-reject { background-color: rgba(239, 68, 68, 0.1); color: var(--reject-color); border-color: rgba(239, 68, 68, 0.2); }
 
         /* Platform Link Buttons */
         .links-col {
@@ -845,50 +846,19 @@
 
                 <!-- Spreadsheet Grid -->
                 <div class="spreadsheet-container">
-                    <table class="spreadsheet-table">
+                    <table class="spreadsheet-table" style="min-width: 1100px;">
                         <thead>
-                            <!-- Group Headers -->
                             <tr>
-                                <th rowspan="2" style="width: 40px;">No</th>
-                                <th rowspan="2" style="width: 150px;">Company</th>
-                                <th rowspan="2" style="width: 180px;">Links</th>
-                                <th rowspan="2" style="width: 150px;">Location</th>
-                                <th rowspan="2" style="width: 60px;">Dist</th>
-                                <th rowspan="2" style="width: 60px;">Time</th>
-                                <th colspan="3" class="group-header gh-applied">Applied</th>
-                                <th colspan="3" class="group-header gh-reachout">Reachout</th>
-                                <th colspan="3" class="group-header gh-notice">Notice</th>
-                                <th colspan="3" class="group-header gh-interview">Interview</th>
-                                <th colspan="3" class="group-header gh-tech">Tech Inter</th>
-                                <th colspan="3" class="group-header gh-accept">Accept</th>
-                                <th colspan="3" class="group-header gh-reject">Reject</th>
-                                <th rowspan="2" style="width: 120px;">History/Age</th>
-                                <th rowspan="2" style="width: 180px;">Requirements</th>
-                                <th rowspan="2" style="width: 100px;">Actions</th>
-                            </tr>
-                            <!-- Numbered Columns -->
-                            <tr>
-                                <th class="sub-status-header">1</th>
-                                <th class="sub-status-header">2</th>
-                                <th class="sub-status-header">3</th>
-                                <th class="sub-status-header">4</th>
-                                <th class="sub-status-header">5</th>
-                                <th class="sub-status-header">6</th>
-                                <th class="sub-status-header">7</th>
-                                <th class="sub-status-header">8</th>
-                                <th class="sub-status-header">9</th>
-                                <th class="sub-status-header">10</th>
-                                <th class="sub-status-header">11</th>
-                                <th class="sub-status-header">12</th>
-                                <th class="sub-status-header">13</th>
-                                <th class="sub-status-header">14</th>
-                                <th class="sub-status-header">15</th>
-                                <th class="sub-status-header">16</th>
-                                <th class="sub-status-header">17</th>
-                                <th class="sub-status-header">18</th>
-                                <th class="sub-status-header">19</th>
-                                <th class="sub-status-header">20</th>
-                                <th class="sub-status-header">21</th>
+                                <th style="width: 40px;">No</th>
+                                <th style="width: 150px;">Company</th>
+                                <th style="width: 110px;">Status</th>
+                                <th style="width: 180px;">Links</th>
+                                <th style="width: 150px;">Location</th>
+                                <th style="width: 60px;">Dist</th>
+                                <th style="width: 60px;">Time</th>
+                                <th style="width: 120px;">History/Age</th>
+                                <th style="width: 200px;">Requirements</th>
+                                <th style="width: 100px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="job-table-body">
@@ -1036,13 +1006,7 @@
                         <input type="url" class="form-input" id="job-link-ta" placeholder="https://techinasia.com/...">
                     </div>
 
-                    <!-- Steps Selection (1 to 21) -->
-                    <div class="form-group full-width" style="margin-top: 15px;">
-                        <span class="form-label" style="font-weight: bold; margin-bottom: 2px;">Checklist Progress (Langkah 1 - 21)</span>
-                        <div class="step-checkbox-matrix" id="modal-step-matrix">
-                            <!-- Populated in JS -->
-                        </div>
-                    </div>
+
 
                     <!-- Requirements & Notes -->
                     <div class="form-group full-width">
@@ -1436,42 +1400,11 @@
         searchJobs.addEventListener('input', renderJobs);
         filterJobStatus.addEventListener('change', renderJobs);
 
-        // Generate Step Matrix in Modal
-        const modalStepMatrix = document.getElementById('modal-step-matrix');
-        const statusGroups = [
-            { name: 'Applied', cols: [1,2,3], cls: 'scl-applied' },
-            { name: 'Reachout', cols: [4,5,6], cls: 'scl-reachout' },
-            { name: 'Notice', cols: [7,8,9], cls: 'scl-notice' },
-            { name: 'Interview', cols: [10,11,12], cls: 'scl-interview' },
-            { name: 'Tech Inter', cols: [13,14,15], cls: 'scl-tech' },
-            { name: 'Accept', cols: [16,17,18], cls: 'scl-accept' },
-            { name: 'Reject', cols: [19,20,21], cls: 'scl-reject' }
-        ];
-
-        function populateModalStepMatrix() {
-            modalStepMatrix.innerHTML = '';
-            statusGroups.forEach(grp => {
-                grp.cols.forEach(num => {
-                    const lbl = document.createElement('label');
-                    lbl.className = `step-checkbox-label ${grp.cls}`;
-                    lbl.title = `Tahap: ${grp.name} - Langkah ${num}`;
-                    lbl.innerHTML = `<input type="checkbox" class="modal-step-chk" value="${num}"><span>${num}</span>`;
-                    modalStepMatrix.appendChild(lbl);
-                });
-            });
-        }
-
-        populateModalStepMatrix();
-
         document.getElementById('btn-add-job').addEventListener('click', () => {
             jobForm.reset();
             jobIdInp.value = '';
             jobAppliedDateInp.value = new Date().toISOString().split('T')[0];
             document.getElementById('job-dialog-title').textContent = '[ ADD COMPANY RESEARCH ]';
-            
-            // Clear step checkboxes
-            document.querySelectorAll('.modal-step-chk').forEach(chk => chk.checked = false);
-            
             jobDialog.classList.add('active');
         });
 
@@ -1481,14 +1414,6 @@
 
         jobForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            // Collect step checkboxes
-            const steps = [];
-            document.querySelectorAll('.modal-step-chk').forEach(chk => {
-                if (chk.checked) {
-                    steps.push(parseInt(chk.value));
-                }
-            });
 
             const payload = {
                 company_name: jobCompanyInp.value,
@@ -1507,7 +1432,7 @@
                 techinasia_link: jobTaInp.value,
                 requirements: jobReqInp.value,
                 notes: jobNotesInp.value,
-                steps: steps
+                steps: []
             };
 
             const isEdit = jobIdInp.value !== '';
@@ -1622,26 +1547,24 @@
                 });
                 linksHtml += '</div>';
 
-                // Build steps cells columns
-                let stepsCellsHtml = '';
-                const stepsArr = j.steps || [];
-
-                for (let num = 1; num <= 21; num++) {
-                    const isActive = stepsArr.includes(num);
-                    const cellClass = isActive ? `step-cell active-${num}` : 'step-cell';
-                    stepsCellsHtml += `<td class="${cellClass}" data-num="${num}">${isActive ? '•' : ''}</td>`;
-                }
+                // Determine status badge class
+                let statusClass = 'status-applied';
+                if (j.status === 'Reachout') statusClass = 'status-reachout';
+                else if (j.status === 'Notice') statusClass = 'status-notice';
+                else if (j.status === 'Interview') statusClass = 'status-interview';
+                else if (j.status === 'Tech Inter') statusClass = 'status-tech';
+                else if (j.status === 'Accept') statusClass = 'status-accept';
+                else if (j.status === 'Reject') statusClass = 'status-reject';
 
                 // Render main rows
                 tr.innerHTML = `
                     <td style="text-align: center; font-family: var(--font-mono); color: var(--text-muted);">${index + 1}</td>
                     <td style="font-weight: 700; color: var(--text-main); font-size: 13px;">${escapeHtml(j.company_name)}</td>
+                    <td style="text-align: center;"><span class="status-badge ${statusClass}">${j.status || 'Applied'}</span></td>
                     <td>${linksHtml}</td>
                     <td style="color: var(--text-muted); font-size: 11px;">${j.location ? escapeHtml(j.location) : '-'}</td>
                     <td style="text-align: center; font-family: var(--font-mono);">${j.distance ? escapeHtml(j.distance) : '-'}</td>
                     <td style="text-align: center; font-family: var(--font-mono);">${j.travel_time ? escapeHtml(j.travel_time) : '-'}</td>
-                    
-                    ${stepsCellsHtml}
                     
                     <td style="font-family: var(--font-mono); font-size: 11px; text-align: center;" title="Tanggal lamar: ${j.applied_date || '-'}">
                         ${getRelativeTime(j.applied_date)}
@@ -1654,48 +1577,6 @@
                         <button class="skill-action-btn delete delete-job-btn">[ Del ]</button>
                     </td>
                 `;
-
-                // Bind Cell Click: Toggling individual steps
-                tr.querySelectorAll('.step-cell').forEach(cell => {
-                    cell.addEventListener('click', async (e) => {
-                        e.stopPropagation();
-                        const num = parseInt(cell.getAttribute('data-num'));
-                        let currentSteps = [...(j.steps || [])];
-
-                        if (currentSteps.includes(num)) {
-                            currentSteps = currentSteps.filter(n => n !== num);
-                        } else {
-                            currentSteps.push(num);
-                        }
-
-                        // Determine main status based on which step was clicked (smart helper)
-                        let newStatus = j.status;
-                        if (num >= 1 && num <= 3) newStatus = 'Applied';
-                        else if (num >= 4 && num <= 6) newStatus = 'Reachout';
-                        else if (num >= 7 && num <= 9) newStatus = 'Notice';
-                        else if (num >= 10 && num <= 12) newStatus = 'Interview';
-                        else if (num >= 13 && num <= 15) newStatus = 'Tech Inter';
-                        else if (num >= 16 && num <= 18) newStatus = 'Accept';
-                        else if (num >= 19 && num <= 21) newStatus = 'Reject';
-
-                        try {
-                            const updated = await db.request(`/api/applications?id=${j.id}`, 'PUT', {
-                                ...j,
-                                steps: currentSteps,
-                                status: newStatus
-                            });
-                            showToast(`Status ${j.company_name} updated.`);
-                            
-                            // Live update data locally & re-render
-                            j.steps = currentSteps;
-                            j.status = newStatus;
-                            updateJobsSummary();
-                            renderJobs();
-                        } catch (err) {
-                            showToast('Failed to update status.', true);
-                        }
-                    });
-                });
 
                 // Bind Edit Button
                 tr.querySelector('.edit-job-btn').addEventListener('click', (e) => {
@@ -1718,12 +1599,6 @@
                     jobTaInp.value = j.techinasia_link || '';
                     jobReqInp.value = j.requirements || '';
                     jobNotesInp.value = j.notes || '';
-
-                    // Check steps checkboxes in modal
-                    document.querySelectorAll('.modal-step-chk').forEach(chk => {
-                        const val = parseInt(chk.value);
-                        chk.checked = stepsArr.includes(val);
-                    });
 
                     document.getElementById('job-dialog-title').textContent = '[ EDIT COMPANY RESEARCH ]';
                     jobDialog.classList.add('active');
