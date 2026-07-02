@@ -1031,6 +1031,11 @@
 
     <!-- Scripts -->
     <script>
+        // Global Error Handler for Debugging
+        window.addEventListener('error', function(e) {
+            alert("System Error: " + e.message + "\nFile: " + e.filename + "\nLine: " + e.lineno);
+        });
+
         // A. SECURITY CHECK & GATE SYSTEM
         const accessGate = document.getElementById('access-gate');
         const adminWorkspace = document.getElementById('admin-workspace');
@@ -1507,7 +1512,7 @@
 
             const filtered = allJobs.filter(j => {
                 const matchQuery = !q || 
-                    j.company_name.toLowerCase().includes(q) || 
+                    (j.company_name && j.company_name.toLowerCase().includes(q)) || 
                     (j.location && j.location.toLowerCase().includes(q)) || 
                     (j.requirements && j.requirements.toLowerCase().includes(q));
 
