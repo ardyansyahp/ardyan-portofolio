@@ -1074,6 +1074,7 @@
                 if (useLocal) {
                     return this.localRequest(url, method, body);
                 }
+                let res;
                 try {
                     const headers = {
                         'Authorization': DB_BEARER,
@@ -1083,7 +1084,7 @@
                     if (body) {
                         config.body = JSON.stringify(body);
                     }
-                    const res = await fetch(url, config);
+                    res = await fetch(url, config);
                     
                     if (res.status === 503) {
                         console.warn("API Service Unavailable, switching to LocalStorage fallback.");
@@ -1092,12 +1093,20 @@
                         return this.localRequest(url, method, body);
                     }
                     if (!res.ok) {
-                        throw new Error('API request failed');
+                        const errData = await res.json().catch(() => ({}));
+                        throw new Error(errData.error || `API request failed with status ${res.status}`);
                     }
                     if (method === 'DELETE') return { success: true };
                     return await res.json();
                 } catch (e) {
-                    console.error("API error, falling back to local storage:", e);
+                    // Hanya fallback ke LocalStorage jika memang koneksi offline / TypeError fetch
+                    // ATAU jika statusnya 503 (Server offline / config missing).
+                    // Jika res didefinisikan dan statusnya 500/400 (error dari database Supabase), jangan fallback, lemparkan error asli.
+                    if (res && res.status !== 503) {
+                        console.error("Database/Server Error:", e);
+                        throw e;
+                    }
+                    console.warn("Network offline / API down. falling back to local storage:", e);
                     useLocal = true;
                     updateStorageBadge();
                     return this.localRequest(url, method, body);
