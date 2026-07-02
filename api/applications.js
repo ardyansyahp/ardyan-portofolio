@@ -54,7 +54,7 @@ export default async function handler(req, res) {
             const { 
                 company_name, web_link, linkedin_link, jobstreet_link, 
                 glints_link, indeed_link, deall_link, kalibrr_link, 
-                techinasia_link, location, distance, travel_time, 
+                techinasia_link, glassdoor_link, location, distance, travel_time, 
                 applied_date, requirements, notes, status, steps, openings 
             } = req.body;
 
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
                 .insert({ 
                     company_name, web_link, linkedin_link, jobstreet_link, 
                     glints_link, indeed_link, deall_link, kalibrr_link, 
-                    techinasia_link, location, distance, travel_time, 
+                    techinasia_link, glassdoor_link, location, distance, travel_time, 
                     applied_date: applied_date || new Date().toISOString().split('T')[0], 
                     requirements, notes, status: status || 'Applied', 
                     steps: steps || [],
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
             const { 
                 company_name, web_link, linkedin_link, jobstreet_link, 
                 glints_link, indeed_link, deall_link, kalibrr_link, 
-                techinasia_link, location, distance, travel_time, 
+                techinasia_link, glassdoor_link, location, distance, travel_time, 
                 applied_date, requirements, notes, status, steps, openings 
             } = req.body;
 
@@ -95,7 +95,7 @@ export default async function handler(req, res) {
                 .update({ 
                     company_name, web_link, linkedin_link, jobstreet_link, 
                     glints_link, indeed_link, deall_link, kalibrr_link, 
-                    techinasia_link, location, distance, travel_time, 
+                    techinasia_link, glassdoor_link, location, distance, travel_time, 
                     applied_date, requirements, notes, status, steps, openings 
                 })
                 .eq('id', id)

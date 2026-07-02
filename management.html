@@ -497,6 +497,7 @@
         .platform-link.js { background: #eab308; }
         .platform-link.gl { background: #ff5a5f; color: #fff; }
         .platform-link.id { background: #2164f3; color: #fff; }
+        .platform-link.gd { background: #00b22d; color: #fff; }
         .platform-link.de { background: #10b981; color: #fff; }
         .platform-link.ka { background: #f43f5e; color: #fff; }
         .platform-link.ta { background: #ea580c; color: #fff; }
@@ -946,6 +947,34 @@
                         <label class="form-label" for="job-link-li">Company LinkedIn Link</label>
                         <input type="url" class="form-input" id="job-link-li" placeholder="https://linkedin.com/company/...">
                     </div>
+                    <div class="form-group">
+                        <label class="form-label" for="job-link-js">Company Jobstreet Link</label>
+                        <input type="url" class="form-input" id="job-link-js" placeholder="https://jobstreet.co.id/company/...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="job-link-gl">Company Glints Link</label>
+                        <input type="url" class="form-input" id="job-link-gl" placeholder="https://glints.com/companies/...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="job-link-id">Company Indeed Link</label>
+                        <input type="url" class="form-input" id="job-link-id" placeholder="https://indeed.com/cmp/...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="job-link-gd">Company Glassdoor Link</label>
+                        <input type="url" class="form-input" id="job-link-gd" placeholder="https://glassdoor.com/Overview/...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="job-link-de">Company Dealls Link</label>
+                        <input type="url" class="form-input" id="job-link-de" placeholder="https://dealls.com/company/...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="job-link-ta">Company Tech In Asia Link</label>
+                        <input type="url" class="form-input" id="job-link-ta" placeholder="https://techinasia.com/companies/...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="job-link-ka">Company Kalibrr Link</label>
+                        <input type="url" class="form-input" id="job-link-ka" placeholder="https://kalibrr.com/c/...">
+                    </div>
                     <!-- Requirements & Notes -->
                     <div class="form-group full-width">
                         <label class="form-label" for="job-requirements">Company Tech Stack &amp; General Requirements</label>
@@ -1331,6 +1360,13 @@
         const jobTimeInp = document.getElementById('job-time');
         const jobWebInp = document.getElementById('job-link-web');
         const jobLiInp = document.getElementById('job-link-li');
+        const jobJsInp = document.getElementById('job-link-js');
+        const jobGlInp = document.getElementById('job-link-gl');
+        const jobIndeedInp = document.getElementById('job-link-id');
+        const jobGdInp = document.getElementById('job-link-gd');
+        const jobDeInp = document.getElementById('job-link-de');
+        const jobTaInp = document.getElementById('job-link-ta');
+        const jobKaInp = document.getElementById('job-link-ka');
         const jobReqInp = document.getElementById('job-requirements');
         const jobNotesInp = document.getElementById('job-notes');
 
@@ -1377,6 +1413,13 @@
                 travel_time: jobTimeInp.value,
                 web_link: jobWebInp.value,
                 linkedin_link: jobLiInp.value,
+                jobstreet_link: jobJsInp.value,
+                glints_link: jobGlInp.value,
+                indeed_link: jobIndeedInp.value,
+                glassdoor_link: jobGdInp.value,
+                deall_link: jobDeInp.value,
+                techinasia_link: jobTaInp.value,
+                kalibrr_link: jobKaInp.value,
                 requirements: jobReqInp.value,
                 notes: jobNotesInp.value,
                 openings: existingOpenings
@@ -1497,16 +1540,25 @@
 
                 // Build links column elements
                 let linksHtml = '<div class="links-col">';
-                if (j.web_link) {
-                    linksHtml += `<a href="${j.web_link}" target="_blank" class="platform-link web" title="Website Resmi: ${j.web_link}">W</a>`;
-                } else {
-                    linksHtml += `<span class="platform-link disabled">W</span>`;
-                }
-                if (j.linkedin_link) {
-                    linksHtml += `<a href="${j.linkedin_link}" target="_blank" class="platform-link li" title="LinkedIn Company Profile: ${j.linkedin_link}">L</a>`;
-                } else {
-                    linksHtml += `<span class="platform-link disabled">L</span>`;
-                }
+                const linkItems = [
+                    { key: 'web_link', label: 'W', cls: 'web', title: 'Website Resmi' },
+                    { key: 'linkedin_link', label: 'L', cls: 'li', title: 'LinkedIn Page' },
+                    { key: 'jobstreet_link', label: 'J', cls: 'js', title: 'Jobstreet Profile' },
+                    { key: 'glints_link', label: 'G', cls: 'gl', title: 'Glints Profile' },
+                    { key: 'indeed_link', label: 'I', cls: 'id', title: 'Indeed Profile' },
+                    { key: 'glassdoor_link', label: 'GD', cls: 'gd', title: 'Glassdoor Profile' },
+                    { key: 'deall_link', label: 'D', cls: 'de', title: 'Dealls Profile' },
+                    { key: 'techinasia_link', label: 'T', cls: 'ta', title: 'Tech In Asia Profile' },
+                    { key: 'kalibrr_link', label: 'K', cls: 'ka', title: 'Kalibrr Profile' }
+                ];
+                linkItems.forEach(item => {
+                    const url = j[item.key];
+                    if (url && url !== '-') {
+                        linksHtml += `<a href="${url}" target="_blank" class="platform-link ${item.cls}" title="${item.title}: ${url}">${item.label}</a>`;
+                    } else {
+                        linksHtml += `<span class="platform-link disabled">${item.label}</span>`;
+                    }
+                });
                 linksHtml += '</div>';
 
                 const isExpanded = expandedCompanyId == j.id;
@@ -1725,6 +1777,13 @@
                     jobTimeInp.value = j.travel_time || '';
                     jobWebInp.value = j.web_link || '';
                     jobLiInp.value = j.linkedin_link || '';
+                    jobJsInp.value = j.jobstreet_link || '';
+                    jobGlInp.value = j.glints_link || '';
+                    jobIndeedInp.value = j.indeed_link || '';
+                    jobGdInp.value = j.glassdoor_link || '';
+                    jobDeInp.value = j.deall_link || '';
+                    jobTaInp.value = j.techinasia_link || '';
+                    jobKaInp.value = j.kalibrr_link || '';
                     jobReqInp.value = j.requirements || '';
                     jobNotesInp.value = j.notes || '';
 
