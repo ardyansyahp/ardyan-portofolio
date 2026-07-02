@@ -842,15 +842,13 @@
                         <thead>
                             <tr>
                                 <th style="width: 40px;">No</th>
-                                <th style="width: 150px;">Company</th>
-                                <th style="width: 110px;">Status</th>
-                                <th style="width: 180px;">Links</th>
-                                <th style="width: 150px;">Location</th>
-                                <th style="width: 60px;">Dist</th>
-                                <th style="width: 60px;">Time</th>
-                                <th style="width: 120px;">History/Age</th>
-                                <th style="width: 200px;">Requirements</th>
-                                <th style="width: 100px;">Actions</th>
+                                <th style="width: 250px;">Company Name</th>
+                                <th style="width: 120px;">Company Links</th>
+                                <th style="width: 200px;">Location</th>
+                                <th style="width: 80px;">Dist</th>
+                                <th style="width: 80px;">Time</th>
+                                <th style="width: 150px;">Total Openings</th>
+                                <th style="width: 120px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="job-table-body">
@@ -941,65 +939,21 @@
                         <input type="text" class="form-input" id="job-time" placeholder="e.g. 26 m">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="job-status">Main Status</label>
-                        <select class="form-select" id="job-status">
-                            <option value="Applied">Applied</option>
-                            <option value="Reachout">Reachout</option>
-                            <option value="Notice">Notice</option>
-                            <option value="Interview">Interview</option>
-                            <option value="Tech Inter">Tech Inter</option>
-                            <option value="Accept">Accept</option>
-                            <option value="Reject">Reject</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="job-applied-date">Applied Date</label>
-                        <input type="date" class="form-input" id="job-applied-date">
-                    </div>
-                    <!-- Platform links -->
-                    <div class="form-group full-width" style="margin-top: 10px; margin-bottom: 5px;">
-                        <span class="form-label" style="font-weight: bold; border-bottom: 1px dashed var(--border-color); padding-bottom: 4px;">Platform &amp; Application Links</span>
-                    </div>
-                    <div class="form-group">
                         <label class="form-label" for="job-link-web">Company Website Link</label>
                         <input type="url" class="form-input" id="job-link-web" placeholder="https://example.com">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="job-link-li">LinkedIn Post / Profile</label>
-                        <input type="url" class="form-input" id="job-link-li" placeholder="https://linkedin.com/jobs/...">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="job-link-js">Jobstreet Link</label>
-                        <input type="url" class="form-input" id="job-link-js" placeholder="https://jobstreet.co.id/...">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="job-link-gl">Glints Link</label>
-                        <input type="url" class="form-input" id="job-link-gl" placeholder="https://glints.com/...">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="job-link-id">Indeed Link</label>
-                        <input type="url" class="form-input" id="job-link-id" placeholder="https://indeed.com/...">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="job-link-de">Deall.co Link</label>
-                        <input type="url" class="form-input" id="job-link-de" placeholder="https://deall.co/...">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="job-link-ka">Kalibrr Link</label>
-                        <input type="url" class="form-input" id="job-link-ka" placeholder="https://kalibrr.com/...">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="job-link-ta">Tech In Asia Link</label>
-                        <input type="url" class="form-input" id="job-link-ta" placeholder="https://techinasia.com/...">
+                        <label class="form-label" for="job-link-li">Company LinkedIn Link</label>
+                        <input type="url" class="form-input" id="job-link-li" placeholder="https://linkedin.com/company/...">
                     </div>
                     <!-- Requirements & Notes -->
                     <div class="form-group full-width">
-                        <label class="form-label" for="job-requirements">Company Technology Requirements</label>
+                        <label class="form-label" for="job-requirements">Company Tech Stack &amp; General Requirements</label>
                         <textarea class="form-textarea" id="job-requirements" placeholder="e.g. PHP 8.2, Laravel 10, MySQL, REST API, TailwindCSS"></textarea>
                     </div>
                     <div class="form-group full-width">
-                        <label class="form-label" for="job-notes">Internal Notes &amp; History log</label>
-                        <textarea class="form-textarea" id="job-notes" placeholder="Catatan proses wawancara, pertanyaan teknis yang ditanyakan, negosiasi gaji, dll..."></textarea>
+                        <label class="form-label" for="job-notes">Internal Description &amp; Notes</label>
+                        <textarea class="form-textarea" id="job-notes" placeholder="Catatan profil perusahaan, prospek, iklim kerja, dll..."></textarea>
                     </div>
                 </div>
                 <div class="dialog-footer">
@@ -1175,6 +1129,7 @@
         // C. INTERACTIVE LOGIC (TABS, MODALS, RENDERING)
         let allSkills = [];
         let allJobs = [];
+        let expandedCompanyId = null;
 
         // Tab Switching
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -1363,6 +1318,7 @@
 
 
         // --- JOB TRACKER SECTION LOGIC ---
+        // --- JOB TRACKER SECTION LOGIC ---
         const jobTableBody = document.getElementById('job-table-body');
         const jobDialog = document.getElementById('job-dialog');
         const jobForm = document.getElementById('job-form');
@@ -1373,16 +1329,8 @@
         const jobLocationInp = document.getElementById('job-location');
         const jobDistanceInp = document.getElementById('job-distance');
         const jobTimeInp = document.getElementById('job-time');
-        const jobStatusInp = document.getElementById('job-status');
-        const jobAppliedDateInp = document.getElementById('job-applied-date');
         const jobWebInp = document.getElementById('job-link-web');
         const jobLiInp = document.getElementById('job-link-li');
-        const jobJsInp = document.getElementById('job-link-js');
-        const jobGlInp = document.getElementById('job-link-gl');
-        const jobIndeedInp = document.getElementById('job-link-id');
-        const jobDeInp = document.getElementById('job-link-de');
-        const jobKaInp = document.getElementById('job-link-ka');
-        const jobTaInp = document.getElementById('job-link-ta');
         const jobReqInp = document.getElementById('job-requirements');
         const jobNotesInp = document.getElementById('job-notes');
 
@@ -1402,7 +1350,6 @@
         document.getElementById('btn-add-job').addEventListener('click', () => {
             jobForm.reset();
             jobIdInp.value = '';
-            jobAppliedDateInp.value = new Date().toISOString().split('T')[0];
             document.getElementById('job-dialog-title').textContent = '[ ADD COMPANY RESEARCH ]';
             showDialog(jobDialog);
         });
@@ -1414,39 +1361,40 @@
         jobForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // Ambil openings yang sudah ada jika proses edit
+            let existingOpenings = [];
+            if (jobIdInp.value) {
+                const found = allJobs.find(x => x.id == jobIdInp.value);
+                if (found && found.openings) {
+                    existingOpenings = found.openings;
+                }
+            }
+
             const payload = {
                 company_name: jobCompanyInp.value,
                 location: jobLocationInp.value,
                 distance: jobDistanceInp.value,
                 travel_time: jobTimeInp.value,
-                status: jobStatusInp.value,
-                applied_date: jobAppliedDateInp.value,
                 web_link: jobWebInp.value,
                 linkedin_link: jobLiInp.value,
-                jobstreet_link: jobJsInp.value,
-                glints_link: jobGlInp.value,
-                indeed_link: jobIndeedInp.value,
-                deall_link: jobDeInp.value,
-                kalibrr_link: jobKaInp.value,
-                techinasia_link: jobTaInp.value,
                 requirements: jobReqInp.value,
                 notes: jobNotesInp.value,
-                steps: []
+                openings: existingOpenings
             };
 
             const isEdit = jobIdInp.value !== '';
             try {
                 if (isEdit) {
                     await db.request(`/api/applications?id=${jobIdInp.value}`, 'PUT', payload);
-                    showToast('Job application details updated!');
+                    showToast('Profil perusahaan diperbarui!');
                 } else {
                     await db.request('/api/applications', 'POST', payload);
-                    showToast('Job application created successfully!');
+                    showToast('Profil perusahaan berhasil ditambahkan!');
                 }
                 hideDialog(jobDialog);
                 await loadJobsData();
             } catch (err) {
-                showToast('Action failed: ' + err.message, true);
+                showToast('Aksi gagal: ' + err.message, true);
             }
         });
 
@@ -1463,10 +1411,25 @@
         }
 
         function updateJobsSummary() {
-            sumJobsTotal.textContent = allJobs.length;
-            sumJobsApplied.textContent = allJobs.filter(j => j.status === 'Applied').length;
-            sumJobsInterviews.textContent = allJobs.filter(j => j.status === 'Interview' || j.status === 'Tech Inter').length;
-            sumJobsAccepted.textContent = allJobs.filter(j => j.status === 'Accept').length;
+            let total = 0;
+            let applied = 0;
+            let interviews = 0;
+            let accepted = 0;
+
+            allJobs.forEach(j => {
+                const ops = j.openings || [];
+                ops.forEach(op => {
+                    total++;
+                    if (op.status === 'Applied') applied++;
+                    if (op.status === 'Interview' || op.status === 'Tech Inter') interviews++;
+                    if (op.status === 'Accept') accepted++;
+                });
+            });
+
+            sumJobsTotal.textContent = total;
+            sumJobsApplied.textContent = applied;
+            sumJobsInterviews.textContent = interviews;
+            sumJobsAccepted.textContent = accepted;
         }
 
         // Relative Date Calculator
@@ -1508,9 +1471,12 @@
                 const matchQuery = !q || 
                     (j.company_name && j.company_name.toLowerCase().includes(q)) || 
                     (j.location && j.location.toLowerCase().includes(q)) || 
-                    (j.requirements && j.requirements.toLowerCase().includes(q));
+                    (j.requirements && j.requirements.toLowerCase().includes(q)) ||
+                    (j.openings && j.openings.some(op => op.title && op.title.toLowerCase().includes(q)));
 
-                const matchStatus = statFilter === 'all' || j.status === statFilter;
+                const matchStatus = statFilter === 'all' || 
+                    (j.openings && j.openings.some(op => op.status === statFilter));
+                
                 return matchQuery && matchStatus;
             });
 
@@ -1520,64 +1486,235 @@
             }
 
             filtered.forEach((j, index) => {
+                // 1. Baris Utama (Profil Perusahaan)
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-id', j.id);
 
-                // Build links column elements
-                const linkItems = [
-                    { key: 'web_link', label: 'W', cls: 'web', title: 'Website Resmi' },
-                    { key: 'linkedin_link', label: 'L', cls: 'li', title: 'LinkedIn Post/Profile' },
-                    { key: 'jobstreet_link', label: 'J', cls: 'js', title: 'Jobstreet' },
-                    { key: 'glints_link', label: 'G', cls: 'gl', title: 'Glints' },
-                    { key: 'indeed_link', label: 'I', cls: 'id', title: 'Indeed' },
-                    { key: 'deall_link', label: 'D', cls: 'de', title: 'Deall.co' },
-                    { key: 'kalibrr_link', label: 'K', cls: 'ka', title: 'Kalibrr' },
-                    { key: 'techinasia_link', label: 'T', cls: 'ta', title: 'Tech In Asia' }
-                ];
+                // 2. Baris Detail (Lowongan Pekerjaan)
+                const detailTr = document.createElement('tr');
+                detailTr.className = 'openings-detail-row';
+                detailTr.style.display = (expandedCompanyId == j.id) ? 'table-row' : 'none';
 
+                // Build links column elements
                 let linksHtml = '<div class="links-col">';
-                linkItems.forEach(item => {
-                    const url = j[item.key];
-                    if (url && url !== '-') {
-                        linksHtml += `<a href="${url}" target="_blank" class="platform-link ${item.cls}" title="${item.title}: ${url}">${item.label}</a>`;
-                    } else {
-                        linksHtml += `<span class="platform-link disabled">${item.label}</span>`;
-                    }
-                });
+                if (j.web_link) {
+                    linksHtml += `<a href="${j.web_link}" target="_blank" class="platform-link web" title="Website Resmi: ${j.web_link}">W</a>`;
+                } else {
+                    linksHtml += `<span class="platform-link disabled">W</span>`;
+                }
+                if (j.linkedin_link) {
+                    linksHtml += `<a href="${j.linkedin_link}" target="_blank" class="platform-link li" title="LinkedIn Company Profile: ${j.linkedin_link}">L</a>`;
+                } else {
+                    linksHtml += `<span class="platform-link disabled">L</span>`;
+                }
                 linksHtml += '</div>';
 
-                // Determine status badge class
-                let statusClass = 'status-applied';
-                if (j.status === 'Reachout') statusClass = 'status-reachout';
-                else if (j.status === 'Notice') statusClass = 'status-notice';
-                else if (j.status === 'Interview') statusClass = 'status-interview';
-                else if (j.status === 'Tech Inter') statusClass = 'status-tech';
-                else if (j.status === 'Accept') statusClass = 'status-accept';
-                else if (j.status === 'Reject') statusClass = 'status-reject';
+                const isExpanded = expandedCompanyId == j.id;
+                const toggleText = isExpanded ? '[ ▼ Collapse ]' : '[ ▶ Expand ]';
+                const openingsCount = j.openings ? j.openings.length : 0;
 
-                // Render main rows
+                // Render baris utama
                 tr.innerHTML = `
                     <td style="text-align: center; font-family: var(--font-mono); color: var(--text-muted);">${index + 1}</td>
-                    <td style="font-weight: 700; color: var(--text-main); font-size: 13px;">${escapeHtml(j.company_name)}</td>
-                    <td style="text-align: center;"><span class="status-badge ${statusClass}">${j.status || 'Applied'}</span></td>
+                    <td style="font-weight: 700; color: var(--text-main); font-size: 13px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="toggle-openings-btn" style="background:none; border:none; color:var(--accent); font-family:var(--font-mono); font-size:11px; cursor:pointer; padding: 2px 4px;">${toggleText}</button>
+                            <span>${escapeHtml(j.company_name)}</span>
+                        </div>
+                    </td>
                     <td>${linksHtml}</td>
                     <td style="color: var(--text-muted); font-size: 11px;">${j.location ? escapeHtml(j.location) : '-'}</td>
                     <td style="text-align: center; font-family: var(--font-mono);">${j.distance ? escapeHtml(j.distance) : '-'}</td>
                     <td style="text-align: center; font-family: var(--font-mono);">${j.travel_time ? escapeHtml(j.travel_time) : '-'}</td>
-                    
-                    <td style="font-family: var(--font-mono); font-size: 11px; text-align: center;" title="Tanggal lamar: ${j.applied_date || '-'}">
-                        ${getRelativeTime(j.applied_date)}
-                    </td>
-                    <td style="font-size: 11px; color: var(--text-muted); line-height: 1.4; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${j.requirements ? escapeHtml(j.requirements) : ''}">
-                        ${j.requirements ? escapeHtml(j.requirements) : '-'}
-                    </td>
+                    <td style="text-align: center; font-family: var(--font-mono); font-size: 11px; font-weight: bold; color: var(--accent);">${openingsCount} Openings</td>
                     <td style="text-align: center;">
                         <button class="skill-action-btn edit-job-btn" style="margin-right: 6px;">[ Edit ]</button>
                         <button class="skill-action-btn delete delete-job-btn">[ Del ]</button>
                     </td>
                 `;
 
-                // Bind Edit Button
+                // Render baris detail (inline form & list)
+                detailTr.innerHTML = `
+                    <td colspan="8" style="padding: 0; background: #0b0b0e;">
+                        <div class="openings-detail-wrapper" style="padding: 18px 24px; border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+                                <!-- Kolom Kiri: Deskripsi & Tech stack perusahaan -->
+                                <div style="display: flex; flex-direction: column; gap: 16px;">
+                                    <div>
+                                        <h4 style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">[ Company Description &amp; Notes ]</h4>
+                                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 10px; border-radius: 4px; min-height: 60px;">${escapeHtml(j.notes) || 'Belum ada deskripsi.'}</div>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">[ Company Tech Stack / Requirements ]</h4>
+                                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 10px; border-radius: 4px; min-height: 60px;">${escapeHtml(j.requirements) || 'Belum ada kebutuhan teknologi.'}</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Kolom Kanan: Manajemen Lowongan -->
+                                <div>
+                                    <h4 style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">[ Active Job Openings ]</h4>
+                                    
+                                    <!-- Daftar Lowongan -->
+                                    <div class="inline-openings-container" style="max-height: 200px; overflow-y: auto; margin-bottom: 14px; padding-right: 4px;">
+                                        <!-- Rendered dynamically below -->
+                                    </div>
+                                    
+                                    <!-- Input Tambah Lowongan Baru secara Inline -->
+                                    <div style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px;">
+                                        <span style="font-family: var(--font-mono); font-size: 9px; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 8px;">+ Add New Job Opening Link</span>
+                                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                            <input type="text" class="form-input inline-title-inp" placeholder="Job Title (e.g. React Dev)" style="flex: 1; padding: 6px 10px; font-size: 12px; background: rgba(0,0,0,0.2);">
+                                            <input type="url" class="form-input inline-link-inp" placeholder="Paste Link (e.g. Jobstreet, Glints)" style="flex: 1.5; padding: 6px 10px; font-size: 12px; background: rgba(0,0,0,0.2);">
+                                            <select class="form-select inline-status-inp" style="width: 100px; padding: 6px 10px; font-size: 12px; background: rgba(0,0,0,0.2); height: auto;">
+                                                <option value="Applied">Applied</option>
+                                                <option value="Reachout">Reachout</option>
+                                                <option value="Notice">Notice</option>
+                                                <option value="Interview">Interview</option>
+                                                <option value="Tech Inter">Tech Inter</option>
+                                                <option value="Accept">Accept</option>
+                                                <option value="Reject">Reject</option>
+                                            </select>
+                                            <button class="btn btn-primary inline-add-btn" style="padding: 6px 12px; font-family: var(--font-mono); font-size: 11px;">[ Add ]</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+
+                // Populate Daftar Lowongan Pekerjaan
+                const openingsContainer = detailTr.querySelector('.inline-openings-container');
+                const openingsList = j.openings || [];
+                
+                if (openingsList.length === 0) {
+                    openingsContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); padding: 20px;">[ NO ACTIVE OPENINGS RECORDED ]</div>`;
+                } else {
+                    openingsList.forEach((op, opIndex) => {
+                        const opEl = document.createElement('div');
+                        opEl.style.display = 'flex';
+                        opEl.style.alignItems = 'center';
+                        opEl.style.justifyContent = 'space-between';
+                        opEl.style.padding = '8px 12px';
+                        opEl.style.background = 'rgba(255,255,255,0.01)';
+                        opEl.style.border = '1px solid rgba(255,255,255,0.03)';
+                        opEl.style.borderRadius = '4px';
+                        opEl.style.marginBottom = '6px';
+                        opEl.style.fontSize = '12px';
+                        
+                        opEl.innerHTML = `
+                            <div style="display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60%;">
+                                <span style="color: var(--text-muted); font-family: var(--font-mono); font-size: 10px;">#${opIndex + 1}</span>
+                                <a href="${op.link}" target="_blank" style="color: var(--accent); font-weight: bold; text-decoration: underline; text-decoration-color: rgba(56, 189, 248, 0.4);" title="${escapeHtml(op.link)}">${escapeHtml(op.title || 'Job Link')}</a>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <select class="form-select op-status-change" style="width: auto; padding: 2px 4px; font-size: 11px; height: auto; background: transparent; border-color: rgba(255,255,255,0.1); color: var(--text-main);">
+                                    <option value="Applied" ${op.status === 'Applied' ? 'selected' : ''}>Applied</option>
+                                    <option value="Reachout" ${op.status === 'Reachout' ? 'selected' : ''}>Reachout</option>
+                                    <option value="Notice" ${op.status === 'Notice' ? 'selected' : ''}>Notice</option>
+                                    <option value="Interview" ${op.status === 'Interview' ? 'selected' : ''}>Interview</option>
+                                    <option value="Tech Inter" ${op.status === 'Tech Inter' ? 'selected' : ''}>Tech Inter</option>
+                                    <option value="Accept" ${op.status === 'Accept' ? 'selected' : ''}>Accept</option>
+                                    <option value="Reject" ${op.status === 'Reject' ? 'selected' : ''}>Reject</option>
+                                </select>
+                                <button class="op-del-btn" style="background:none; border:none; color:var(--reject-color); font-family:var(--font-mono); cursor:pointer; font-size: 11px; padding: 2px 4px;">[ Delete ]</button>
+                            </div>
+                        `;
+                        
+                        // Handler: Perubahan Status Lowongan secara Inline
+                        opEl.querySelector('.op-status-change').addEventListener('change', async (e) => {
+                            const newStatus = e.target.value;
+                            op.status = newStatus;
+                            try {
+                                await db.request(`/api/applications?id=${j.id}`, 'PUT', j);
+                                showToast('Status lowongan diperbarui!');
+                                updateJobsSummary();
+                                renderJobs();
+                            } catch (err) {
+                                showToast('Gagal mengubah status.', true);
+                            }
+                        });
+                        
+                        // Handler: Hapus Lowongan secara Inline
+                        opEl.querySelector('.op-del-btn').addEventListener('click', async () => {
+                            if (confirm(`Hapus lowongan "${op.title || 'Job Link'}"?`)) {
+                                j.openings = j.openings.filter((_, idx) => idx !== opIndex);
+                                try {
+                                    await db.request(`/api/applications?id=${j.id}`, 'PUT', j);
+                                    showToast('Lowongan dihapus.');
+                                    updateJobsSummary();
+                                    renderJobs();
+                                } catch (err) {
+                                    showToast('Gagal menghapus lowongan.', true);
+                                }
+                            }
+                        });
+                        
+                        openingsContainer.appendChild(opEl);
+                    });
+                }
+
+                // Handler: Tambah Lowongan Baru secara Inline
+                const inlineAddBtn = detailTr.querySelector('.inline-add-btn');
+                const titleInp = detailTr.querySelector('.inline-title-inp');
+                const linkInp = detailTr.querySelector('.inline-link-inp');
+                const statusInp = detailTr.querySelector('.inline-status-inp');
+                
+                inlineAddBtn.addEventListener('click', async () => {
+                    const titleVal = titleInp.value.trim();
+                    const linkVal = linkInp.value.trim();
+                    const statusVal = statusInp.value;
+                    
+                    if (!titleVal || !linkVal) {
+                        showToast('Judul dan Link lowongan wajib diisi!', true);
+                        return;
+                    }
+                    
+                    const newOp = {
+                        title: titleVal,
+                        link: linkVal,
+                        status: statusVal,
+                        id: Date.now()
+                    };
+                    
+                    if (!j.openings) j.openings = [];
+                    j.openings.push(newOp);
+                    
+                    try {
+                        await db.request(`/api/applications?id=${j.id}`, 'PUT', j);
+                        showToast('Lowongan baru berhasil ditambahkan!');
+                        titleInp.value = '';
+                        linkInp.value = '';
+                        updateJobsSummary();
+                        renderJobs();
+                    } catch (err) {
+                        showToast('Gagal menambahkan lowongan.', true);
+                        j.openings.pop(); // Revert
+                    }
+                });
+
+                // Handler: Klik Toggle Expand / Collapse baris detail
+                const toggleBtn = tr.querySelector('.toggle-openings-btn');
+                toggleBtn.addEventListener('click', () => {
+                    const isNowExpanded = detailTr.style.display === 'table-row';
+                    if (isNowExpanded) {
+                        detailTr.style.display = 'none';
+                        toggleBtn.textContent = '[ ▶ Expand ]';
+                        if (expandedCompanyId == j.id) {
+                            expandedCompanyId = null;
+                        }
+                    } else {
+                        // Collapse baris lain yang sedang terbuka
+                        document.querySelectorAll('.openings-detail-row').forEach(row => row.style.display = 'none');
+                        document.querySelectorAll('.toggle-openings-btn').forEach(btn => btn.textContent = '[ ▶ Expand ]');
+                        
+                        detailTr.style.display = 'table-row';
+                        toggleBtn.textContent = '[ ▼ Collapse ]';
+                        expandedCompanyId = j.id;
+                    }
+                });
+
+                // Bind Edit Button (Modal Edit Profil Perusahaan)
                 tr.querySelector('.edit-job-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
                     jobForm.reset();
@@ -1586,16 +1723,8 @@
                     jobLocationInp.value = j.location || '';
                     jobDistanceInp.value = j.distance || '';
                     jobTimeInp.value = j.travel_time || '';
-                    jobStatusInp.value = j.status || 'Applied';
-                    jobAppliedDateInp.value = j.applied_date || '';
                     jobWebInp.value = j.web_link || '';
                     jobLiInp.value = j.linkedin_link || '';
-                    jobJsInp.value = j.jobstreet_link || '';
-                    jobGlInp.value = j.glints_link || '';
-                    jobIndeedInp.value = j.indeed_link || '';
-                    jobDeInp.value = j.deall_link || '';
-                    jobKaInp.value = j.kalibrr_link || '';
-                    jobTaInp.value = j.techinasia_link || '';
                     jobReqInp.value = j.requirements || '';
                     jobNotesInp.value = j.notes || '';
 
@@ -1603,21 +1732,22 @@
                     showDialog(jobDialog);
                 });
 
-                // Bind Delete Button
+                // Bind Delete Button (Hapus Profil Perusahaan)
                 tr.querySelector('.delete-job-btn').addEventListener('click', async (e) => {
                     e.stopPropagation();
-                    if (confirm(`Apakah Anda yakin ingin menghapus lamaran "${j.company_name}"?`)) {
+                    if (confirm(`Apakah Anda yakin ingin menghapus profil perusahaan "${j.company_name}" beserta seluruh lowongannya?`)) {
                         try {
                             await db.request(`/api/applications?id=${j.id}`, 'DELETE');
-                            showToast('Entry deleted successfully.');
+                            showToast('Profil perusahaan berhasil dihapus.');
                             await loadJobsData();
                         } catch (err) {
-                            showToast('Failed to delete entry.', true);
+                            showToast('Gagal menghapus profil.', true);
                         }
                     }
                 });
 
                 jobTableBody.appendChild(tr);
+                jobTableBody.appendChild(detailTr);
             });
         }
 

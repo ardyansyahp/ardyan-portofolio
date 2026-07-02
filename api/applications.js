@@ -55,7 +55,7 @@ export default async function handler(req, res) {
                 company_name, web_link, linkedin_link, jobstreet_link, 
                 glints_link, indeed_link, deall_link, kalibrr_link, 
                 techinasia_link, location, distance, travel_time, 
-                applied_date, requirements, notes, status, steps 
+                applied_date, requirements, notes, status, steps, openings 
             } = req.body;
 
             if (!company_name) {
@@ -70,7 +70,8 @@ export default async function handler(req, res) {
                     techinasia_link, location, distance, travel_time, 
                     applied_date: applied_date || new Date().toISOString().split('T')[0], 
                     requirements, notes, status: status || 'Applied', 
-                    steps: steps || [] 
+                    steps: steps || [],
+                    openings: openings || []
                 })
                 .select()
                 .single();
@@ -86,7 +87,7 @@ export default async function handler(req, res) {
                 company_name, web_link, linkedin_link, jobstreet_link, 
                 glints_link, indeed_link, deall_link, kalibrr_link, 
                 techinasia_link, location, distance, travel_time, 
-                applied_date, requirements, notes, status, steps 
+                applied_date, requirements, notes, status, steps, openings 
             } = req.body;
 
             const { data, error } = await supabase
@@ -95,7 +96,7 @@ export default async function handler(req, res) {
                     company_name, web_link, linkedin_link, jobstreet_link, 
                     glints_link, indeed_link, deall_link, kalibrr_link, 
                     techinasia_link, location, distance, travel_time, 
-                    applied_date, requirements, notes, status, steps 
+                    applied_date, requirements, notes, status, steps, openings 
                 })
                 .eq('id', id)
                 .select()
