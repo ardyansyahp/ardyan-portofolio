@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastShortcutTime = 0;
 
     window.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.shiftKey && e.key === '3') {
+        if (e.ctrlKey && e.shiftKey && (e.code === 'Digit3' || e.key === '3' || e.key === '#')) {
             const now = Date.now();
             if (now - lastShortcutTime < 1500) {
                 shortcutSequence++;
