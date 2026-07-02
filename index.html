@@ -383,6 +383,26 @@
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
 
+    <!-- Password Modal for Management Mode -->
+    <div id="password-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content-wrapper">
+            <div class="modal-header">
+                <span class="modal-title">[ ACCESS CODE REQUIRED ]</span>
+            </div>
+            <div class="modal-body">
+                <p>Otentikasi diperlukan untuk mengakses halaman manajemen sistem.</p>
+                <div class="password-field-container">
+                    <input type="password" id="password-input" placeholder="••••" maxlength="6" autofocus autocomplete="off">
+                    <span id="password-error" class="password-error-message"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-password-btn" class="btn btn-outline">Cancel</button>
+                <button id="submit-password-btn" class="btn btn-primary">Authorize</button>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/main.js"></script>
 </body>
 
