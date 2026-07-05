@@ -171,20 +171,33 @@ h1, h2, h3, h4 {
 
 .section-label {
     font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--text-main);
     text-transform: uppercase;
-    padding-bottom: 2px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 6px;
+    white-space: nowrap;
+    padding: 5px 12px;
+    border: 1px solid rgba(245, 245, 245, 0.15);
+    position: relative;
+}
+
+.section-label::before {
+    content: '[';
+    margin-right: 6px;
+    color: rgba(245, 245, 245, 0.3);
+}
+
+.section-label::after {
+    content: ']';
+    margin-left: 6px;
+    color: rgba(245, 245, 245, 0.3);
 }
 
 .section-header::after {
     content: '';
     flex: 1;
     height: 1px;
-    background: var(--border-color);
+    background: linear-gradient(to right, rgba(245, 245, 245, 0.1), transparent);
 }
 
 /* ---- Hero ---- */
