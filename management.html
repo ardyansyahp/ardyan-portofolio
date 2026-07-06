@@ -1074,8 +1074,6 @@
                   <th style="width: 250px">Company Name</th>
                   <th style="width: 120px">Company Links</th>
                   <th style="width: 200px">Location</th>
-                  <th style="width: 80px">Dist</th>
-                  <th style="width: 80px">Time</th>
                   <th style="width: 150px">Total Openings</th>
                   <th style="width: 120px">Actions</th>
                 </tr>
@@ -1194,24 +1192,7 @@
                 placeholder="e.g. Cikarang, Bekasi"
               />
             </div>
-            <div class="form-group">
-              <label class="form-label" for="job-distance">Distance (km)</label>
-              <input
-                type="text"
-                class="form-input"
-                id="job-distance"
-                placeholder="e.g. 10 km"
-              />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="job-time">Travel Time</label>
-              <input
-                type="text"
-                class="form-input"
-                id="job-time"
-                placeholder="e.g. 26 m"
-              />
-            </div>
+
             <div class="form-group">
               <label class="form-label" for="job-link-web"
                 >Company Website Link</label
@@ -1313,23 +1294,24 @@
             </div>
             <!-- Requirements & Notes -->
             <div class="form-group full-width">
-              <label class="form-label" for="job-requirements"
-                >Company Tech Stack &amp; General Requirements</label
+              <label class="form-label" for="job-person-linkedin"
+                >LinkedIn Orang Dari Perusahaan Tersebut</label
               >
-              <textarea
-                class="form-textarea"
-                id="job-requirements"
-                placeholder="e.g. PHP 8.2, Laravel 10, MySQL, REST API, TailwindCSS"
-              ></textarea>
+              <input
+                type="url"
+                class="form-input"
+                id="job-person-linkedin"
+                placeholder="https://linkedin.com/in/..."
+              />
             </div>
             <div class="form-group full-width">
               <label class="form-label" for="job-notes"
-                >Internal Description &amp; Notes</label
+                >Catatan</label
               >
               <textarea
                 class="form-textarea"
                 id="job-notes"
-                placeholder="Catatan profil perusahaan, prospek, iklim kerja, dll..."
+                placeholder="Catatan in general ya..."
               ></textarea>
             </div>
           </div>
@@ -1757,8 +1739,7 @@
       const jobIdInp = document.getElementById("job-id");
       const jobCompanyInp = document.getElementById("job-company");
       const jobLocationInp = document.getElementById("job-location");
-      const jobDistanceInp = document.getElementById("job-distance");
-      const jobTimeInp = document.getElementById("job-time");
+
       const jobWebInp = document.getElementById("job-link-web");
       const jobLiInp = document.getElementById("job-link-li");
       const jobJsInp = document.getElementById("job-link-js");
@@ -1768,7 +1749,7 @@
       const jobDeInp = document.getElementById("job-link-de");
       const jobTaInp = document.getElementById("job-link-ta");
       const jobKaInp = document.getElementById("job-link-ka");
-      const jobReqInp = document.getElementById("job-requirements");
+      const jobPersonLinkedInInp = document.getElementById("job-person-linkedin");
       const jobNotesInp = document.getElementById("job-notes");
 
       // Summary elements
@@ -1813,8 +1794,6 @@
         const payload = {
           company_name: jobCompanyInp.value,
           location: jobLocationInp.value,
-          distance: jobDistanceInp.value,
-          travel_time: jobTimeInp.value,
           web_link: jobWebInp.value,
           linkedin_link: jobLiInp.value,
           jobstreet_link: jobJsInp.value,
@@ -1824,7 +1803,7 @@
           deall_link: jobDeInp.value,
           techinasia_link: jobTaInp.value,
           kalibrr_link: jobKaInp.value,
-          requirements: jobReqInp.value,
+          person_linkedin: jobPersonLinkedInInp.value,
           notes: jobNotesInp.value,
           openings: existingOpenings,
         };
@@ -2034,8 +2013,6 @@
                     </td>
                     <td>${linksHtml}</td>
                     <td style="color: var(--text-muted); font-size: 11px;">${j.location ? escapeHtml(j.location) : "-"}</td>
-                    <td style="text-align: center; font-family: var(--font-mono);">${j.distance ? escapeHtml(j.distance) : "-"}</td>
-                    <td style="text-align: center; font-family: var(--font-mono);">${j.travel_time ? escapeHtml(j.travel_time) : "-"}</td>
                     <td style="text-align: center; font-family: var(--font-mono); font-size: 11px; font-weight: bold; color: var(--accent);">${openingsCount} Openings</td>
                     <td style="text-align: center;">
                         <button class="skill-action-btn edit-job-btn" style="margin-right: 6px;">[ Edit ]</button>
@@ -2045,18 +2022,18 @@
 
           // Render baris detail (inline form & list)
           detailTr.innerHTML = `
-                    <td colspan="8" style="padding: 0; background: #0b0b0e;">
+                    <td colspan="6" style="padding: 0; background: #0b0b0e;">
                         <div class="openings-detail-wrapper" style="padding: 18px 24px; border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.03);">
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
-                                <!-- Kolom Kiri: Deskripsi & Tech stack perusahaan -->
+                                <!-- Kolom Kiri: Deskripsi & Info orang di perusahaan -->
                                 <div style="display: flex; flex-direction: column; gap: 16px;">
                                     <div>
-                                        <h4 style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">[ Company Description &amp; Notes ]</h4>
-                                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 10px; border-radius: 4px; min-height: 60px;">${escapeHtml(j.notes) || "Belum ada deskripsi."}</div>
+                                        <h4 style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">[ Catatan ]</h4>
+                                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 10px; border-radius: 4px; min-height: 60px;">${escapeHtml(j.notes) || "Belum ada catatan."}</div>
                                     </div>
                                     <div>
-                                        <h4 style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">[ Company Tech Stack / Requirements ]</h4>
-                                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 10px; border-radius: 4px; min-height: 60px;">${escapeHtml(j.requirements) || "Belum ada kebutuhan teknologi."}</div>
+                                        <h4 style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">[ LinkedIn Orang Dari Perusahaan ]</h4>
+                                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); padding: 10px; border-radius: 4px; min-height: 60px;">${j.person_linkedin ? `<a href="${escapeHtml(j.person_linkedin)}" target="_blank" style="color: var(--accent); text-decoration: none;">${escapeHtml(j.person_linkedin)}</a>` : "Belum ada link."}</div>
                                     </div>
                                 </div>
                                 
@@ -2245,8 +2222,6 @@
             jobIdInp.value = j.id;
             jobCompanyInp.value = j.company_name;
             jobLocationInp.value = j.location || "";
-            jobDistanceInp.value = j.distance || "";
-            jobTimeInp.value = j.travel_time || "";
             jobWebInp.value = j.web_link || "";
             jobLiInp.value = j.linkedin_link || "";
             jobJsInp.value = j.jobstreet_link || "";
@@ -2256,7 +2231,7 @@
             jobDeInp.value = j.deall_link || "";
             jobTaInp.value = j.techinasia_link || "";
             jobKaInp.value = j.kalibrr_link || "";
-            jobReqInp.value = j.requirements || "";
+            jobPersonLinkedInInp.value = j.person_linkedin || "";
             jobNotesInp.value = j.notes || "";
 
             document.getElementById("job-dialog-title").textContent =
