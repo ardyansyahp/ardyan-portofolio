@@ -67,15 +67,19 @@ export default async function handler(req, res) {
                     return res.status(200).json(current || { views: 0, likes: 0 });
                 }
 
-                // 2. Simpan IP ke log secara diam-diam di background (fire and forget)
-                // Jika tabel visitor_logs belum dibuat, perintah ini akan gagal diam-diam tanpa merusak API
-                supabase.from('visitor_logs').insert({
+                // 2. Simpan IP ke log (ditunggu/await)
+                // Hanya tambahkan statistik JIKA log berhasil disimpan
+                const { error: insertLogError } = await supabase.from('visitor_logs').insert({
                     ip_address: ip,
                     user_agent: userAgent,
                     action: action
-                }).then(({ error }) => {
-                    if (error) console.log("Gagal simpan IP, mungkin tabel visitor_logs belum dibuat.");
                 });
+
+                if (insertLogError) {
+                    console.error("Gagal menyimpan log visitor:", insertLogError);
+                    // Jika gagal simpan log, return angka saat ini dan JANGAN tambah views/likes
+                    return res.status(200).json(current || { views: 0, likes: 0 });
+                }
             }
             // -------------------------------------
 
